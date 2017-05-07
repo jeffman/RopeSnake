@@ -60,7 +60,6 @@
     <Compile Include="Core\ProjectTests.cs" />
     <Compile Include="Core\RangeTests.cs" />
     <Compile Include="Core\StreamExtensionsTests.cs" />
-    <Compile Include="Core\FileSystemExtensionsTests.cs" />
     <Compile Include="Core\TableAccessorExtensionsTests.cs" />
     <Compile Include="Core\TableAccessorTests.cs" />
     <Compile Include="Mother3\Mother3TableTests.cs" />

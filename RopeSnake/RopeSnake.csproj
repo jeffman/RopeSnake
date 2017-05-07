@@ -62,7 +62,6 @@
     <Compile Include="Core\Utilities\ITableUpdater.cs" />
     <Compile Include="Core\Utilities\RangeAllocator.cs" />
     <Compile Include="Core\Models\FixedTableAccessor.cs" />
-    <Compile Include="Core\Extensions\FileSystemExtensions.cs" />
     <Compile Include="Core\IModule.cs" />
     <Compile Include="Core\Models\SizedTableEntry.cs" />
     <Compile Include="Core\Models\TableEntry.cs" />
