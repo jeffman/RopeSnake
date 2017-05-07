@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C8C41208-608B-458D-BC3E-0F04C23F47C0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RopeSnake</RootNamespace>
+    <AssemblyName>RopeSnake</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.9\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Extensions\TableAccessorExtensions.cs" />
+    <Compile Include="Core\IResourceManager.cs" />
+    <Compile Include="Core\Models\Rom.cs" />
+    <Compile Include="Core\Models\AllocatableBlock.cs" />
+    <Compile Include="Core\Models\Block.cs" />
+    <Compile Include="Core\Extensions\BlockExtensions.cs" />
+    <Compile Include="Core\Models\BlockStream.cs" />
+    <Compile Include="Core\Models\IAllocatable.cs" />
+    <Compile Include="Core\Models\Range.cs" />
+    <Compile Include="Core\RLog.cs" />
+    <Compile Include="Core\Utilities\ITableAccessor.cs" />
+    <Compile Include="Core\Utilities\ITableUpdater.cs" />
+    <Compile Include="Core\Utilities\RangeAllocator.cs" />
+    <Compile Include="Core\Models\FixedTableAccessor.cs" />
+    <Compile Include="Core\Extensions\FileSystemExtensions.cs" />
+    <Compile Include="Core\IModule.cs" />
+    <Compile Include="Core\Models\SizedTableEntry.cs" />
+    <Compile Include="Core\Models\TableEntry.cs" />
+    <Compile Include="Core\Project.cs" />
+    <Compile Include="Core\Extensions\StreamExtensions.cs" />
+    <Compile Include="Core\Extensions\Extensions.cs" />
+    <Compile Include="Core\Utilities\PredicateEqualityComparer.cs" />
+    <Compile Include="Core\Utilities\ResourceManager.cs" />
+    <Compile Include="Mother3\SarTableAccessor.cs" />
+    <Compile Include="Mother3\SarTableBase.cs" />
+    <Compile Include="Mother3\SarTableUpdater.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gba\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RopeSnake.Versions\RopeSnake.Versions.csproj">
+      <Project>{16a82ed0-14a2-46e2-9889-d3d6049ea92c}</Project>
+      <Name>RopeSnake.Versions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

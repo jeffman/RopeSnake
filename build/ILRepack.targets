@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\ILRepack.2.0.13\build\ILRepack.props" Condition="Exists('..\packages\ILRepack.2.0.13\build\ILRepack.props')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\ILRepack.2.0.13\build\ILRepack.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.2.0.13\build\ILRepack.props'))" />
+    <Error Condition="!Exists('..\packages\ILRepack.MSBuild.Task.1.0.9\build\ILRepack.MSBuild.Task.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.MSBuild.Task.1.0.9\build\ILRepack.MSBuild.Task.targets'))" />
+  </Target>
+  <Import Project="..\packages\ILRepack.MSBuild.Task.1.0.9\build\ILRepack.MSBuild.Task.targets" Condition="Exists('..\packages\ILRepack.MSBuild.Task.1.0.9\build\ILRepack.MSBuild.Task.targets')" />
+  <Target Name="ILRepack">
+    <ItemGroup>
+      <InputAssemblies Include="$(OutputPath)\$(AssemblyName).exe" />
+      <InputAssemblies Include="$(OutputPath)\*.dll" />
+    </ItemGroup>
+    <ItemGroup>
+      <ToDelete Include="@(InputAssemblies)" Condition="'%(Filename)%(Extension)' != '$(AssemblyName).exe'" />
+      <ToDelete Include="$(OutputPath)\*.config" Exclude="$(OutputPath)\$(AssemblyName).exe.config" />
+      <ToDelete Include="$(OutputPath)\*.pdb" />
+      <ToDelete Include="$(OutputPath)\*.xml" />
+    </ItemGroup>
+    <ILRepack Parallel="true" Internalize="true" InputAssemblies="@(InputAssemblies)" Wildcards="True" TargetKind="Exe" OutputFile="$(OutputPath)\$(AssemblyName).exe" />
+    <Delete Files="@(ToDelete)" />
+  </Target>
+</Project>
