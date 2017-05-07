@@ -126,7 +126,7 @@ namespace RopeSnake.Tests.Core
         public void WriteString()
         {
             stream.WriteString("Test");
-            Assert.AreEqual(5, stream.Position);
+            Assert.AreEqual(4, stream.Position);
 
             stream.Position = 0;
             Assert.AreEqual("Test", stream.ReadString());
@@ -148,7 +148,7 @@ namespace RopeSnake.Tests.Core
         public void WriteStringWithNull()
         {
             stream.WriteString("Te\0st");
-            Assert.AreEqual(6, stream.Position);
+            Assert.AreEqual(5, stream.Position);
 
             stream.Position = 0;
             Assert.AreEqual("Te", stream.ReadString());

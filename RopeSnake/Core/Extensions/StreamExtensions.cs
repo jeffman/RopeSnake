@@ -234,7 +234,6 @@ namespace RopeSnake.Core
             using (var writer = new StreamWriter(stream, DefaultEncoding, 4096, true))
             {
                 writer.Write(value);
-                writer.Write('\0');
             }
         }
 
