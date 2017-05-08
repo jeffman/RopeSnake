@@ -54,33 +54,36 @@ namespace RopeSnake.Core
             _rangeList = new LinkedList<Range>();
         }
 
-        public RangeAllocator(IEnumerable<Range> ranges)
-            : this()
+        public RangeAllocator(IEnumerable<Range> ranges) : this()
         {
             foreach (var range in ranges.Distinct().OrderBy(r => r, rangeComparer))
-            {
                 _rangeList.AddLast(range);
-            }
 
             Consolidate();
         }
 
-        internal RangeAllocator(params Range[] ranges)
-            : this((IEnumerable<Range>)ranges)
-        { }
+        internal RangeAllocator(params Range[] ranges) : this((IEnumerable<Range>)ranges) { }
 
         public int Allocate(int size, int alignment)
         {
+            if (size < 1)
+                throw new ArgumentException(nameof(size));
+
+            if (alignment < 1)
+                throw new ArgumentException(nameof(size));
+
             lock (_lockObj)
             {
-                var query = _rangeList.EnumerateNodes().Where(n => n.Value.Size >= size).OrderBy(n => n.Value.Size); ;
-                
-                var match = query.FirstOrDefault(n => n.Value.GetAlignedSize(alignment) >= size);
+                RLog.Debug($"Allocating {size} bytes (alignment {alignment})...");
+
+                var query = _rangeList.EnumerateNodes()
+                    .Where(n => n.Value.GetAlignedSize(alignment) >= size)
+                    .OrderBy(n => n.Value.Size);
+
+                var match = query.FirstOrDefault();
 
                 if (match == null)
-                {
                     throw new AllocationException(size, alignment, Ranges);
-                }
 
                 Range range = match.Value;
                 int location = range.Start.Align(alignment);
@@ -125,13 +128,9 @@ namespace RopeSnake.Core
 
                 // Insert
                 if (current == null)
-                {
                     current = _rangeList.AddLast(range);
-                }
                 else
-                {
                     current = _rangeList.AddBefore(current, range);
-                }
 
                 // Consolidate backwards
                 Consolidate(current, n => n.Previous);
