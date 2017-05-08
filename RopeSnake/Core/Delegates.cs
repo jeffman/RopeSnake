@@ -8,4 +8,5 @@ using System.IO;
 namespace RopeSnake.Core
 {
     public delegate Stream OpenResourceDelegate(string resource, string extension);
+    public delegate void ModuleProgressEventHandler(object sender, ModuleProgressEventArgs e);
 }
