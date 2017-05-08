@@ -18,10 +18,10 @@ namespace RopeSnake.Tests.Core
 
             Assert.AreEqual(Range.StartEnd(0, 7), a.CombineWith(b));
             Assert.AreEqual(a.CombineWith(b), b.CombineWith(a));
-            Assert.AreEqual(true, a.CanCombineWith(b));
-            Assert.AreEqual(true, b.CanCombineWith(a));
-            Assert.AreEqual(false, a.CanCombineWith(c));
-            Assert.AreEqual(true, a.CanCombineWith(d));
+            Assert.IsTrue(a.CanCombineWith(b));
+            Assert.IsTrue(b.CanCombineWith(a));
+            Assert.IsFalse(a.CanCombineWith(c));
+            Assert.IsTrue(a.CanCombineWith(d));
             Assert.AreEqual(Range.StartEnd(0, 7), a.CombineWith(d));
         }
 

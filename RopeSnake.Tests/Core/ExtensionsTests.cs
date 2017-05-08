@@ -59,7 +59,7 @@ namespace RopeSnake.Tests.Core
 
             double millisPerObject = sw.Elapsed.TotalMilliseconds / totalCount;
 
-            Assert.AreEqual(true, millisPerObject < 0.01);
+            Assert.IsTrue(millisPerObject < 0.01);
         }
 
         internal static (List<object> flattened, List<object> nested) CreateNestedList(int childrenCount, int depth)
