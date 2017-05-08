@@ -17,6 +17,10 @@ namespace RopeSnake.Core
         public int RequestedAlignment { get; }
         public IEnumerable<Range> Ranges { get; }
 
+        public AllocationException(int requestedSize, int requestedAlignment)
+            : this(requestedSize, requestedAlignment, null)
+        { }
+
         public AllocationException(int requestedSize, int requestedAlignment, IEnumerable<Range> ranges)
             : this($"Could not allocate the requested size of {requestedSize}. Alignment: {requestedAlignment}",
                   requestedSize,

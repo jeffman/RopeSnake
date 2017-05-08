@@ -63,6 +63,7 @@
     <Compile Include="Core\StreamExtensionsTests.cs" />
     <Compile Include="Core\TableAccessorExtensionsTests.cs" />
     <Compile Include="Core\TableAccessorTests.cs" />
+    <Compile Include="Core\RangeAllocatorTests.cs" />
     <Compile Include="Mother3\Mother3TableTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
