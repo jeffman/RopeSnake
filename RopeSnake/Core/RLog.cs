@@ -18,7 +18,7 @@ namespace RopeSnake.Core
             _log = LogManager.GetLogger("RopeSnake");
         }
 
-        internal static void Log(LogLevel level, string message)
+        internal static void Log(LogLevel level, string message, Exception exception = null)
         {
             if (!_log.IsEnabled(level))
                 return;
@@ -27,6 +27,9 @@ namespace RopeSnake.Core
 
             if (Context != null)
                 logInfo.Properties["context"] = Context.ToString();
+
+            if (exception != null)
+                logInfo.Exception = exception;
 
             _log.Log(typeof(RLog), logInfo);
         }
@@ -45,6 +48,9 @@ namespace RopeSnake.Core
 
         public static void Error(string message)
             => Log(LogLevel.Error, message);
+
+        public static void Error(string message, Exception exception)
+            => Log(LogLevel.Error, message, exception);
 
         public static void Fatal(string message)
             => Log(LogLevel.Fatal, message);
