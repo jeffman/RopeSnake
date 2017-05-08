@@ -12,7 +12,7 @@ namespace RopeSnake.Core
         string Name { get; }
         void ReadFromRom(Rom rom);
         void WriteToRom(Rom rom);
-        void ReadFromProject(IResourceManager resources);
-        void WriteToProject(IResourceManager resources);
+        void ReadFromProject(OpenResourceDelegate openResource);
+        void WriteToProject(OpenResourceDelegate openResource);
     }
 }
