@@ -51,6 +51,7 @@
     <Compile Include="Core\Assets.cs" />
     <Compile Include="Core\Delegates.cs" />
     <Compile Include="Core\Extensions\TableAccessorExtensions.cs" />
+    <Compile Include="Core\Json.cs" />
     <Compile Include="Core\Models\Rom.cs" />
     <Compile Include="Core\Models\AllocatableBlock.cs" />
     <Compile Include="Core\Models\Block.cs" />
