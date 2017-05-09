@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# ROMs
+*.gba
+
 # User-specific files
 *.suo
 *.user
@@ -45,7 +48,7 @@ dlldata.c
 # .NET Core
 project.lock.json
 project.fragment.lock.json
-artifacts/
+# artifacts/
 **/Properties/launchSettings.json
 
 *_i.c
