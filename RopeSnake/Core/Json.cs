@@ -15,5 +15,30 @@ namespace RopeSnake.Core
 
         public static void WriteToFile(string path, object value)
             => File.WriteAllText(path, JsonConvert.SerializeObject(value, Formatting.Indented));
+
+        public static T ReadJson<T>(this Stream stream)
+        {
+            var serializer = new JsonSerializer();
+            using (var reader = new StreamReader(stream))
+            {
+                using (var jsonReader = new JsonTextReader(reader))
+                {
+                    return serializer.Deserialize<T>(jsonReader);
+                }
+            }
+        }
+
+        public static void WriteJson(this Stream stream, object value)
+        {
+            var serializer = new JsonSerializer();
+            using (var writer = new StreamWriter(stream))
+            {
+                using (var jsonWriter = new JsonTextWriter(writer))
+                {
+                    jsonWriter.Formatting = Formatting.Indented;
+                    serializer.Serialize(jsonWriter, value);
+                }
+            }
+        }
     }
 }

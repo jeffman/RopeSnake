@@ -3,6 +3,7 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RopeSnake.Core;
 
@@ -208,6 +209,45 @@ namespace RopeSnake.Tests.Core
             stream.Position = 4;
             Assert.AreEqual(0, stream.ReadShort());
             Assert.AreEqual(-1, stream.ReadShort());
+        }
+
+        [TestMethod]
+        public void ReadJson()
+        {
+            var basic = File.OpenRead("Artifacts\\basic.json").ReadJson<Dictionary<string, int>>();
+            var expected = new Dictionary<string, int>
+            {
+                ["Key1"] = 123,
+                ["Key2"] = 456
+            };
+
+            CollectionAssert.AreEquivalent(expected, basic);
+
+            // Try reading it again to make sure the file handle was released
+            basic = File.OpenRead("Artifacts\\basic.json").ReadJson<Dictionary<string, int>>();
+            CollectionAssert.AreEquivalent(expected, basic);
+        }
+
+        [TestMethod]
+        public void WriteJson()
+        {
+            var basic = new Dictionary<string, int>
+            {
+                ["Key1"] = 123,
+                ["Key2"] = 456
+            };
+
+            string expected = @"{
+  ""Key1"": 123,
+  ""Key2"": 456
+}";
+
+            File.OpenWrite("Temp\\basic.json").WriteJson(basic);
+            Assert.AreEqual(expected, File.ReadAllText("Temp\\basic.json"));
+
+            // Try writing it again to make sure the file handle was released
+            File.OpenWrite("Temp\\basic.json").WriteJson(basic);
+            Assert.AreEqual(expected, File.ReadAllText("Temp\\basic.json"));
         }
     }
 }
