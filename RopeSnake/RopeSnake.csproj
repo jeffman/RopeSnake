@@ -54,12 +54,12 @@
     <Compile Include="Core\Delegates.cs" />
     <Compile Include="Core\Extensions\TableAccessorExtensions.cs" />
     <Compile Include="Core\Json.cs" />
-    <Compile Include="Core\Models\Rom.cs" />
-    <Compile Include="Core\Models\AllocatableBlock.cs" />
-    <Compile Include="Core\Models\Block.cs" />
+    <Compile Include="Core\Rom.cs" />
+    <Compile Include="Core\AllocatableBlock.cs" />
+    <Compile Include="Core\Block.cs" />
     <Compile Include="Core\Extensions\BlockExtensions.cs" />
-    <Compile Include="Core\Models\BlockStream.cs" />
-    <Compile Include="Core\Models\IAllocatable.cs" />
+    <Compile Include="Core\Utilities\BlockStream.cs" />
+    <Compile Include="Core\IAllocatable.cs" />
     <Compile Include="Core\Models\Range.cs" />
     <Compile Include="Core\ProjectData.cs" />
     <Compile Include="Core\RLog.cs" />
