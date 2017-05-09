@@ -8,10 +8,6 @@ namespace RopeSnake.Core
 {
     public class Rom : AllocatableBlock
     {
-        public Rom(int length) : base(length) { }
-
-        public Rom(byte[] data) : base(data) { }
-
-        public Rom(Block copyFrom) : base(copyFrom) { }
+        public Rom() : base() { }
     }
 }

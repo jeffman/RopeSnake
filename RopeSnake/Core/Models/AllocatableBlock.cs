@@ -10,17 +10,7 @@ namespace RopeSnake.Core
     {
         protected IAllocatable _allocator;
 
-        public AllocatableBlock(int length) : base(length)
-        {
-            CreateAllocator();
-        }
-
-        public AllocatableBlock(byte[] data) : base(data)
-        {
-            CreateAllocator();
-        }
-
-        public AllocatableBlock(Block copyFrom) : base(copyFrom)
+        public AllocatableBlock() : base()
         {
             CreateAllocator();
         }

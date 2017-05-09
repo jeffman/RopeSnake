@@ -20,7 +20,7 @@ namespace RopeSnake.Tests.Mother3
         public static void ClassInitialize(TestContext context)
         {
             baseRom = new Block(File.ReadAllBytes("Artifacts/Roms/m3_orig.gba"));
-            rom = new Block(baseRom);
+            rom = new Block();
             expectedSar = JsonConvert.DeserializeObject<SizedTableEntry[]>(
                 File.ReadAllText("Artifacts/Mother3/orig_sartable_expected.json"));
         }
@@ -28,7 +28,7 @@ namespace RopeSnake.Tests.Mother3
         [TestInitialize]
         public void TestInitialize()
         {
-            rom = new Block(baseRom);
+            baseRom.CopyTo(rom);
         }
 
         [TestMethod]
