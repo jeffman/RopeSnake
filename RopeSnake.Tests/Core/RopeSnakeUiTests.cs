@@ -18,19 +18,19 @@ namespace RopeSnake.Tests.Core
         public virtual void Reset()
             => throw new NotImplementedException();
 
-        public virtual void ReadFromProject(OpenResourceDelegate openResource)
+        public virtual ProjectData ReadFromProject(OpenResourceDelegate openResource)
             => throw new NotImplementedException();
 
-        public virtual void ReadFromRom(Rom rom)
+        public virtual ProjectData ReadFromRom(Rom rom)
             => throw new NotImplementedException();
 
-        public virtual void WriteToProject(OpenResourceDelegate openResource)
+        public virtual void WriteToProject(ProjectData data, OpenResourceDelegate openResource)
             => throw new NotImplementedException();
 
         public virtual void WriteToRom(Rom rom, CompileResult compileResult, AllocationResult allocationResult)
             => throw new NotImplementedException();
 
-        public virtual CompileResult Compile()
+        public virtual CompileResult Compile(ProjectData data)
             => throw new NotImplementedException();
     }
 

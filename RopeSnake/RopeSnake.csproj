@@ -61,6 +61,7 @@
     <Compile Include="Core\Models\BlockStream.cs" />
     <Compile Include="Core\Models\IAllocatable.cs" />
     <Compile Include="Core\Models\Range.cs" />
+    <Compile Include="Core\ProjectData.cs" />
     <Compile Include="Core\RLog.cs" />
     <Compile Include="Core\RopeSnakeUi.cs" />
     <Compile Include="Core\Utilities\ITableAccessor.cs" />
