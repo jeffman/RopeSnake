@@ -13,14 +13,7 @@ namespace RopeSnake.Tests.Core
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
-            Directory.CreateDirectory("temp");
             manager = new ResourceManager("temp");
-        }
-
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-            Directory.Delete("temp", true);
         }
 
         private Stream Open(string name, string extension, FileMode mode)

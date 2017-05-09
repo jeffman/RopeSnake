@@ -65,6 +65,7 @@
     <Compile Include="Core\TableAccessorExtensionsTests.cs" />
     <Compile Include="Core\TableAccessorTests.cs" />
     <Compile Include="Core\RangeAllocatorTests.cs" />
+    <Compile Include="Core\AssemblyInitialize.cs" />
     <Compile Include="Mother3\Mother3TableTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -88,15 +89,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="Artifacts\BasicProject\base.bin">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Artifacts\BasicProject\project.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Artifacts\BasicProject\rom.config.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RopeSnake.Versions\RopeSnake.Versions.csproj">
