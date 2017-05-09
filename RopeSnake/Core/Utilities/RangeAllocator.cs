@@ -112,6 +112,8 @@ namespace RopeSnake.Core
         {
             lock (_lockObj)
             {
+                RLog.Debug($"Deallocating range {range}");
+
                 LinkedListNode<Range> current = _rangeList.First;
                 int? compareResult = null;
 
@@ -138,6 +140,11 @@ namespace RopeSnake.Core
                 // Consolidate forwards
                 Consolidate(current, n => n.Next);
             }
+        }
+
+        public void Clear()
+        {
+            _rangeList.Clear();
         }
 
         private void Consolidate()
