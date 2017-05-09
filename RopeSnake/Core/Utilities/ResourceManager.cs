@@ -11,7 +11,6 @@ namespace RopeSnake.Core
 {
     internal sealed class ResourceManager
     {
-        internal const string DefaultExt = "bin";
         public string Root { get; }
         public FileMapDict FileMap { get; set; }
 
@@ -25,7 +24,7 @@ namespace RopeSnake.Core
             FileMap = fileMap ?? throw new ArgumentException(nameof(fileMap));
         }
 
-        public void Delete(string module, string resource, string extension = DefaultExt)
+        public void Delete(string module, string resource, string extension)
         {
             RLog.Debug($"Deleting resource [{module}][{resource}]");
 
@@ -51,7 +50,7 @@ namespace RopeSnake.Core
             FileMap[module].Remove(resource);
         }
 
-        public Stream Get(string module, string resource, string extension = DefaultExt, FileMode mode = FileMode.OpenOrCreate)
+        public Stream Get(string module, string resource, string extension, FileMode mode)
         {
             RLog.Debug($"Getting resource [{module}][{resource}] with mode {mode}");
 
