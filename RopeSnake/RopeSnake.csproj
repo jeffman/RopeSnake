@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\AllocationResult.cs" />
     <Compile Include="Core\Assets.cs" />
+    <Compile Include="Core\CompileResult.cs" />
     <Compile Include="Core\Delegates.cs" />
     <Compile Include="Core\Extensions\TableAccessorExtensions.cs" />
     <Compile Include="Core\Json.cs" />

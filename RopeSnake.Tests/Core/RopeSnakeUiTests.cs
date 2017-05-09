@@ -15,7 +15,7 @@ namespace RopeSnake.Tests.Core
         public event ModuleProgressEventHandler Progress;
 #pragma warning restore CS0067
 
-        public virtual void Initialize()
+        public virtual void Reset()
             => throw new NotImplementedException();
 
         public virtual void ReadFromProject(OpenResourceDelegate openResource)
@@ -27,7 +27,10 @@ namespace RopeSnake.Tests.Core
         public virtual void WriteToProject(OpenResourceDelegate openResource)
             => throw new NotImplementedException();
 
-        public virtual void WriteToRom(Rom rom)
+        public virtual void WriteToRom(Rom rom, CompileResult compileResult, AllocationResult allocationResult)
+            => throw new NotImplementedException();
+
+        public virtual CompileResult Compile()
             => throw new NotImplementedException();
     }
 

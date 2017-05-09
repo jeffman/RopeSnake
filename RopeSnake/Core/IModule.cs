@@ -10,11 +10,47 @@ namespace RopeSnake.Core
     public interface IModule
     {
         string Name { get; }
+
+        /// <summary>
+        /// Called when this IModule wishes to express a progress update.
+        /// </summary>
         event ModuleProgressEventHandler Progress;
 
+        /// <summary>
+        /// Reset the module to a freshly-initialized state. All project data is released.
+        /// </summary>
+        void Reset();
+
+        /// <summary>
+        /// Read project data from a ROM.
+        /// </summary>
+        /// <param name="rom">ROM to read from</param>
         void ReadFromRom(Rom rom);
-        void WriteToRom(Rom rom);
+
+        /// <summary>
+        /// Compile project data into blocks.
+        /// </summary>
+        /// <returns>collection of static and allocatable blocks</returns>
+        CompileResult Compile();
+
+        /// <summary>
+        /// Write all compiled data to ROM and perform any ROM cleanup, i.e. updating ASM pointers.
+        /// </summary>
+        /// <param name="rom">ROM to write to</param>
+        /// <param name="compileResult">result from calling Compile</param>
+        /// <param name="allocationResult">summary of block allocations in ROM</param>
+        void WriteToRom(Rom rom, CompileResult compileResult, AllocationResult allocationResult);
+
+        /// <summary>
+        /// Read all project data from disk.
+        /// </summary>
+        /// <param name="openResource"></param>
         void ReadFromProject(OpenResourceDelegate openResource);
+
+        /// <summary>
+        /// Write all project data to disk.
+        /// </summary>
+        /// <param name="openResource"></param>
         void WriteToProject(OpenResourceDelegate openResource);
     }
 
