@@ -81,9 +81,9 @@
     <Compile Include="Core\Utilities\PredicateEqualityComparer.cs" />
     <Compile Include="Core\Utilities\ResourceManager.cs" />
     <Compile Include="Core\Utilities\RomTypeDetector.cs" />
-    <Compile Include="Mother3\SarTableAccessor.cs" />
-    <Compile Include="Mother3\SarTableBase.cs" />
-    <Compile Include="Mother3\SarTableUpdater.cs" />
+    <Compile Include="Mother3\Structure\SarTableAccessor.cs" />
+    <Compile Include="Mother3\Structure\SarTableBase.cs" />
+    <Compile Include="Mother3\Structure\SarTableUpdater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
