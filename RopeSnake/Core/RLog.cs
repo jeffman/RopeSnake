@@ -46,6 +46,9 @@ namespace RopeSnake.Core
         public static void Warn(string message)
             => Log(LogLevel.Warn, message);
 
+        public static void Warn(string message, Exception exception)
+            => Log(LogLevel.Warn, message, exception);
+
         public static void Error(string message)
             => Log(LogLevel.Error, message);
 
@@ -54,5 +57,8 @@ namespace RopeSnake.Core
 
         public static void Fatal(string message)
             => Log(LogLevel.Fatal, message);
+
+        public static void Fatal(string message, Exception ex)
+            => Log(LogLevel.Fatal, message, ex);
     }
 }
