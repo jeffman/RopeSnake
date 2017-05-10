@@ -66,6 +66,7 @@
     <Compile Include="Core\TableAccessorTests.cs" />
     <Compile Include="Core\RangeAllocatorTests.cs" />
     <Compile Include="Core\AssemblyInitialize.cs" />
+    <Compile Include="Core\RomTypeDetectorTests.cs" />
     <Compile Include="Mother3\Mother3TableTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

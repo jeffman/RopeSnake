@@ -23,9 +23,10 @@ namespace RopeSnake.Core
         #region IAllocatable implementation
 
         public int Allocate(int size, int alignment)
-        {
-            return _allocator.Allocate(size, alignment);
-        }
+            => _allocator.Allocate(size, alignment);
+
+        public void Deallocate(Range range)
+            => _allocator.Deallocate(range);
 
         #endregion
     }

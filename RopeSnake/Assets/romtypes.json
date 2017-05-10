@@ -1,0 +1,75 @@
+﻿{
+  "Mother 3": {
+    "Platform": "GBA",
+    "Identifiers": [
+      {
+        "Offset": 160,
+        "Data": [77, 79, 84, 72, 69, 82, 51, 0, 0, 0, 0, 0, 65, 51, 85, 74]
+      }
+    ],
+    "Versions": {
+      "jp": {
+        "Identifiers": [
+          {
+            "Offset": 33214464,
+            "Data": [ 255, 255 ]
+          }
+        ],
+        "FreeRanges": [
+          "[0x1F86008, 0x1FDFFFF]"
+        ]
+      },
+      "en-v10": {
+        "Identifiers": [
+          {
+            "Offset": 33214464,
+            "Data": [ 0, 7 ]
+          }
+        ],
+        "FreeRanges": [
+          "[0x1F86008, 0x1F8611F]",
+          "[0x1F879E8, 0x1F8C3FF]",
+          "[0x1F8F7A8, 0x1F8FFFF]",
+          "[0x1F92364, 0x1F925FF]",
+          "[0x1FAA12C, 0x1FABFDF]",
+          "[0x1FAFA20, 0x1FAFDFF]",
+          "[0x1FC26F0, 0x1FDFFFF]"
+        ]
+      },
+      "en-v11": {
+        "Identifiers": [
+          {
+            "Offset": 33214464,
+            "Data": [ 103, 62 ]
+          }
+        ],
+        "FreeRanges": [
+          "[0x1F86008, 0x1F8611F]",
+          "[0x1F879E8, 0x1F8C3FF]",
+          "[0x1F8F7A8, 0x1F8FFFF]",
+          "[0x1F92364, 0x1F925FF]",
+          "[0x1FAA12C, 0x1FABFDF]",
+          "[0x1FAFA20, 0x1FAFDFF]",
+          "[0x1FC26F0, 0x1FDFFFF]"
+        ]
+      },
+      "en-v12": {
+        "Identifiers": [
+          {
+            "Offset": 33214464,
+            "Data": [ 48, 1 ]
+          }
+        ],
+        "FreeRanges": [
+          "[0x1F86008, 0x1F8611F]",
+          "[0x1F879E8, 0x1F8C3FF]",
+          "[0x1F8F7A8, 0x1F8FFFF]",
+          "[0x1F92364, 0x1F925FF]",
+          "[0x1FAA12C, 0x1FABFDF]",
+          "[0x1FAFA20, 0x1FAFDFF]",
+          "[0x1FC26F0, 0x1FDFFFF]"
+        ]
+      }
+    }
+  }
+}

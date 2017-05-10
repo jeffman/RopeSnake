@@ -9,6 +9,7 @@ namespace RopeSnake.Core
     public interface IAllocatable
     {
         int Allocate(int size, int alignment);
+        void Deallocate(Range range);
     }
 
     public sealed class AllocationException : Exception

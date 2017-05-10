@@ -54,6 +54,7 @@
     <Compile Include="Core\Delegates.cs" />
     <Compile Include="Core\Extensions\TableAccessorExtensions.cs" />
     <Compile Include="Core\Json.cs" />
+    <Compile Include="Core\Models\RomIdentifier.cs" />
     <Compile Include="Core\Models\RomType.cs" />
     <Compile Include="Core\Rom.cs" />
     <Compile Include="Core\AllocatableBlock.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Core\Extensions\Extensions.cs" />
     <Compile Include="Core\Utilities\PredicateEqualityComparer.cs" />
     <Compile Include="Core\Utilities\ResourceManager.cs" />
+    <Compile Include="Core\Utilities\RomTypeDetector.cs" />
     <Compile Include="Mother3\SarTableAccessor.cs" />
     <Compile Include="Mother3\SarTableBase.cs" />
     <Compile Include="Mother3\SarTableUpdater.cs" />
@@ -87,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Assets\romtypes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
