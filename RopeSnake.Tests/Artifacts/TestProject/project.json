@@ -1,0 +1,18 @@
+﻿{
+  "Type": {
+    "Game": "Halo 3",
+    "Version": "Christmas"
+  },
+  "SkipCompiling": [
+    "Armor"
+  ],
+  "Resources": {
+    "Guns": {
+      "Handheld/Potato": "Handheld/Potato.txt",
+      "Shoulder/Rocket": "Shoulder/Rocket.txt"
+    },
+    "Armor": {
+      "Reindeer": "Reindeer.png"
+    }
+  }
+}

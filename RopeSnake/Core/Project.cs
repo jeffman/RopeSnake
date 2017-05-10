@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using FileMap = System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, string>>;
 
 namespace RopeSnake.Core
 {
@@ -14,10 +17,10 @@ namespace RopeSnake.Core
         internal const FileMode DefaultMode = FileMode.OpenOrCreate;
         internal ResourceManager ResourceManager { get; set; }
 
-        public HashSet<string> SkipCompiling { get; set; }
+        public IEnumerable<string> SkipCompiling { get; internal set; }
         public RomType Type { get; internal set; }
 
-        private Project() { }
+        internal Project() { }
 
         public static Project CreateNew(string projectDirectory, RomType type)
         {
@@ -33,20 +36,39 @@ namespace RopeSnake.Core
             return project;
         }
 
-        public static Project Load(string fileName)
+        public static Project Load(string projectDirectory)
         {
-            throw new NotImplementedException();
+            projectDirectory = Path.GetFullPath(projectDirectory);
+            var json = Json.ReadFromFile<JObject>(Path.Combine(projectDirectory, DefaultFileName));
+
+            var resources = new ResourceManager(projectDirectory, json["Resources"].ToObject<FileMap>());
+            var type = json["Type"].ToObject<RomType>();
+            var skip = json["SkipCompiling"].ToObject<string[]>();
+
+            return new Project
+            {
+                ResourceManager = resources,
+                Type = type,
+                SkipCompiling = skip
+            };
         }
 
-        public void Save(string fileName)
+        public void Save(string projectDirectory)
         {
-            throw new NotImplementedException();
+            projectDirectory = Path.GetFullPath(projectDirectory);
+            var json = new JObject();
+
+            json.Add("Type", JToken.FromObject(Type));
+            json.Add("SkipCompiling", JToken.FromObject(SkipCompiling));
+            json.Add("Resources", JToken.FromObject(ResourceManager.FileMap));
+
+            Json.WriteToFile(Path.Combine(projectDirectory, DefaultFileName), json);
         }
 
         public void Delete(string module, string resource, string extension = DefaultExt)
             => ResourceManager.Delete(module, resource, extension);
 
-        public Stream Get(string module, string resource, string extension, FileMode mode = DefaultMode)
+        public Stream Get(string module, string resource, string extension = DefaultExt, FileMode mode = DefaultMode)
             => ResourceManager.Get(module, resource, extension, mode);
     }
 }
