@@ -15,18 +15,20 @@ namespace RopeSnake.Core
         internal ResourceManager ResourceManager { get; set; }
 
         public HashSet<string> SkipCompiling { get; set; }
+        public RomType Type { get; internal set; }
 
         private Project() { }
 
-        public static Project CreateNew(string path)
+        public static Project CreateNew(string projectDirectory, RomType type)
         {
             var project = new Project
             {
-                ResourceManager = new ResourceManager(path)
+                Type = type,
+                ResourceManager = new ResourceManager(projectDirectory)
             };
 
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(projectDirectory))
+                Directory.CreateDirectory(projectDirectory);
 
             return project;
         }

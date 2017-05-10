@@ -8,6 +8,8 @@ namespace RopeSnake.Core
 {
     public class Rom : AllocatableBlock
     {
+        public RomType Type { get; private set; }
+
         public Rom() : base() { }
     }
 }
