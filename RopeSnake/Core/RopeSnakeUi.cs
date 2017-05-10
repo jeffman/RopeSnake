@@ -17,6 +17,30 @@ namespace RopeSnake.Core
             ModuleTypes = new HashSet<Type>(FindModuleTypes());
         }
 
+        public static void DecompileRom(string romPath, string projectPath, IProgress<float> progress = null)
+        {
+            var modules = LoadModules(ModuleTypes);
+
+            var rom = new Rom();
+            rom.ReadFromFile(romPath);
+
+            var project = Project.CreateNew(projectPath, rom.Type);
+
+            ModuleProgressEventHandler progressHandler = (s, e) => progress?.Report(e.Fraction);
+
+            foreach (var module in modules)
+            {
+                RLog.Info($"Decompiling {module.Name}...");
+
+                module.Progress += progressHandler;
+                var data = module.ReadFromRom(rom);
+                module.WriteToProject(data, rom.Type, (r, e) => project.Get(module.Name, r, e, FileMode.Create));
+                module.Progress -= progressHandler;
+            }
+
+            project.Save(projectPath);
+        }
+
         internal static IEnumerable<IModule> LoadModules(IEnumerable<Type> moduleTypes)
         {
             RLog.Debug($"Loading modules...");
