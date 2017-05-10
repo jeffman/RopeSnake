@@ -32,8 +32,9 @@ namespace RopeSnake.Core
         /// Compile project data into blocks.
         /// </summary>
         /// <param name="data">data to compile</param>
+        /// <param name="romType">ROM type associated with the project data</param>
         /// <returns>collection of static and allocatable blocks</returns>
-        CompileResult Compile(ProjectData data);
+        CompileResult Compile(ProjectData data, RomType romType);
 
         /// <summary>
         /// Write all compiled data to ROM and perform any ROM cleanup, i.e. updating ASM pointers.
@@ -46,16 +47,18 @@ namespace RopeSnake.Core
         /// <summary>
         /// Read all project data from disk.
         /// </summary>
+        /// <param name="romType">ROM type associated with the project</param>
         /// <param name="openResource"></param>
         /// <returns>read project data</returns>
-        ProjectData ReadFromProject(OpenResourceDelegate openResource);
+        ProjectData ReadFromProject(RomType romType, OpenResourceDelegate openResource);
 
         /// <summary>
         /// Write all project data to disk.
         /// </summary>
         /// <param name="data">data to write</param>
+        /// <param name="romType">ROM type associated with the project data</param>
         /// <param name="openResource"></param>
-        void WriteToProject(ProjectData data, OpenResourceDelegate openResource);
+        void WriteToProject(ProjectData data, RomType romType, OpenResourceDelegate openResource);
     }
 
     public sealed class ModuleProgressEventArgs : EventArgs

@@ -19,6 +19,11 @@ namespace RopeSnake.Core
         public Dictionary<string, Block> AllocateBlocks { get; }
 
         /// <summary>
+        /// ROM type associated with this compilation.
+        /// </summary>
+        public RomType RomType { get; set; }
+
+        /// <summary>
         /// Optional data to be included for use during WriteToRom.
         /// </summary>
         public object Tag { get; set; }
