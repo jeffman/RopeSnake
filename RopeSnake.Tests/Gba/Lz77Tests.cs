@@ -5,6 +5,7 @@ using RopeSnake.Gba;
 using RopeSnake.Core;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Moq;
 
 namespace RopeSnake.Tests.Gba
 {
@@ -33,6 +34,53 @@ namespace RopeSnake.Tests.Gba
             var redecompressed = compressor.Decompress(compressed, 0);
 
             CollectionAssert.AreEqual(decompressed, redecompressed);
+        }
+
+        [TestMethod]
+        public void ReadCache()
+        {
+            Config.Settings.CacheLz77 = true;
+            Compressors.ReadGlobalCache("Artifacts\\CompCache");
+            var cachedCompressor = Compressors.CreateLz77(true);
+            var ordinaryCompressor = new Mock<Lz77Compressor>(true);
+
+            bool didCacheHit = true;
+            ordinaryCompressor
+                .Setup(c => c.Compress(
+                    It.IsAny<byte[]>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>()))
+                .Callback(() => didCacheHit = false);
+
+            ((CachedCompressor)cachedCompressor)._compressor = ordinaryCompressor.Object;
+
+            var decompressed = new byte[0x1000];
+            for (int i = 0; i < decompressed.Length; i++)
+                decompressed[i] = (byte)i;
+
+            var compressed = cachedCompressor.Compress(decompressed, 0, decompressed.Length);
+            Assert.IsTrue(didCacheHit);
+        }
+
+        [TestMethod]
+        public void WriteCache()
+        {
+            Config.Settings.CacheLz77 = true;
+            var cachedCompressor = Compressors.CreateLz77(true);
+
+            var decompressed = new byte[0x1000];
+            for (int i = 0; i < decompressed.Length; i++)
+                decompressed[i] = (byte)i;
+
+            cachedCompressor.Compress(decompressed, 0, decompressed.Length);
+            CachedCompressor.WriteGlobalCache("temp\\CompCache");
+
+            string cacheFile = "temp\\CompCache\\lz77.cache";
+            Assert.IsTrue(File.Exists(cacheFile));
+
+            byte[] actual = File.ReadAllBytes(cacheFile);
+            byte[] expected = File.ReadAllBytes("Artifacts\\CompCache\\lz77.cache");
+            CollectionAssert.AreEqual(expected, actual);
         }
     }
 }

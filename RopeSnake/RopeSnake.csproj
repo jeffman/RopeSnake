@@ -69,6 +69,7 @@
     <Compile Include="Core\RLog.cs" />
     <Compile Include="Core\RopeSnakeUi.cs" />
     <Compile Include="Core\Utilities\CachedCompressor.cs" />
+    <Compile Include="Core\Utilities\Compressors.cs" />
     <Compile Include="Core\Utilities\ICompressor.cs" />
     <Compile Include="Core\Utilities\ITableAccessor.cs" />
     <Compile Include="Core\Utilities\ITableUpdater.cs" />
