@@ -68,6 +68,7 @@
     <Compile Include="Core\ProjectData.cs" />
     <Compile Include="Core\RLog.cs" />
     <Compile Include="Core\RopeSnakeUi.cs" />
+    <Compile Include="Core\Utilities\ICompressor.cs" />
     <Compile Include="Core\Utilities\ITableAccessor.cs" />
     <Compile Include="Core\Utilities\ITableUpdater.cs" />
     <Compile Include="Core\Utilities\RangeAllocator.cs" />
@@ -81,14 +82,13 @@
     <Compile Include="Core\Utilities\PredicateEqualityComparer.cs" />
     <Compile Include="Core\Utilities\ResourceManager.cs" />
     <Compile Include="Core\Utilities\RomTypeDetector.cs" />
+    <Compile Include="Gba\Utilities\Lz77Compressor.cs" />
     <Compile Include="Mother3\Structure\SarTableAccessor.cs" />
     <Compile Include="Mother3\Structure\SarTableBase.cs" />
     <Compile Include="Mother3\Structure\SarTableUpdater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gba\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Assets\romtypes.json">

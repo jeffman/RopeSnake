@@ -67,6 +67,7 @@
     <Compile Include="Core\RangeAllocatorTests.cs" />
     <Compile Include="Core\AssemblyInitialize.cs" />
     <Compile Include="Core\RomTypeDetectorTests.cs" />
+    <Compile Include="Gba\Lz77Tests.cs" />
     <Compile Include="Mother3\Mother3TableTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +79,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artifacts\Mother3\orig_sartable_expected.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Artifacts\Mother3\titlescreen_compressed.bin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Artifacts\Mother3\titlescreen_decompressed.bin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Artifacts\Roms\m3_orig.gba">
