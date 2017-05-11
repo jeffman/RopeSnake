@@ -19,8 +19,8 @@ namespace RopeSnake.Tests.Core
             Assert.AreEqual("Halo 3", project.Type.Game);
             Assert.AreEqual("Christmas", project.Type.Version);
             CollectionAssert.AreEquivalent(new string[] { "Armor" }, project.SkipCompiling.ToList());
-            Assert.AreEqual("potato", project.Get("Guns", "Handheld/Potato", mode: FileMode.Open).ReadString());
-            Assert.AreEqual("rocket", project.Get("Guns", "Shoulder/Rocket", mode: FileMode.Open).ReadString());
+            Assert.AreEqual("potato", project.Get("Guns", "Handheld/Potato", mode: FileMode.Open).ReadAllText());
+            Assert.AreEqual("rocket", project.Get("Guns", "Shoulder/Rocket", mode: FileMode.Open).ReadAllText());
             // Assert.IsFabulous(project.Get("Armor", "Reindeer");
         }
 

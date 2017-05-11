@@ -190,14 +190,9 @@ namespace RopeSnake.Core
         {
             var builder = new StringBuilder();
 
-            using (var reader = new StreamReader(stream, DefaultEncoding))
-            {
-                int c;
-                while ((c = reader.Read()) > 0)
-                {
-                    builder.Append((char)c);
-                }
-            }
+            byte ch;
+            while ((stream.Position < stream.Length) && (ch = stream.GetByte()) != 0)
+                builder.Append((char)ch);
 
             return builder.ToString();
         }
@@ -207,10 +202,21 @@ namespace RopeSnake.Core
             if (byteCount < 0)
                 throw new ArgumentException(nameof(byteCount));
 
-            var bytes = stream.ReadBytes(byteCount);
-            var str = DefaultEncoding.GetString(bytes);
+            var builder = new StringBuilder();
 
-            return new string(str.TakeWhile(c => c != '\0').ToArray());
+            for (int i = 0; i < byteCount; i++)
+            {
+                byte ch = stream.GetByte();
+                if (ch == 0)
+                {
+                    stream.Position += byteCount - i - 1;
+                    break;
+                }
+
+                builder.Append((char)ch);
+            }
+
+            return builder.ToString();
         }
 
         public static string PeekString(this Stream stream)
@@ -231,10 +237,8 @@ namespace RopeSnake.Core
 
         public static void WriteString(this Stream stream, string value)
         {
-            using (var writer = new StreamWriter(stream, DefaultEncoding, 4096, true))
-            {
-                writer.Write(value);
-            }
+            foreach (char ch in value)
+                stream.WriteByte((byte)ch);
         }
 
         public static void WriteString(this Stream stream, string value, int byteCount)
@@ -242,17 +246,28 @@ namespace RopeSnake.Core
             if (byteCount < 0)
                 throw new ArgumentException(nameof(byteCount));
 
-            var bytes = DefaultEncoding.GetBytes(value);
-
-            if (bytes.Length >= byteCount)
+            for (int i = 0; i < byteCount; i++)
             {
-                stream.Write(bytes, 0, byteCount);
-            }
-            else
-            {
-                stream.Write(bytes, 0, bytes.Length);
-                for (int i = bytes.Length; i < byteCount; i++)
+                if (i < value.Length)
+                    stream.WriteByte((byte)value[i]);
+                else
                     stream.WriteByte(0);
+            }
+        }
+
+        public static string ReadAllText(this Stream stream)
+        {
+            using (var reader = new StreamReader(stream, DefaultEncoding))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        public static void WriteAllText(this Stream stream, string value)
+        {
+            using (var writer = new StreamWriter(stream, DefaultEncoding))
+            {
+                writer.Write(value);
             }
         }
 
