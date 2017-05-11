@@ -43,5 +43,7 @@ namespace RopeSnake.Core
             get { return (bool)this["cache.lz77"]; }
             set { this["cache.lz77"] = value; }
         }
+
+        public bool CacheEnabled => CacheLz77;
     }
 }
