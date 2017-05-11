@@ -36,5 +36,12 @@ namespace RopeSnake.Core
             get { return (bool)this["multithreaded"]; }
             set { this["multithreaded"] = value; }
         }
+
+        [ConfigurationProperty("cache.lz77", DefaultValue = false, IsRequired = false)]
+        public bool CacheLz77
+        {
+            get { return (bool)this["cache.lz77"]; }
+            set { this["cache.lz77"] = value; }
+        }
     }
 }
