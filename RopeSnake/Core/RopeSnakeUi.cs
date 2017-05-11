@@ -62,6 +62,7 @@ namespace RopeSnake.Core
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             var types = assemblies
+                .Where(a => !a.IsDynamic)
                 .SelectMany(a => a.GetExportedTypes())
                 .Where(t => typeof(IModule).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract)
                 .ToArray();
