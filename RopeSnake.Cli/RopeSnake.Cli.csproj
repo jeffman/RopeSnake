@@ -7,7 +7,7 @@
     <ProjectGuid>{D7B635B3-5E37-46D1-BB3F-6E0B5BF9F4BA}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>RopeSnake.Cli</RootNamespace>
-    <AssemblyName>RopeSnake</AssemblyName>
+    <AssemblyName>RopeSnake.Cli</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
