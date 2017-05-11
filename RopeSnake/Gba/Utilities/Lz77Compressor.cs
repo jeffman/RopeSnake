@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace RopeSnake.Gba
 {
-    public sealed class Lz77Compressor : ICompressor
+    public class Lz77Compressor : ICompressor
     {
         private const int _compressBufferSize = 128 * 1024;
         private static readonly ThreadLocal<byte[]> _compressBuffers;
@@ -20,7 +20,7 @@ namespace RopeSnake.Gba
             _compressBuffers = new ThreadLocal<byte[]>(() => new byte[_compressBufferSize]);
         }
 
-        public Lz77Compressor(bool compressToVram = true)
+        public Lz77Compressor(bool compressToVram)
         {
             CompressToVram = compressToVram;
         }
@@ -71,7 +71,7 @@ namespace RopeSnake.Gba
         /// 
         /// This implementation is thread-safe.
         /// </remarks>
-        public byte[] Compress(byte[] source, int offset, int length)
+        public virtual byte[] Compress(byte[] source, int offset, int length)
         {
             if (length < 0)
                 throw new ArgumentException(nameof(length));
@@ -240,7 +240,7 @@ namespace RopeSnake.Gba
             }
         }
 
-        public byte[] Decompress(byte[] source, int offset)
+        public virtual byte[] Decompress(byte[] source, int offset)
         {
             // Check for LZ77 signature
             if (source[offset++] != 0x10)
