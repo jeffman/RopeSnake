@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RopeSnake.Core;
+using RopeSnake.Mother3;
 
 namespace RopeSnake.Tests.Core
 {
@@ -56,7 +57,8 @@ namespace RopeSnake.Tests.Core
             // Add more module types here as they are defined
             var expected = new Type[]
             {
-                typeof(TestModule)
+                typeof(TestModule),
+                typeof(TitleScreenModule)
             };
 
             CollectionAssert.AreEquivalent(expected, RopeSnakeUi.ModuleTypes.ToList());

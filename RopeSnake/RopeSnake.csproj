@@ -96,6 +96,7 @@
     <Compile Include="Graphics\Tile.cs" />
     <Compile Include="Graphics\TileInfo.cs" />
     <Compile Include="Graphics\Tilemap.cs" />
+    <Compile Include="Mother3\Modules\TitleScreenModule.cs" />
     <Compile Include="Mother3\Structure\SarTableAccessor.cs" />
     <Compile Include="Mother3\Structure\SarTableBase.cs" />
     <Compile Include="Mother3\Structure\SarTableUpdater.cs" />
