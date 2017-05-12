@@ -17,7 +17,7 @@ namespace RopeSnake.Core
         internal const FileMode DefaultMode = FileMode.OpenOrCreate;
         internal ResourceManager ResourceManager { get; set; }
 
-        public IEnumerable<string> SkipCompiling { get; internal set; }
+        public List<string> SkipCompiling { get; internal set; }
         public RomType Type { get; internal set; }
 
         internal Project() { }
@@ -43,7 +43,7 @@ namespace RopeSnake.Core
 
             var resources = new ResourceManager(projectDirectory, json["Resources"].ToObject<FileMap>());
             var type = json["Type"].ToObject<RomType>();
-            var skip = json["SkipCompiling"].ToObject<string[]>();
+            var skip = json["SkipCompiling"]?.ToObject<List<string>>() ?? new List<string>();
 
             return new Project
             {
