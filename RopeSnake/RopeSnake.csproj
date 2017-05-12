@@ -61,6 +61,7 @@
     <Compile Include="Core\Json.cs" />
     <Compile Include="Core\Models\RomIdentifier.cs" />
     <Compile Include="Core\Models\RomType.cs" />
+    <Compile Include="Core\ModuleBase.cs" />
     <Compile Include="Core\Rom.cs" />
     <Compile Include="Core\AllocatableBlock.cs" />
     <Compile Include="Core\Block.cs" />
