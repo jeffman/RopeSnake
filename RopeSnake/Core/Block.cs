@@ -29,12 +29,14 @@ namespace RopeSnake.Core
             _data = new byte[length];
         }
 
-        public Block(byte[] copyFrom)
+        public Block(byte[] copyFrom) : this(copyFrom, 0, copyFrom.Length) { }
+
+        public Block(byte[] copyFrom, int offset, int length) : this(length)
         {
             if (copyFrom == null)
                 throw new ArgumentNullException(nameof(copyFrom));
 
-            _data = copyFrom.ToArray();
+            Array.Copy(copyFrom, offset, _data, 0, length);
         }
 
         public Block(Block copyFrom) : this(copyFrom._data) { }

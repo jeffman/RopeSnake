@@ -19,9 +19,9 @@ namespace RopeSnake.Tests.Gba
             var compressed = File.ReadAllBytes("Artifacts\\Mother3\\titlescreen_compressed.bin");
 
             var compressor = new Lz77Compressor(true);
-            var recompressed = compressor.Compress(decompressed, 0, decompressed.Length);
+            var recompressed = compressor.Compress(new Block(decompressed), 0, decompressed.Length);
 
-            CollectionAssert.AreEqual(compressed, recompressed);
+            CollectionAssert.AreEqual(compressed, recompressed.Data);
         }
 
         [TestMethod]
@@ -31,9 +31,9 @@ namespace RopeSnake.Tests.Gba
             var compressed = File.ReadAllBytes("Artifacts\\Mother3\\titlescreen_compressed.bin");
 
             var compressor = new Lz77Compressor(true);
-            var redecompressed = compressor.Decompress(compressed, 0);
+            var redecompressed = compressor.Decompress((new Block(compressed)).ToStream());
 
-            CollectionAssert.AreEqual(decompressed, redecompressed);
+            CollectionAssert.AreEqual(decompressed, redecompressed.Data);
         }
 
         [TestMethod]
@@ -47,14 +47,14 @@ namespace RopeSnake.Tests.Gba
             bool didCacheHit = true;
             ordinaryCompressor
                 .Setup(c => c.Compress(
-                    It.IsAny<byte[]>(),
+                    It.IsAny<Block>(),
                     It.IsAny<int>(),
                     It.IsAny<int>()))
                 .Callback(() => didCacheHit = false);
 
             ((CachedCompressor)cachedCompressor)._compressor = ordinaryCompressor.Object;
 
-            var decompressed = new byte[0x1000];
+            var decompressed = new Block(0x1000);
             for (int i = 0; i < decompressed.Length; i++)
                 decompressed[i] = (byte)i;
 
@@ -68,7 +68,7 @@ namespace RopeSnake.Tests.Gba
             Config.Settings.CacheLz77 = true;
             var cachedCompressor = Compressors.CreateLz77(true);
 
-            var decompressed = new byte[0x1000];
+            var decompressed = new Block(0x1000);
             for (int i = 0; i < decompressed.Length; i++)
                 decompressed[i] = (byte)i;
 

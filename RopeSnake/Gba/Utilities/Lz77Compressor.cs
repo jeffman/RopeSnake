@@ -5,19 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using RopeSnake.Core;
 using System.Threading;
+using System.IO;
 
 namespace RopeSnake.Gba
 {
     public class Lz77Compressor : ICompressor
     {
         private const int _compressBufferSize = 128 * 1024;
-        private static readonly ThreadLocal<byte[]> _compressBuffers;
+        private static readonly ThreadLocal<Block> _compressBuffers;
 
         public bool CompressToVram { get; }
 
         static Lz77Compressor()
         {
-            _compressBuffers = new ThreadLocal<byte[]>(() => new byte[_compressBufferSize]);
+            _compressBuffers = new ThreadLocal<Block>(() => new Block(_compressBufferSize));
         }
 
         public Lz77Compressor(bool compressToVram)
@@ -71,7 +72,7 @@ namespace RopeSnake.Gba
         /// 
         /// This implementation is thread-safe.
         /// </remarks>
-        public virtual byte[] Compress(byte[] source, int offset, int length)
+        public virtual Block Compress(Block source, int offset, int length)
         {
             if (length < 0)
                 throw new ArgumentException(nameof(length));
@@ -84,7 +85,7 @@ namespace RopeSnake.Gba
                 lookup[i] = new LinkedList<int>();
 
             // Overall compressed buffer
-            byte[] compBuffer = _compressBuffers.Value;
+            Block compBuffer = _compressBuffers.Value;
             int compPosition = 0;
 
             // Current mode byte (we'll be using 8 bits at a time)
@@ -203,8 +204,7 @@ namespace RopeSnake.Gba
             if (modeIndex > 0)
                 flush();
 
-            Array.Resize(ref compBuffer, compPosition);
-            return compBuffer;
+            return new Block(compBuffer.Data, 0, compPosition);
 
             void addDirectCopyChunk(byte directCopyValue)
             {
@@ -231,7 +231,7 @@ namespace RopeSnake.Gba
             void flush()
             {
                 compBuffer[compPosition++] = (byte)modeByte;
-                Array.Copy(tempBuffer, 0, compBuffer, compPosition, tempIndex);
+                Array.Copy(tempBuffer, 0, compBuffer.Data, compPosition, tempIndex);
                 compPosition += tempIndex;
 
                 modeByte = 0;
@@ -240,23 +240,23 @@ namespace RopeSnake.Gba
             }
         }
 
-        public virtual byte[] Decompress(byte[] source, int offset)
+        public virtual Block Decompress(Stream source)
         {
             // Check for LZ77 signature
-            if (source[offset++] != 0x10)
+            if (source.GetByte() != 0x10)
                 throw new Exception($"Expected LZ77 header");
 
             // Read the block length
-            int length = source[offset++];
-            length += (source[offset++] << 8);
-            length += (source[offset++] << 16);
+            int length = source.GetByte();
+            length += (source.GetByte() << 8);
+            length += (source.GetByte() << 16);
 
-            byte[] decompressed = new byte[length];
+            Block decompressed = new Block(length);
             int decompPosition = 0;
 
             while (decompPosition < length)
             {
-                byte mode = source[offset++];
+                byte mode = source.GetByte();
                 for (int i = 0; i < 8; i++)
                 {
                     switch ((mode >> (7 - i)) & 1)
@@ -267,14 +267,14 @@ namespace RopeSnake.Gba
                             if (decompPosition >= length)
                                 break;
 
-                            decompressed[decompPosition++] = source[offset++];
+                            decompressed[decompPosition++] = source.GetByte();
                             break;
 
                         case 1:
 
                             // String lookup
-                            int lookup = (source[offset++] << 8);
-                            lookup += source[offset++];
+                            int lookup = (source.GetByte() << 8);
+                            lookup += source.GetByte();
 
                             int numBytes = ((lookup >> 12) & 0xF) + 3;
                             int distance = (lookup & 0xFFF);

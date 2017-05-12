@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Cache = System.Collections.Generic.Dictionary<string, byte[]>;
+using Cache = System.Collections.Generic.Dictionary<string, RopeSnake.Core.Block>;
 
 namespace RopeSnake.Core
 {
@@ -51,20 +51,20 @@ namespace RopeSnake.Core
             }
         }
 
-        public byte[] Compress(byte[] source, int offset, int length)
+        public Block Compress(Block source, int offset, int length)
         {
             string hash;
             lock (_hasherLock)
             {
-                hash = string.Join("", _hasher.ComputeHash(source, offset, length).Select(b => b.ToString("x2")));
+                hash = string.Join("", _hasher.ComputeHash(source.Data, offset, length).Select(b => b.ToString("x2")));
             }
 
-            byte[] compressed;
+            Block compressed;
 
             lock (_cacheLock)
             {
                 if (_cache.TryGetValue(hash, out compressed))
-                    return compressed.ToArray();
+                    return new Block(compressed);
             }
 
             compressed = _compressor.Compress(source, offset, length);
@@ -77,8 +77,8 @@ namespace RopeSnake.Core
             return compressed;
         }
 
-        public byte[] Decompress(byte[] source, int offset)
-            => _compressor.Decompress(source, offset);
+        public Block Decompress(Stream source)
+            => _compressor.Decompress(source);
 
         public static void ReadGlobalCache(string directory)
         {
@@ -136,9 +136,10 @@ namespace RopeSnake.Core
                     {
                         string hash = stream.ReadString();
                         int length = stream.ReadInt();
-                        byte[] data = stream.ReadBytes(length);
+                        Block block = new Block(length);
+                        stream.Read(block.Data, 0, length);
 
-                        cache.Add(hash, data);
+                        cache.Add(hash, block);
                     }
                 }
 
@@ -168,7 +169,7 @@ namespace RopeSnake.Core
                     stream.WriteByte(0);
 
                     stream.WriteInt(kv.Value.Length);
-                    stream.WriteBytes(kv.Value);
+                    stream.WriteBytes(kv.Value.Data);
                 }
             }
         }
