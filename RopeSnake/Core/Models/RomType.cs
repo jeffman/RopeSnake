@@ -10,10 +10,10 @@ namespace RopeSnake.Core
     public struct RomType : IEquatable<RomType>
     {
         public const string UnknownString = "Unknown";
-        public static readonly RomType Unknown = new RomType(UnknownString, UnknownString);
+        public static RomType Unknown { get; } = new RomType(UnknownString, UnknownString);
 
-        public readonly string Game;
-        public readonly string Version;
+        public string Game { get; }
+        public string Version { get; }
 
         public RomType(string game, string version)
         {

@@ -17,12 +17,12 @@ namespace RopeSnake.Core
         /// <summary>
         /// Start location of this range. Inclusive.
         /// </summary>
-        public readonly int Start;
+        public int Start { get; }
 
         /// <summary>
         /// End location of this range. Inclusive.
         /// </summary>
-        public readonly int End;
+        public int End { get; }
 
         public int Size { get { return End - Start + 1; } }
 
