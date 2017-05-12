@@ -89,6 +89,11 @@
     <Compile Include="Core\Utilities\RomTypeDetector.cs" />
     <Compile Include="Gba\Utilities\Lz77Compressor.cs" />
     <Compile Include="Graphics\Canvas.cs" />
+    <Compile Include="Graphics\Palette.cs" />
+    <Compile Include="Graphics\Render.cs" />
+    <Compile Include="Graphics\Tile.cs" />
+    <Compile Include="Graphics\TileInfo.cs" />
+    <Compile Include="Graphics\Tilemap.cs" />
     <Compile Include="Mother3\Structure\SarTableAccessor.cs" />
     <Compile Include="Mother3\Structure\SarTableBase.cs" />
     <Compile Include="Mother3\Structure\SarTableUpdater.cs" />
