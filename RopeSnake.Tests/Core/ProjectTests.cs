@@ -30,7 +30,7 @@ namespace RopeSnake.Tests.Core
             var project = new Project
             {
                 Type = new RomType("Mother 4", "NA"),
-                SkipCompiling = new string[] { "Engine" },
+                SkipCompiling = new List<string> { "Engine" },
                 ResourceManager = new ResourceManager("temp\\TestProject")
             };
 
