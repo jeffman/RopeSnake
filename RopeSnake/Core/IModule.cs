@@ -17,9 +17,19 @@ namespace RopeSnake.Core
         event ModuleProgressEventHandler Progress;
 
         /// <summary>
-        /// Reset the module to a freshly-initialized state. All project data is released.
+        /// Returns whether or not this module is compatible with the given ROM type.
         /// </summary>
-        void Reset();
+        /// <param name="romType"></param>
+        /// <returns></returns>
+        bool IsCompatibleWith(RomType romType);
+
+        /// <summary>
+        /// Returns a collection of unallocated ranges associated with the module for
+        /// the given ROM type.
+        /// </summary>
+        /// <param name="romType"></param>
+        /// <returns></returns>
+        IEnumerable<Range> GetFreeRanges(RomType romType);
 
         /// <summary>
         /// Read project data from a ROM.

@@ -28,7 +28,7 @@ namespace RopeSnake.Core
 
             ModuleProgressEventHandler progressHandler = (s, e) => progress?.Report(e.Fraction);
 
-            foreach (var module in modules)
+            foreach (var module in modules.Where(m => m.IsCompatibleWith(rom.Type)))
             {
                 RLog.Info($"Decompiling {module.Name}...");
 

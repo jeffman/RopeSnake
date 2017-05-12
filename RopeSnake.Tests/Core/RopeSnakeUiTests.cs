@@ -15,9 +15,6 @@ namespace RopeSnake.Tests.Core
         public event ModuleProgressEventHandler Progress;
 #pragma warning restore CS0067
 
-        public virtual void Reset()
-            => throw new NotImplementedException();
-
         public virtual ProjectData ReadFromProject(RomType romType, OpenResourceDelegate openResource)
             => throw new NotImplementedException();
 
@@ -31,6 +28,12 @@ namespace RopeSnake.Tests.Core
             => throw new NotImplementedException();
 
         public virtual CompileResult Compile(ProjectData data, RomType romType)
+            => throw new NotImplementedException();
+
+        public bool IsCompatibleWith(RomType romType)
+            => false;
+
+        public IEnumerable<Range> GetFreeRanges(RomType romType)
             => throw new NotImplementedException();
     }
 
