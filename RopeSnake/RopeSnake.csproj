@@ -88,6 +88,7 @@
     <Compile Include="Core\Utilities\PredicateEqualityComparer.cs" />
     <Compile Include="Core\Utilities\ResourceManager.cs" />
     <Compile Include="Core\Utilities\RomTypeDetector.cs" />
+    <Compile Include="Gba\Extensions\StreamExtensions.cs" />
     <Compile Include="Gba\Utilities\Lz77Compressor.cs" />
     <Compile Include="Graphics\Canvas.cs" />
     <Compile Include="Graphics\Palette.cs" />
