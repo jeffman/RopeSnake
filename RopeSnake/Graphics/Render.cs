@@ -16,18 +16,21 @@ namespace RopeSnake.Graphics
         {
             _zeroHandlers = new Dictionary<ZeroIndexHandling, ZeroHandlerDelegate>();
             _zeroHandlers[ZeroIndexHandling.DoNothing] = (canvas, x, y, color) => { };
-            _zeroHandlers[ZeroIndexHandling.DrawSolid] = (canvas, x, y, color) => { canvas.SetPixel(x, y, color); };
-            _zeroHandlers[ZeroIndexHandling.DrawTransparent] = (canvas, x, y, color) => { canvas.SetPixel(x, y, Color.Transparent); };
+            _zeroHandlers[ZeroIndexHandling.DrawSolid] = (canvas, x, y, color) => { canvas.SetColor(x, y, color); };
+            _zeroHandlers[ZeroIndexHandling.DrawTransparent] = (canvas, x, y, color) => { canvas.SetColor(x, y, Color.Transparent); };
         }
 
         public static void Tilemap(
             Canvas canvas,
             Tilemap tilemap,
             IEnumerable<Tile> tileset,
-            IEnumerable<Palette> palettes,
+            Palette palette,
             ZeroIndexHandling zeroHandling = ZeroIndexHandling.DoNothing,
             Region clippingRegion = null)
         {
+            if (canvas.IsIndexed)
+                AssignPalette(canvas.BaseBitmap, palette, zeroHandling);
+
             for (int tileY = 0; tileY < tilemap.TileHeight; tileY++)
             {
                 for (int tileX = 0; tileX < tilemap.TileWidth; tileX++)
@@ -41,27 +44,48 @@ namespace RopeSnake.Graphics
                         tile.Width,
                         tile.Height);
 
-                    if (clippingRegion == null || !clippingRegion.IsVisible(tileRect))
+                    if (clippingRegion == null || clippingRegion.IsVisible(tileRect))
                     {
-                        Render.TilePixels(canvas,
-                            tileRect.X,
-                            tileRect.Y,
-                            tile,
-                            palettes.ElementAt(info.Palette),
-                            info.FlipX,
-                            info.FlipY,
-                            zeroHandling);
+                        Render.Tile(canvas, tileRect.X, tileRect.Y, tile, palette, info, zeroHandling);
                     }
                 }
             }
         }
 
-        public static void TilePixels(
+        public static void Tile(
             Canvas canvas,
             int x,
             int y,
             Tile tile,
             Palette palette,
+            TileInfo info,
+            ZeroIndexHandling zeroHandling)
+            => Render.Tile(canvas, x, y, tile, palette, info.Palette, info.FlipX, info.FlipY, zeroHandling);
+
+        public static void Tile(
+            Canvas canvas,
+            int x,
+            int y,
+            Tile tile,
+            Palette palette,
+            int paletteIndex,
+            bool flipX,
+            bool flipY,
+            ZeroIndexHandling zeroHandling)
+        {
+            if (canvas.IsIndexed)
+                Render.IndexedTile(canvas, x, y, tile, paletteIndex * palette.ColorsPerPalette, flipX, flipY, zeroHandling);
+            else
+                Render.RasterTile(canvas, x, y, tile, palette, paletteIndex, flipX, flipY, zeroHandling);
+        }
+
+        public static void RasterTile(
+            Canvas canvas,
+            int x,
+            int y,
+            Tile tile,
+            Palette palette,
+            int paletteIndex,
             bool flipX,
             bool flipY,
             ZeroIndexHandling zeroHandling)
@@ -70,16 +94,56 @@ namespace RopeSnake.Graphics
             {
                 for (int px = 0; px < tile.Width; px++)
                 {
-                    int sourceX = flipX ? (tile.Width - px) : px;
-                    int sourceY = flipY ? (tile.Height - py) : py;
+                    int sourceX = flipX ? (tile.Width - px - 1) : px;
+                    int sourceY = flipY ? (tile.Height - py - 1) : py;
                     byte index = tile[sourceX, sourceY];
 
                     if (index == 0)
-                        _zeroHandlers[zeroHandling](canvas, x + px, y + py, palette[index]);
+                        _zeroHandlers[zeroHandling](canvas, x + px, y + py, palette.GetColor(paletteIndex, index));
                     else
-                        canvas.SetPixel(x + px, y + py, palette[index]);
+                        canvas.SetColor(x + px, y + py, palette.GetColor(paletteIndex, index));
                 }
             }
+        }
+
+        public static void IndexedTile(
+            Canvas canvas,
+            int x,
+            int y,
+            Tile tile,
+            int paletteOffset,
+            bool flipX,
+            bool flipY,
+            ZeroIndexHandling zeroHandling)
+        {
+            for (int py = 0; py < tile.Height; py++)
+            {
+                for (int px = 0; px < tile.Width; px++)
+                {
+                    int sourceX = flipX ? (tile.Width - px - 1) : px;
+                    int sourceY = flipY ? (tile.Height - py - 1) : py;
+                    byte index = tile[sourceX, sourceY];
+
+                    if (index > 0 || zeroHandling == ZeroIndexHandling.DrawSolid)
+                        canvas.SetValue(x + px, y + py, index + paletteOffset);
+                }
+            }
+        }
+
+        internal static void AssignPalette(Bitmap image, Palette palette, ZeroIndexHandling zeroHandling)
+        {
+            var imagePalette = image.Palette;
+            var imageColors = imagePalette.Entries;
+
+            for (int i = 0; i < palette.TotalCount; i++)
+            {
+                if (i == 0 && zeroHandling != ZeroIndexHandling.DrawSolid)
+                    imageColors[i] = Color.Transparent;
+                else
+                    imageColors[i] = palette.GetColor(i);
+            }
+
+            image.Palette = imagePalette;
         }
     }
 

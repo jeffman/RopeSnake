@@ -22,11 +22,11 @@ namespace RopeSnake.Tests.Graphics
         [TestMethod]
         public void SetPixel()
         {
-            using (var canvas = new Canvas(bitmap))
+            using (var canvas = new Raster32bppCanvas(bitmap))
             {
-                canvas.SetPixel(0, 0, Color.Blue);
-                canvas.SetPixel(31, 0, Color.Red);
-                canvas.SetPixel(16, 16, Color.Yellow);
+                canvas.SetColor(0, 0, Color.Blue);
+                canvas.SetColor(31, 0, Color.Red);
+                canvas.SetColor(16, 16, Color.Yellow);
             }
 
             Assert.AreEqual(Color.Blue.ToArgb(), bitmap.GetPixel(0, 0).ToArgb());
@@ -41,24 +41,24 @@ namespace RopeSnake.Tests.Graphics
             bitmap.SetPixel(31, 0, Color.Red);
             bitmap.SetPixel(16, 16, Color.Yellow);
 
-            using (var canvas = new Canvas(bitmap))
+            using (var canvas = new Raster32bppCanvas(bitmap))
             {
-                Assert.AreEqual(Color.Blue.ToArgb(), canvas.GetPixel(0, 0).ToArgb());
-                Assert.AreEqual(Color.Red.ToArgb(), canvas.GetPixel(31, 0).ToArgb());
-                Assert.AreEqual(Color.Yellow.ToArgb(), canvas.GetPixel(16, 16).ToArgb());
+                Assert.AreEqual(Color.Blue.ToArgb(), canvas.GetColor(0, 0).ToArgb());
+                Assert.AreEqual(Color.Red.ToArgb(), canvas.GetColor(31, 0).ToArgb());
+                Assert.AreEqual(Color.Yellow.ToArgb(), canvas.GetColor(16, 16).ToArgb());
             }
         }
 
         [TestMethod]
         public void GetPixelOutOfBounds()
         {
-            using (var canvas = new Canvas(bitmap))
+            using (var canvas = new Raster32bppCanvas(bitmap))
             {
                 Assert.ThrowsException<InvalidOperationException>(
-                    () => canvas.GetPixel(-1, -2), "Coordinate (-1, -2) out of bounds");
+                    () => canvas.GetValue(-1, -2), "Coordinate (-1, -2) out of bounds");
 
                 Assert.ThrowsException<InvalidOperationException>(
-                    () => canvas.GetPixel(32, 32), "Coordinate (32, 32) out of bounds");
+                    () => canvas.GetValue(32, 32), "Coordinate (32, 32) out of bounds");
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Drawing.Imaging;
 using RopeSnake.Core;
 using RopeSnake.Gba;
 using RopeSnake.Graphics;
@@ -21,7 +22,7 @@ namespace RopeSnake.Mother3
 
         public override IEnumerable<Range> GetFreeRanges(RomType romType)
         {
-            return new Range[] { Range.StartEnd(0x1BD4338, 0x1BD693F) };
+            return new Range[] { Range.StartEnd(0x1BD6940, 0x1C5F33F) };
         }
 
         public override CompileResult Compile(ProjectData data, RomType romType)
@@ -31,34 +32,69 @@ namespace RopeSnake.Mother3
 
         public override ProjectData ReadFromProject(RomType romType, OpenResourceDelegate openResource)
         {
-            throw new NotImplementedException();
+            var data = new TitleScreenProjectData();
+
+            for (int i = 0; i < 21; i++)
+            {
+                string resource = $"TitleScreens\\Animation\\{i:D2}";
+                RLog.Debug($"Reading {resource}.png");
+
+                var bitmap = new Bitmap(openResource(resource, "png"));
+                var graphics = GbaGraphicsUtilities.ParseBitmap(bitmap, 1, 256);
+
+                data.AnimationTilesets[i] = graphics.Tileset;
+                data.AnimationTilemaps[i] = graphics.Tilemap;
+
+                if (i == 0)
+                    data.AnimationPalette = graphics.Palette;
+                else
+                {
+                    if (!graphics.Palette.PaletteEquals(data.AnimationPalette))
+                        RLog.Warn($"Title screen animation {resource}.png has differing palette from 00.png");
+                }
+            }
+
+            return data;
         }
 
         public override ProjectData ReadFromRom(Rom rom)
         {
-            int gfxAddress = 0x1bd4338;
-            int palAddress = 0x1bd5f40;
-            int mapAddress = 0x1bd6140;
+            var data = new TitleScreenProjectData();
+            var table = new OffsetTableAccessor(rom, 0x1BCDD8C);
+            var palette = table.ParseEntry(51, rom, s => s.ReadPalette(1, 256));
 
-            var stream = rom.ToStream(gfxAddress);
-            var tileset = stream.ReadCompressed(s => s.ReadTileset(192, 8));
-            var palettes = stream.At(palAddress).ReadPalettes(1, 256);
-            var tilemap = stream.At(mapAddress).ReadTilemap(32, 32);
+            data.AnimationPalette = palette;
 
-            var bmp = new Bitmap(256, 256, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            using (var canvas = new Canvas(bmp))
+            for (int i = 0; i < 21; i++)
             {
-                Render.Tilemap(canvas, tilemap, tileset, palettes);
+                var tileset = table.ParseEntry(i + 9, rom, s => s.ReadTileset(384, 8));
+                var tilemap = table.ParseEntry(i + 30, rom, s => s.ReadTilemap(32, 32));
+                data.AnimationTilesets[i] = tileset;
+                data.AnimationTilemaps[i] = tilemap;
             }
 
-            var projectData = new TitleScreenProjectData { TitleScreen = bmp };
-            return projectData;
+            return data;
         }
 
         public override void WriteToProject(ProjectData data, RomType romType, OpenResourceDelegate openResource)
         {
             var titleData = data as TitleScreenProjectData;
-            titleData.TitleScreen.Save(openResource("TitleScreens\\Main", "png"), System.Drawing.Imaging.ImageFormat.Png);
+
+            for (int i = 0; i < 21; i++)
+            {
+                var tileset = titleData.AnimationTilesets[i];
+                var tilemap = titleData.AnimationTilemaps[i];
+
+                var bitmap = new Bitmap(256, 256, PixelFormat.Format8bppIndexed);
+
+                using (var canvas = Canvas.Create(bitmap))
+                {
+                    Render.Tilemap(canvas, tilemap, tileset, titleData.AnimationPalette, ZeroIndexHandling.DrawSolid);
+                }
+
+                string resource = $"TitleScreens\\Animation\\{i:D2}";
+                bitmap.Save(openResource(resource, "png"), ImageFormat.Png);
+            }
         }
 
         public override void WriteToRom(Rom rom, CompileResult compileResult, AllocationResult allocationResult)
@@ -69,6 +105,8 @@ namespace RopeSnake.Mother3
 
     public class TitleScreenProjectData : ProjectData
     {
-        public Bitmap TitleScreen { get; set; }
+        public List<Tile>[] AnimationTilesets { get; set; } = new List<Tile>[21];
+        public Tilemap[] AnimationTilemaps { get; set; } = new Tilemap[21];
+        public Palette AnimationPalette { get; set; }
     }
 }

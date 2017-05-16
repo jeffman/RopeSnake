@@ -8,26 +8,48 @@ using System.Collections;
 
 namespace RopeSnake.Graphics
 {
-    public class Palette : IEnumerable<Color>
+    public class Palette
     {
-        public int Count => colors.Length;
+        public int PaletteCount { get; }
+        public int ColorsPerPalette { get; }
+        public int TotalCount => PaletteCount * ColorsPerPalette;
 
-        internal Color[] colors;
-        public Color this[int index]
+        internal protected Color[,] _colors;
+
+        public Palette(int paletteCount, int colorsPerPalette)
         {
-            get => colors[index];
-            set => colors[index] = value;
+            _colors = new Color[paletteCount, colorsPerPalette];
+            PaletteCount = paletteCount;
+            ColorsPerPalette = colorsPerPalette;
         }
 
-        public Palette(int count)
+        public Color GetColor(int paletteIndex, int colorIndex)
+            => _colors[paletteIndex, colorIndex];
+
+        public Color GetColor(int index)
+            => GetColor(index / ColorsPerPalette, index % ColorsPerPalette);
+
+        public void SetColor(int paletteIndex, int colorIndex, Color color)
+            => _colors[paletteIndex, colorIndex] = color;
+
+        public void SetColor(int index, Color color)
+            => SetColor(index / ColorsPerPalette, index % ColorsPerPalette, color);
+
+        public bool PaletteEquals(Palette other)
         {
-            colors = new Color[count];
+            if (other == null)
+                return false;
+
+            if (TotalCount != other.TotalCount)
+                return false;
+
+            for (int i = 0; i < TotalCount; i++)
+            {
+                if (GetColor(i) != other.GetColor(i))
+                    return false;
+            }
+
+            return true;
         }
-
-        public IEnumerator<Color> GetEnumerator()
-            => ((IEnumerable<Color>)colors).GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator()
-            => GetEnumerator();
     }
 }

@@ -80,15 +80,15 @@ namespace RopeSnake.Gba
             stream.WriteUShort((ushort)value);
         }
 
-        public static Palette ReadPalette(this Stream stream, int numColours)
+        public static Palette ReadPalette(this Stream stream, int numPalettes, int numColors)
         {
-            if (numColours < 0)
-                throw new ArgumentException(nameof(numColours));
+            if (numColors < 0)
+                throw new ArgumentException(nameof(numColors));
 
-            var palette = new Palette(numColours);
+            var palette = new Palette(numPalettes, numColors);
 
-            for (int i = 0; i < numColours; i++)
-                palette[i] = stream.ReadColor();
+            for (int i = 0; i < palette.TotalCount; i++)
+                palette.SetColor(i, stream.ReadColor());
 
             return palette;
         }
@@ -98,33 +98,8 @@ namespace RopeSnake.Gba
             if (palette == null)
                 throw new ArgumentException(nameof(palette));
 
-            foreach (var color in palette)
-                stream.WriteColor(color);
-        }
-
-        public static Palette[] ReadPalettes(this Stream stream, int numPalettes, int numColours)
-        {
-            if (numPalettes < 0)
-                throw new ArgumentException(nameof(numPalettes));
-
-            if (numColours < 0)
-                throw new ArgumentException(nameof(numColours));
-
-            var palettes = new Palette[numPalettes];
-
-            for (int i = 0; i < numPalettes; i++)
-                palettes[i] = stream.ReadPalette(numColours);
-
-            return palettes;
-        }
-
-        public static void WritePalettes(this Stream stream, IEnumerable<Palette> palettes)
-        {
-            if (palettes == null)
-                throw new ArgumentNullException(nameof(palettes));
-
-            foreach (var palette in palettes)
-                stream.WritePalette(palette);
+            for (int i = 0; i < palette.TotalCount; i++)
+                stream.WriteColor(palette.GetColor(i));
         }
 
         public static Tile ReadTile(this Stream stream, int bitDepth = 4)
