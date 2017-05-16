@@ -59,7 +59,8 @@ namespace RopeSnake.Core
             var json = new JObject();
 
             json.Add("Type", JToken.FromObject(Type));
-            json.Add("SkipCompiling", JToken.FromObject(SkipCompiling));
+            if (SkipCompiling != null)
+                json.Add("SkipCompiling", JToken.FromObject(SkipCompiling));
             json.Add("Resources", JToken.FromObject(ResourceManager.FileMap));
 
             Json.WriteToFile(Path.Combine(projectDirectory, DefaultFileName), json);
