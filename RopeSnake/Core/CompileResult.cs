@@ -24,6 +24,11 @@ namespace RopeSnake.Core
         public RomType RomType { get; set; }
 
         /// <summary>
+        /// Alignment to be used during allocation.
+        /// </summary>
+        public int Alignment { get; set; } = 1;
+
+        /// <summary>
         /// Optional data to be included for use during WriteToRom.
         /// </summary>
         public object Tag { get; set; }
