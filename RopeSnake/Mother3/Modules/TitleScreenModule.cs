@@ -27,7 +27,32 @@ namespace RopeSnake.Mother3
 
         public override CompileResult Compile(ProjectData data, RomType romType)
         {
-            throw new NotImplementedException();
+            var titleData = data as TitleScreenProjectData;
+            var result = new CompileResult { Alignment = 4 };
+
+            var paletteBuffer = new Block(0x200);
+            var paletteStream = paletteBuffer.ToStream();
+
+            paletteStream.WritePalette(titleData.AnimationPalette);
+            result.AllocateBlocks.Add($"{Name}.AnimationPalette", paletteBuffer);
+
+            for (int i = 0; i < 21; i++)
+            {
+                var tilesetBuffer = new Block(0x10000);
+                var tilemapBuffer = new Block(0x800);
+                var tilesetStream = tilesetBuffer.ToStream();
+                var tilemapStream = tilemapBuffer.ToStream();
+
+                tilesetStream.WriteTileset(titleData.AnimationTilesets[i], 8);
+                tilemapStream.WriteTilemap(titleData.AnimationTilemaps[i]);
+
+                tilesetBuffer.Resize((int)tilesetStream.Position);
+
+                result.AllocateBlocks.Add($"{Name}.AnimationTilesets[{i}]", tilesetBuffer);
+                result.AllocateBlocks.Add($"{Name}.AnimationTilemaps[{i}]", tilemapBuffer);
+            }
+
+            return result;
         }
 
         public override ProjectData ReadFromProject(RomType romType, OpenResourceDelegate openResource)
@@ -39,7 +64,10 @@ namespace RopeSnake.Mother3
                 string resource = $"TitleScreens\\Animation\\{i:D2}";
                 RLog.Debug($"Reading {resource}.png");
 
-                var bitmap = new Bitmap(openResource(resource, "png"));
+                Bitmap bitmap;
+                using (var bmpStream = openResource(resource, "png"))
+                    bitmap = new Bitmap(bmpStream);
+
                 var graphics = GbaGraphicsUtilities.ParseBitmap(bitmap, 1, 256);
 
                 data.AnimationTilesets[i] = graphics.Tileset;
@@ -93,13 +121,32 @@ namespace RopeSnake.Mother3
                 }
 
                 string resource = $"TitleScreens\\Animation\\{i:D2}";
-                bitmap.Save(openResource(resource, "png"), ImageFormat.Png);
+                using (var bmpStream = openResource(resource, "png"))
+                    bitmap.Save(bmpStream, ImageFormat.Png);
             }
         }
 
         public override void WriteToRom(Rom rom, CompileResult compileResult, AllocationResult allocationResult)
         {
-            throw new NotImplementedException();
+            CopyAllocatedBlocksToRom(rom, compileResult, allocationResult);
+
+            var table = new OffsetTableUpdater(rom, 0x1BCDD8C);
+
+            for (int i = 0; i < 21; i++)
+            {
+                string tilesetKey = $"{Name}.AnimationTilesets[{i}]";
+                string tilemapKey = $"{Name}.AnimationTilemaps[{i}]";
+
+                int tilesetAddress = allocationResult.Allocations[tilesetKey];
+                int tilemapAddress = allocationResult.Allocations[tilemapKey];
+
+                table.UpdateEntry(i + 9, new TableEntry(tilesetAddress));
+                table.UpdateEntry(i + 30, new TableEntry(tilemapAddress));
+            }
+
+            string paletteKey = $"{Name}.AnimationPalette";
+            int paletteAddress = allocationResult.Allocations[paletteKey];
+            table.UpdateEntry(51, new TableEntry(paletteAddress));
         }
     }
 
