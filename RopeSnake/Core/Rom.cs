@@ -12,6 +12,11 @@ namespace RopeSnake.Core
 
         public Rom() : base() { }
 
+        public Rom(Rom copyFrom) : base(copyFrom)
+        {
+            Type = copyFrom.Type;
+        }
+
         public override void ReadFromFile(string fileName)
         {
             base.ReadFromFile(fileName);

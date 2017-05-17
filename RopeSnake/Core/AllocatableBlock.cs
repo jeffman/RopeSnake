@@ -15,6 +15,11 @@ namespace RopeSnake.Core
             CreateAllocator();
         }
 
+        public AllocatableBlock(Block copyFrom) : base(copyFrom)
+        {
+            CreateAllocator();
+        }
+
         protected void CreateAllocator()
         {
             _allocator = new RangeAllocator();
