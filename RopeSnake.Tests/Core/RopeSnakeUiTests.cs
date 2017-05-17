@@ -61,7 +61,7 @@ namespace RopeSnake.Tests.Core
                 typeof(TitleScreenModule)
             };
 
-            CollectionAssert.AreEquivalent(expected, RopeSnakeUi.ModuleTypes.ToList());
+            CollectionAssert.AreEquivalent(expected, RopeSnakeUi._moduleTypes.ToList());
         }
     }
 }
