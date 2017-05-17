@@ -38,10 +38,5 @@ namespace RopeSnake.Core
             StaticBlocks = new Dictionary<string, (Block, int)>();
             AllocateBlocks = new Dictionary<string, Block>();
         }
-
-        public void WriteStaticBlocksToRom(Rom rom)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

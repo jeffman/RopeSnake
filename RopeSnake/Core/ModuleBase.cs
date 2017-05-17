@@ -23,5 +23,34 @@ namespace RopeSnake.Core
         {
             Progress?.Invoke(this, new ModuleProgressEventArgs(current, total));
         }
+
+        #region Helper methods
+
+        internal protected virtual void CopyAllocatedBlocksToRom(Block rom, CompileResult compileResult, AllocationResult allocationResult)
+        {
+            foreach (var kv in compileResult.AllocateBlocks)
+            {
+                string key = kv.Key;
+                Block block = kv.Value;
+                int address = allocationResult.Allocations[key];
+
+                RLog.Debug($"Copying block {key} ({block.Length} bytes) to ROM at 0x{address:X}");
+                block.CopyTo(rom, address);
+            }
+        }
+
+        internal protected virtual void CopyStaticBlocksToRom(Block rom, CompileResult compileResult)
+        {
+            foreach (var kv in compileResult.StaticBlocks)
+            {
+                string key = kv.Key;
+                (Block block, int address) = kv.Value;
+
+                RLog.Debug($"Copying block {key} ({block.Length} bytes) to ROM at 0x{address:X}");
+                block.CopyTo(rom, address);
+            }
+        }
+
+        #endregion
     }
 }
