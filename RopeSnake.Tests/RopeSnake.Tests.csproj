@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Core\BlockExtensionsTests.cs" />
     <Compile Include="Core\ExtensionsTests.cs" />
+    <Compile Include="Core\JsonTests.cs" />
     <Compile Include="Core\ModuleTests.cs" />
     <Compile Include="Core\ProjectTests.cs" />
     <Compile Include="Core\RangeTests.cs" />
