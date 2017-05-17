@@ -88,7 +88,7 @@ namespace RopeSnake.Mother3
         public override ProjectData ReadFromRom(Rom rom)
         {
             var data = new TitleScreenProjectData();
-            var table = new OffsetTableAccessor(rom, 0x1BCDD8C);
+            var table = new OffsetTableAccessor(rom, Mother3.Configs[rom.Type].GetAsmPointer("TitleScreens", rom));
             var palette = table.ParseEntry(51, rom, s => s.ReadPalette(1, 256));
 
             data.AnimationPalette = palette;
@@ -130,7 +130,7 @@ namespace RopeSnake.Mother3
         {
             CopyAllocatedBlocksToRom(rom, compileResult, allocationResult);
 
-            var table = new OffsetTableUpdater(rom, 0x1BCDD8C);
+            var table = new OffsetTableUpdater(rom, Mother3.Configs[rom.Type].GetAsmPointer("TitleScreens", rom));
 
             for (int i = 0; i < 21; i++)
             {
