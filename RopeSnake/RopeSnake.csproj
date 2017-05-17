@@ -106,6 +106,7 @@
     <Compile Include="Mother3\Modules\TitleScreenModule.cs" />
     <Compile Include="Mother3\Structure\OffsetTableAccessor.cs" />
     <Compile Include="Mother3\Structure\OffsetTableBase.cs" />
+    <Compile Include="Mother3\Structure\OffsetTableUpdater.cs" />
     <Compile Include="Mother3\Structure\SarTableAccessor.cs" />
     <Compile Include="Mother3\Structure\SarTableBase.cs" />
     <Compile Include="Mother3\Structure\SarTableUpdater.cs" />
