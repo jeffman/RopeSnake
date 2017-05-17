@@ -26,7 +26,7 @@ namespace RopeSnake.Core
 
         public void Delete(string module, string resource, string extension)
         {
-            RLog.Debug($"Deleting resource [{module}][{resource}]");
+            RLog.Trace($"Deleting resource [{module}][{resource}]");
 
             if (!FileMap.ContainsKey(module))
                 throw new InvalidOperationException($"Module not found: {module}");
@@ -39,12 +39,12 @@ namespace RopeSnake.Core
 
             if (file.Exists)
             {
-                RLog.Debug($"File exists; deleting {file.FullName}");
+                RLog.Trace($"File exists; deleting {file.FullName}");
                 file.Delete();
             }
             else
             {
-                RLog.Debug($"File exists; skipping delete {file.FullName}");
+                RLog.Trace($"File exists; skipping delete {file.FullName}");
             }
 
             FileMap[module].Remove(resource);
@@ -52,18 +52,18 @@ namespace RopeSnake.Core
 
         public Stream Get(string module, string resource, string extension, FileMode mode)
         {
-            RLog.Debug($"Getting resource [{module}][{resource}] with mode {mode}");
+            RLog.Trace($"Getting resource [{module}][{resource}] with mode {mode}");
 
             if (!FileMap.ContainsKey(module))
             {
-                RLog.Debug($"Creating resource filemap for {module}");
+                RLog.Trace($"Creating resource filemap for {module}");
                 FileMap[module] = new Dictionary<string, string>();
             }
 
             if (!FileMap[module].ContainsKey(resource))
             {
                 string defaultFile = $"{resource}.{extension}";
-                RLog.Debug($"Creating default resource lookup for {module}: {defaultFile}");
+                RLog.Trace($"Creating default resource lookup for {module}: {defaultFile}");
                 FileMap[module][resource] = defaultFile;
             }
 
@@ -78,13 +78,13 @@ namespace RopeSnake.Core
                 case FileMode.OpenOrCreate:
                     if (!directory.Exists)
                     {
-                        RLog.Debug($"Creating directory {directory.FullName}");
+                        RLog.Trace($"Creating directory {directory.FullName}");
                         directory.Create();
                     }
                     break;
             }
 
-            RLog.Debug($"Opening resource {fullPath}");
+            RLog.Trace($"Opening resource {fullPath}");
             return File.Open(fullPath, mode);
         }
     }
