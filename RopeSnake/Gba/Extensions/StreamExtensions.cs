@@ -22,21 +22,28 @@ namespace RopeSnake.Gba
         }
 
         public static int ReadPointer(this Stream stream)
-        {
-            int pointer = stream.ReadInt();
+            => stream.ReadInt().ToPointer();
 
-            if (pointer == 0)
+        public static int FromPointer(this int value)
+        {
+            if (value == 0)
                 return 0;
 
-            return pointer & 0x7FFFFFF;
+            if (value < 0x8000000 || value > 0x9FFFFFF)
+                RLog.Warn($"Invalid pointer: 0x{value:X}");
+
+            return value & 0x7FFFFFF;
         }
 
         public static void WritePointer(this Stream stream, int value)
-        {
-            if (value == 0)
-                stream.WriteInt(0);
+            => stream.WriteInt(value.ToPointer());
 
-            stream.WriteInt(value | 0x8000000);
+        public static int ToPointer(this int value)
+        {
+            if (value <= 0)
+                return 0;
+
+            return value | 0x8000000;
         }
 
         public static T ReadCompressed<T>(this Stream stream, Func<Stream, int, T> reader)
