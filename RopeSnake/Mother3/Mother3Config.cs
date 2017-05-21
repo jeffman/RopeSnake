@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RopeSnake.Core;
 using RopeSnake.Gba;
+using RopeSnake.Mother3.Text;
 using Newtonsoft.Json;
 
 namespace RopeSnake.Mother3
@@ -14,6 +15,15 @@ namespace RopeSnake.Mother3
     {
         [JsonProperty]
         public Dictionary<string, AsmPointer[]> AsmPointers { get; internal set; }
+
+        [JsonProperty]
+        public ControlCode[] ControlCodes { get; internal set; }
+
+        [JsonProperty]
+        public Dictionary<short, char> NormalLookup { get; internal set; }
+
+        [JsonProperty]
+        public Dictionary<short, char> SaturnLookup { get; internal set; }
 
         public int GetAsmPointer(string key, Rom rom)
         {

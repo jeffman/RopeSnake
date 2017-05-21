@@ -114,6 +114,17 @@
     <Compile Include="Mother3\Structure\SarTableAccessor.cs" />
     <Compile Include="Mother3\Structure\SarTableBase.cs" />
     <Compile Include="Mother3\Structure\SarTableUpdater.cs" />
+    <Compile Include="Mother3\Text\CharacterToken.cs" />
+    <Compile Include="Mother3\Text\ControlCode.cs" />
+    <Compile Include="Mother3\Text\ControlCodeToken.cs" />
+    <Compile Include="Mother3\Text\ICharacterMap.cs" />
+    <Compile Include="Mother3\Text\ITokenReader.cs" />
+    <Compile Include="Mother3\Text\ITokenWriter.cs" />
+    <Compile Include="Mother3\Text\JapaneseCharacterMap.cs" />
+    <Compile Include="Mother3\Text\Mother3TextReader.cs" />
+    <Compile Include="Mother3\Text\StreamTokenReader.cs" />
+    <Compile Include="Mother3\Text\StringTokenWriter.cs" />
+    <Compile Include="Mother3\Text\Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -123,7 +134,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\RomConfigs\mother3-jp.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Assets\romtypes.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
