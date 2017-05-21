@@ -108,7 +108,6 @@
     <Compile Include="Graphics\Tilemap.cs" />
     <Compile Include="Mother3\Modules\TitleScreenModule.cs" />
     <Compile Include="Mother3\Mother3Config.cs" />
-    <Compile Include="Mother3\Mother3.cs" />
     <Compile Include="Mother3\Structure\OffsetTableAccessor.cs" />
     <Compile Include="Mother3\Structure\OffsetTableBase.cs" />
     <Compile Include="Mother3\Structure\OffsetTableUpdater.cs" />

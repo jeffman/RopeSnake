@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,5 +33,39 @@ namespace RopeSnake.Mother3
 
             return pointers.First();
         }
+
+        #region Static members
+
+        public static IReadOnlyDictionary<RomType, Mother3Config> Configs { get; internal set; }
+
+        static Mother3Config()
+        {
+            ReloadConfigs();
+        }
+
+        public static void ReloadConfigs()
+        {
+            var configs = new Dictionary<RomType, Mother3Config>();
+
+            foreach (var kv in RomConfigs.FileNameLookup.Where(kv => kv.Key.Game == "Mother 3"))
+                configs.Add(kv.Key, Assets.Open($"RomConfigs\\{kv.Value}.json").ReadJson<Mother3Config>());
+
+            Configs = new ReadOnlyDictionary<RomType, Mother3Config>(configs);
+        }
+
+        public static ICharacterMap CreateCharacterMap(RomType type)
+        {
+            switch (type.Version)
+            {
+                case "jp":
+                    return new JapaneseCharacterMap(Configs[type].NormalLookup, Configs[type].SaturnLookup);
+
+                default:
+                    RLog.Warn($"Unrecognized ROM version: {type.Version}. Defaulting to Japanese character map.");
+                    goto case "jp";
+            }
+        }
+
+        #endregion
     }
 }
