@@ -21,6 +21,7 @@ namespace RopeSnake.Mother3.Text
     {
         None = 0,
         Character,
-        ControlCode
+        ControlCode,
+        Raw
     }
 }

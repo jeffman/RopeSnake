@@ -43,7 +43,10 @@ namespace RopeSnake.Mother3.Text
                 var code = _controlCodes.FirstOrDefault(c => c.Value == value);
 
                 if (code == null)
-                    throw new Exception($"Invalid control code: 0x{value:X4}, stream position 0x{oldPosition:X}");
+                {
+                    RLog.Warn($"Encountered unknown control code: 0x{code:X4} at position 0x{oldPosition:X}. Outputting as raw literal.");
+                    return new RawToken(value);
+                }
 
                 var args = new short[code.Arguments];
                 for (int i = 0; i < args.Length; i++)

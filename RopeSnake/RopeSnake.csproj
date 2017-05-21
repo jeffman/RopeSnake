@@ -122,6 +122,7 @@
     <Compile Include="Mother3\Text\ITokenWriter.cs" />
     <Compile Include="Mother3\Text\JapaneseCharacterMap.cs" />
     <Compile Include="Mother3\Text\Mother3TextReader.cs" />
+    <Compile Include="Mother3\Text\RawToken.cs" />
     <Compile Include="Mother3\Text\StreamTokenReader.cs" />
     <Compile Include="Mother3\Text\StringTokenWriter.cs" />
     <Compile Include="Mother3\Text\Token.cs" />

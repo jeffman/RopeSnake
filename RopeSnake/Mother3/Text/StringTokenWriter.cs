@@ -40,6 +40,15 @@ namespace RopeSnake.Mother3.Text
                         break;
                     }
 
+                case RawToken rawToken:
+                    {
+                        Output.Append(CodeOpen);
+                        Output.Append(rawToken.Value.ToString());
+                        Output.Append(CodeClose);
+
+                        break;
+                    }
+
                 default:
                     throw new Exception("Unrecognized token");
             }

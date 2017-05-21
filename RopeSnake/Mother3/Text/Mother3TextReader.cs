@@ -32,13 +32,15 @@ namespace RopeSnake.Mother3.Text
 
         public string ReadString() => ReadString(-1);
 
-        public string ReadString(int maxChars)
+        public string ReadString(int bytesToRead)
         {
             _streamReader.Reset();
             _stringWriter.Reset();
             _stringWriter.Output.Clear();
 
-            for (int i = 0; (maxChars == -1) || (i < maxChars); i++)
+            long oldPosition = BaseStream.Position;
+
+            while ((bytesToRead == -1) || (BaseStream.Position - oldPosition < bytesToRead))
             {
                 var token = _streamReader.Read();
 
@@ -47,6 +49,9 @@ namespace RopeSnake.Mother3.Text
 
                 _stringWriter.Write(token);
             }
+
+            if ((bytesToRead >= 0) && BaseStream.Position != oldPosition + bytesToRead)
+                BaseStream.Position = oldPosition + bytesToRead;
 
             return _stringWriter.Output.ToString();
         }
