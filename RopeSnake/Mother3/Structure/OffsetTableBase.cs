@@ -15,7 +15,7 @@ namespace RopeSnake.Mother3
 
         protected OffsetTableBase(Block source, int tableOffset)
         {
-            int count = source.ReadInt(tableOffset + 4);
+            int count = source.ReadInt(tableOffset);
             if (count < 0)
                 throw new TableException($"Negative counts not supported: got {count}");
 
