@@ -35,6 +35,9 @@ namespace RopeSnake.Core
 
         public override void Flush() { }
 
+        public override int ReadByte()
+            => Block[(int)Position++];
+
         public override int Read(byte[] buffer, int offset, int count)
         {
             Array.Copy(Block.Data, (int)Position, buffer, offset, count);
@@ -69,6 +72,9 @@ namespace RopeSnake.Core
 
             Block.Resize((int)value);
         }
+
+        public override void WriteByte(byte value)
+            => Block[(int)Position++] = value;
 
         public override void Write(byte[] buffer, int offset, int count)
         {
