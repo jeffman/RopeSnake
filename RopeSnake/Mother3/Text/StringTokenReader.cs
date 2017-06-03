@@ -9,7 +9,9 @@ namespace RopeSnake.Mother3.Text
 {
     internal class StringTokenReader : ITokenReader
     {
-        private string _baseString;
+        internal static Dictionary<string, CharacterContext> _stringToContext;
+
+        internal string _baseString;
         public string BaseString
         {
             get => _baseString;
@@ -22,6 +24,14 @@ namespace RopeSnake.Mother3.Text
 
         public int Position { get; set; }
         protected IEnumerable<ControlCode> _controlCodes;
+
+        static StringTokenReader()
+        {
+            _stringToContext = new Dictionary<string, CharacterContext>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var kv in StringTokenWriter._contextToString)
+                _stringToContext.Add(kv.Value, kv.Key);
+        }
 
         public StringTokenReader(IEnumerable<ControlCode> controlCodes)
         {
@@ -74,13 +84,20 @@ namespace RopeSnake.Mother3.Text
                     chunks.Add(codeBuilder.ToString());
 
                 // Order for matching codes:
-                // 1) Check tag first
-                // 2) If no codes have that tag, interpret it as a number
-                //    a) If no codes have that number, interpret it as a raw literal
+                // 1) Check for context
+                // 2) If not a context, check for tag
+                // 3) If no codes have that tag, interpret it as a number
+                // 4) If no codes have that number, interpret it as a raw literal
                 if (chunks.Count == 0)
                     throw new Exception($"Empty code: position {oldPosition}");
 
                 string firstChunk = chunks[0];
+
+                if (_stringToContext.TryGetValue(firstChunk, out CharacterContext context))
+                {
+                    return new ContextToken(context);
+                }
+
                 var code = _controlCodes.FirstOrDefault(c => StringComparer.OrdinalIgnoreCase.Equals(c.Tag, firstChunk));
 
                 if (code == null)

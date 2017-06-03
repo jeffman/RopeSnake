@@ -25,6 +25,9 @@ namespace RopeSnake.Mother3
         [JsonProperty]
         public Dictionary<short, char> SaturnLookup { get; internal set; }
 
+        [JsonProperty]
+        public ScriptEncodingParameters ScriptEncodingParameters { get; internal set; }
+
         public int GetAsmPointer(string key, Rom rom)
         {
             var pointers = new HashSet<int>();
@@ -69,6 +72,9 @@ namespace RopeSnake.Mother3
             {
                 case "jp":
                     return new JapaneseCharacterMap(Configs[type].NormalLookup, Configs[type].SaturnLookup);
+
+                case "en-v10":
+                    return new EnglishCharacterMap(Configs[type].NormalLookup, Configs[type].SaturnLookup);
 
                 default:
                     RLog.Warn($"Unrecognized ROM version: {type.Version}. Defaulting to Japanese character map.");

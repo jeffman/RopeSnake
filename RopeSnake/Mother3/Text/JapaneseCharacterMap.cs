@@ -8,10 +8,10 @@ using ReverseLookup = System.Collections.Generic.Dictionary<char, short>;
 
 namespace RopeSnake.Mother3.Text
 {
-    public sealed class JapaneseCharacterMap : ICharacterMap
+    public class JapaneseCharacterMap : ICharacterMap
     {
-        internal Dictionary<CharacterContext, ForwardLookup> _forwardLookups;
-        internal Dictionary<CharacterContext, ReverseLookup> _reverseLookups;
+        internal protected Dictionary<CharacterContext, ForwardLookup> _forwardLookups;
+        internal protected Dictionary<CharacterContext, ReverseLookup> _reverseLookups;
 
         internal JapaneseCharacterMap(ForwardLookup normalLookup, ForwardLookup saturnLookup)
         {
@@ -42,7 +42,7 @@ namespace RopeSnake.Mother3.Text
             return (forward, reverse);
         }
 
-        public char Decode(short value, CharacterContext context)
+        public virtual char Decode(short value, CharacterContext context)
         {
             if (_forwardLookups[context].TryGetValue(value, out char decoded))
                 return decoded;
@@ -50,7 +50,22 @@ namespace RopeSnake.Mother3.Text
             return '?';
         }
 
-        public short Encode(char str, CharacterContext context)
-            => _reverseLookups[context][str];
+        public virtual short Encode(char ch, CharacterContext context)
+            => _reverseLookups[context][ch];
+
+        public CharacterContext GetContext(short value)
+        {
+            if (_forwardLookups[CharacterContext.Normal].ContainsKey(value))
+                return CharacterContext.Normal;
+
+            else if (_forwardLookups[CharacterContext.Saturn].ContainsKey(value))
+                return CharacterContext.Saturn;
+
+            return CharacterContext.None;
+        }
+
+        public bool IsSharedCharacter(char ch)
+            => _reverseLookups[CharacterContext.Normal].ContainsKey(ch)
+            && _reverseLookups[CharacterContext.Saturn].ContainsKey(ch);
     }
 }

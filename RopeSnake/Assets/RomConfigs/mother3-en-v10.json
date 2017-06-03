@@ -1,0 +1,583 @@
+﻿{
+  "AsmPointers": {
+    "TitleScreens": [
+      356416,
+      356480,
+      356580,
+      356816,
+      356936,
+      356996,
+      357092,
+      357184,
+      357244
+    ],
+    "Text.MainFont": [
+      41232,
+      302284,
+      419552,
+      420644,
+      423384,
+      514024,
+      539824,
+      540604,
+      542404,
+      544956,
+      547172,
+      570988,
+      577484,
+      582088
+    ]
+  },
+  "ScriptEncodingParameters": {
+    "EvenPadAddress": 33210368,
+    "EvenPadModulus": 14880,
+    "EvenOffset1": -7,
+    "EvenOffset2": 3,
+    "OddPadAddress": 1295858,
+    "OddPadModulus": 270,
+    "OddOffset1": 89,
+    "OddOffset2": -8
+  },
+  "ControlCodes": [
+    {
+      "Description": "End of text",
+      "Value": -1,
+      "Arguments": 0,
+      "Tag": "END",
+      "Flags": "Terminate"
+    },
+    {
+      "Description": "Line break",
+      "Value": -255,
+      "Arguments": 0,
+      "Tag": "BREAK"
+    },
+    {
+      "Description": "End menu selection",
+      "Value": -254,
+      "Arguments": 0,
+      "Tag": "ENDMENU"
+    },
+    {
+      "Description": "Wait for player input; XXXX is always 0xFF00",
+      "Value": -253,
+      "Arguments": 1,
+      "Tag": "WAIT"
+    },
+    {
+      "Description": "Wait for XXXX frames",
+      "Value": -252,
+      "Arguments": 1,
+      "Tag": "DELAY"
+    },
+    {
+      "Description": "Unknown",
+      "Value": -251,
+      "Arguments": 1
+    },
+    {
+      "Description": "Begin menu selection with XXXX choices",
+      "Value": -250,
+      "Arguments": 1,
+      "Tag": "MENU"
+    },
+    {
+      "Description": "Event",
+      "Value": -249,
+      "Arguments": 0,
+      "Tag": "EVENT"
+    },
+    {
+      "Description": "Play sound XXXX",
+      "Value": -248,
+      "Arguments": 1,
+      "Tag": "SOUND"
+    },
+    {
+      "Description": "Center text horizontally and vertically",
+      "Value": -247,
+      "Arguments": 0,
+      "Tag": "CENTERHV"
+    },
+    {
+      "Description": "Center text horizontally",
+      "Value": -246,
+      "Arguments": 0,
+      "Tag": "CENTERH"
+    },
+    {
+      "Description": "Alternate between regular and Mr. Saturn fonts",
+      "Value": -245,
+      "Arguments": 0,
+      "Tag": "ALTFONT",
+      "Flags": "AlternateFont"
+    },
+    {
+      "Description": "Unknown",
+      "Value": -244,
+      "Arguments": 1
+    },
+    {
+      "Description": "Battle text variable",
+      "Value": -240,
+      "Arguments": 0
+    },
+    {
+      "Description": "Battle text variable",
+      "Value": -239,
+      "Arguments": 0
+    },
+    {
+      "Description": "Battle text variable",
+      "Value": -238,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -237,
+      "Arguments": 0
+    },
+    {
+      "Description": "Battle text variable",
+      "Value": -236,
+      "Arguments": 0
+    },
+    {
+      "Description": "Battle text variable",
+      "Value": -235,
+      "Arguments": 0
+    },
+    {
+      "Description": "Battle text variable",
+      "Value": -234,
+      "Arguments": 0
+    },
+    {
+      "Description": "Battle text variable",
+      "Value": -231,
+      "Arguments": 0
+    },
+    {
+      "Description": "Battle text variable",
+      "Value": -224,
+      "Arguments": 0
+    },
+    {
+      "Description": "Display name of item XXXX",
+      "Value": -223,
+      "Arguments": 1,
+      "Tag": "ITEM"
+    },
+    {
+      "Description": "Display name of character XXXX",
+      "Value": -222,
+      "Arguments": 1,
+      "Tag": "NAME22"
+    },
+    {
+      "Description": "Display name of character XXXX",
+      "Value": -221,
+      "Arguments": 1,
+      "Tag": "NAME23"
+    },
+    {
+      "Description": "Unknown",
+      "Value": -220,
+      "Arguments": 1
+    },
+    {
+      "Description": "Unknown",
+      "Value": -219,
+      "Arguments": 1
+    },
+    {
+      "Description": "Display character name XXXX followed by YYYY dashes",
+      "Value": -218,
+      "Arguments": 2,
+      "Tag": "NAMEDASH"
+    },
+    {
+      "Description": "Unknown",
+      "Value": -208,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -207,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -206,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -205,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -204,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -203,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -202,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -201,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -190,
+      "Arguments": 1
+    },
+    {
+      "Description": "Unknown",
+      "Value": -188,
+      "Arguments": 0
+    },
+    {
+      "Description": "Favorite food",
+      "Value": -187,
+      "Arguments": 0,
+      "Tag": "FOOD"
+    },
+    {
+      "Description": "Favorite thing",
+      "Value": -186,
+      "Arguments": 0,
+      "Tag": "THING"
+    },
+    {
+      "Description": "Player name (sanctuary)",
+      "Value": -185,
+      "Arguments": 0,
+      "Tag": "SANCNAME"
+    },
+    {
+      "Description": "Player name (factory)",
+      "Value": -184,
+      "Arguments": 0,
+      "Tag": "FACTNAME"
+    },
+    {
+      "Description": "Unknown",
+      "Value": -128,
+      "Arguments": 1
+    },
+    {
+      "Description": "Unknown",
+      "Value": -127,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -126,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -125,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -124,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -96,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -95,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -94,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -93,
+      "Arguments": 0
+    },
+    {
+      "Description": "Unknown",
+      "Value": -32,
+      "Arguments": 0
+    },
+    {
+      "Description": "Display status icon XXXX",
+      "Value": -31,
+      "Arguments": 1,
+      "Tag": "ICON"
+    },
+    {
+      "Description": "Custom code: hot spring",
+      "Value": -257,
+      "Tag": "HOTSPRING",
+      "Arguments": 1
+    },
+    {
+      "Description": "Custom code: article",
+      "Value": -4352,
+      "Tag": "ARTICLE",
+      "Arguments": 1
+    }
+  ],
+  "NormalLookup": {
+    "0": "_",
+    "1": "!",
+    "2": "\"",
+    "3": "#",
+    "4": "$",
+    "5": "%",
+    "6": "&",
+    "7": "'",
+    "8": "(",
+    "9": ")",
+    "10": "*",
+    "11": "+",
+    "12": ",",
+    "13": "-",
+    "14": ".",
+    "15": "/",
+    "16": "0",
+    "17": "1",
+    "18": "2",
+    "19": "3",
+    "20": "4",
+    "21": "5",
+    "22": "6",
+    "23": "7",
+    "24": "8",
+    "25": "9",
+    "26": ":",
+    "27": ";",
+    "28": "<",
+    "29": "=",
+    "30": ">",
+    "31": "?",
+    "32": "@",
+    "33": "A",
+    "34": "B",
+    "35": "C",
+    "36": "D",
+    "37": "E",
+    "38": "F",
+    "39": "G",
+    "40": "H",
+    "41": "I",
+    "42": "J",
+    "43": "K",
+    "44": "L",
+    "45": "M",
+    "46": "N",
+    "47": "O",
+    "48": "P",
+    "49": "Q",
+    "50": "R",
+    "51": "S",
+    "52": "T",
+    "53": "U",
+    "54": "V",
+    "55": "W",
+    "56": "X",
+    "57": "Y",
+    "58": "Z",
+    "59": "α",
+    "60": "β",
+    "61": "γ",
+    "62": "Ω",
+    "63": "〇",
+    "64": " ",
+    "65": "a",
+    "66": "b",
+    "67": "c",
+    "68": "d",
+    "69": "e",
+    "70": "f",
+    "71": "g",
+    "72": "h",
+    "73": "i",
+    "74": "j",
+    "75": "k",
+    "76": "l",
+    "77": "m",
+    "78": "n",
+    "79": "o",
+    "80": "p",
+    "81": "q",
+    "82": "r",
+    "83": "s",
+    "84": "t",
+    "85": "u",
+    "86": "v",
+    "87": "w",
+    "88": "x",
+    "89": "y",
+    "90": "z",
+    "91": "{",
+    "92": "♪",
+    "93": "}",
+    "94": "~",
+    "95": "ß",
+    "96": "¡",
+    "97": "¿",
+    "98": "À",
+    "99": "Á",
+    "100": "Â",
+    "101": "Ã",
+    "102": "Ä",
+    "103": "Å",
+    "104": "Æ",
+    "105": "Ç",
+    "106": "È",
+    "107": "É",
+    "108": "Ê",
+    "109": "Ë",
+    "110": "Ì",
+    "111": "Í",
+    "112": "Î",
+    "113": "Ï",
+    "114": "Ñ",
+    "115": "Œ",
+    "116": "Ò",
+    "117": "Ó",
+    "118": "Ô",
+    "119": "Õ",
+    "120": "Ö",
+    "121": "Ø",
+    "122": "Ù",
+    "123": "Ú",
+    "124": "Û",
+    "125": "Ü",
+    "126": "Ý",
+    "127": "Ÿ",
+    "128": "à",
+    "129": "á",
+    "130": "â",
+    "131": "ã",
+    "132": "ä",
+    "133": "å",
+    "134": "æ",
+    "135": "ç",
+    "136": "è",
+    "137": "é",
+    "138": "ê",
+    "139": "ë",
+    "140": "ì",
+    "141": "í",
+    "142": "î",
+    "143": "ï",
+    "144": "ñ",
+    "145": "œ",
+    "146": "ò",
+    "147": "ó",
+    "148": "ô",
+    "149": "õ",
+    "150": "ö",
+    "151": "ø",
+    "152": "ù",
+    "153": "ú",
+    "154": "û",
+    "155": "ü",
+    "156": "ý",
+    "157": "ÿ",
+    "228": "→",
+    "229": "←",
+    "230": "↑",
+    "231": "↓",
+    "232": "¹",
+    "233": "²",
+    "234": "¶",
+    "235": "¬",
+    "236": "❤"
+  },
+  "SaturnLookup": {
+    "158": " ",
+    "159": "@",
+    "160": "!",
+    "161": "\"",
+    "162": "#",
+    "163": "$",
+    "164": "%",
+    "165": "&",
+    "166": "'",
+    "167": "(",
+    "168": ")",
+    "169": "*",
+    "170": "+",
+    "171": ",",
+    "172": "-",
+    "173": ".",
+    "174": "/",
+    "175": "?",
+    "176": "0",
+    "177": "1",
+    "178": "2",
+    "179": "3",
+    "180": "4",
+    "181": "5",
+    "182": "6",
+    "183": "7",
+    "184": "8",
+    "185": "9",
+    "186": ":",
+    "187": ";",
+    "188": "<",
+    "189": "=",
+    "190": ">",
+    "191": "¡",
+    "192": "¿",
+    "193": "A",
+    "194": "B",
+    "195": "C",
+    "196": "D",
+    "197": "E",
+    "198": "F",
+    "199": "G",
+    "200": "H",
+    "201": "I",
+    "202": "J",
+    "203": "K",
+    "204": "L",
+    "205": "M",
+    "206": "N",
+    "207": "O",
+    "208": "P",
+    "209": "Q",
+    "210": "R",
+    "211": "S",
+    "212": "T",
+    "213": "U",
+    "214": "V",
+    "215": "W",
+    "216": "X",
+    "217": "Y",
+    "218": "Z",
+    "219": "α",
+    "220": "β",
+    "221": "γ",
+    "222": "Ω",
+    "223": "ß",
+    "224": "Ç",
+    "225": "Æ",
+    "226": "Œ",
+    "227": "Ø"
+  }
+}

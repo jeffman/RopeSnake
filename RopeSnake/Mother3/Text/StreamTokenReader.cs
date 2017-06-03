@@ -23,16 +23,20 @@ namespace RopeSnake.Mother3.Text
             _controlCodes = controlCodes;
         }
 
-        public void Reset()
+        public virtual void Reset()
         {
             _context = CharacterContext.Normal;
         }
 
-        public Token Read()
+        public virtual Token Read()
         {
             long oldPosition = BaseStream.Position;
             short value = ReadShort();
+            return OnRead(value, oldPosition);
+        }
 
+        protected Token OnRead(short value, long oldPosition)
+        {
             if (value >= 0)
             {
                 char decoded = _characterMap.Decode(value, _context);

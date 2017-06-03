@@ -9,11 +9,14 @@ namespace RopeSnake.Mother3.Text
     public interface ICharacterMap
     {
         char Decode(short value, CharacterContext context);
-        short Encode(char str, CharacterContext context);
+        short Encode(char ch, CharacterContext context);
+        CharacterContext GetContext(short value);
+        bool IsSharedCharacter(char ch);
     }
 
     public enum CharacterContext
     {
+        None,
         Normal,
         Saturn
     }
