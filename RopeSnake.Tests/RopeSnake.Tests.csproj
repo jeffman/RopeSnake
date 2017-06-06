@@ -78,6 +78,7 @@
     <Compile Include="Gba\Lz77Tests.cs" />
     <Compile Include="Graphics\CanvasTests.cs" />
     <Compile Include="Mother3\Mother3TableTests.cs" />
+    <Compile Include="Mother3\TextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
