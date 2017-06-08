@@ -89,6 +89,15 @@ namespace RopeSnake.Core
         public static uint ReadUInt(this Stream stream)
             => stream.ReadUInt(DefaultEndianness);
 
+        public static bool ReadBool8(this Stream stream)
+            => stream.GetByte() != 0;
+
+        public static bool ReadBool16(this Stream stream)
+            => stream.ReadUShort() != 0;
+
+        public static bool ReadBool32(this Stream stream)
+            => stream.ReadInt() != 0;
+
         public static T Peek<T>(this Stream stream, Func<Stream, T> reader)
         {
             long position = stream.Position;
@@ -185,6 +194,15 @@ namespace RopeSnake.Core
 
         public static void WriteUInt(this Stream stream, uint value)
             => stream.WriteUInt(value, DefaultEndianness);
+
+        public static void WriteBool8(this Stream stream, bool value)
+            => stream.WriteByte((byte)(value ? 1 : 0));
+
+        public static void WriteBool16(this Stream stream, bool value)
+            => stream.WriteShort((short)(value ? 1 : 0));
+
+        public static void WriteBool32(this Stream stream, bool value)
+            => stream.WriteInt(value ? 1 : 0);
 
         public static string ReadString(this Stream stream)
         {

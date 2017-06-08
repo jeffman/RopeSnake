@@ -106,6 +106,9 @@
     <Compile Include="Graphics\Gba\HashedTile.cs" />
     <Compile Include="Graphics\TileInfo.cs" />
     <Compile Include="Graphics\Tilemap.cs" />
+    <Compile Include="Mother3\Models\BattleInfo.cs" />
+    <Compile Include="Mother3\Models\Item.cs" />
+    <Compile Include="Mother3\Models\ModelExtensions.cs" />
     <Compile Include="Mother3\Modules\TitleScreenModule.cs" />
     <Compile Include="Mother3\Mother3Config.cs" />
     <Compile Include="Mother3\Structure\OffsetTableAccessor.cs" />
