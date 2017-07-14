@@ -36,7 +36,7 @@ namespace RopeSnake.Mother3
             {
                 int pointer = rom.ReadInt(asmPointer.Location).FromPointer();
                 if (pointer > 0)
-                    pointer += asmPointer.TargetOffset;
+                    pointer -= asmPointer.TargetOffset;
 
                 pointers.Add(pointer);
             }
