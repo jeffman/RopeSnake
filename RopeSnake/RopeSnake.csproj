@@ -107,6 +107,8 @@
     <Compile Include="Graphics\TileInfo.cs" />
     <Compile Include="Graphics\Tilemap.cs" />
     <Compile Include="Mother3\Models\BattleInfo.cs" />
+    <Compile Include="Mother3\Mother3Extensions.cs" />
+    <Compile Include="Mother3\Mother3Helpers.cs" />
     <Compile Include="Mother3\Structure\FixedStringTable.cs" />
     <Compile Include="Mother3\Models\Item.cs" />
     <Compile Include="Mother3\Models\ModelExtensions.cs" />
