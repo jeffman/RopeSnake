@@ -21,7 +21,7 @@ namespace RopeSnake.Mother3.Text
             Reset();
         }
 
-        public void Write(Token token)
+        public virtual void Write(Token token)
         {
             switch (token)
             {
@@ -34,7 +34,7 @@ namespace RopeSnake.Mother3.Text
 
                 case ControlCodeToken codeToken:
                     {
-                        WriteShort(codeToken.Code.Value);
+                        WriteCodeValue(codeToken);
 
                         foreach (short arg in codeToken.Arguments)
                             WriteShort(arg);
@@ -51,6 +51,12 @@ namespace RopeSnake.Mother3.Text
                         break;
                     }
 
+                case ContextToken contextToken:
+                    {
+                        _context = contextToken.Context;
+                        break;
+                    }
+
                 default:
                     throw new Exception("Unrecognized token");
             }
@@ -64,6 +70,11 @@ namespace RopeSnake.Mother3.Text
         protected virtual void WriteShort(short value)
         {
             BaseStream.WriteShort(value);
+        }
+
+        protected virtual void WriteCodeValue(ControlCodeToken codeToken)
+        {
+            WriteShort(codeToken.Code.Value);
         }
 
         protected virtual void AlternateContext(ref CharacterContext context)

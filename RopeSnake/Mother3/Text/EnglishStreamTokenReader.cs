@@ -121,23 +121,23 @@ namespace RopeSnake.Mother3.Text
 
         internal byte DecodeByte()
         {
-            int position = (int)BaseStream.Position + 0x8000000;
+            int decodePosition = (int)BaseStream.Position + 0x8000000;
             byte value = BaseStream.GetByte();
 
             if (EncodingParameters != null)
             {
                 long oldPosition = BaseStream.Position;
-                bool even = (position & 1) == 0;
+                bool even = (decodePosition & 1) == 0;
 
                 if (even)
                 {
-                    BaseStream.Position = EncodingParameters.EvenPadAddress + ((position >> 1) % EncodingParameters.EvenPadModulus);
+                    BaseStream.Position = EncodingParameters.EvenPadAddress + ((decodePosition >> 1) % EncodingParameters.EvenPadModulus);
                     byte key = BaseStream.GetByte();
                     value = (byte)(((value + EncodingParameters.EvenOffset1) ^ key) + EncodingParameters.EvenOffset2);
                 }
                 else
                 {
-                    BaseStream.Position = EncodingParameters.OddPadAddress + ((position >> 1) % EncodingParameters.OddPadModulus);
+                    BaseStream.Position = EncodingParameters.OddPadAddress + ((decodePosition >> 1) % EncodingParameters.OddPadModulus);
                     byte key = BaseStream.GetByte();
                     value = (byte)(((value + EncodingParameters.OddOffset1) ^ key) + EncodingParameters.OddOffset2);
                 }
