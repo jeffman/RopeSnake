@@ -123,6 +123,7 @@
     <Compile Include="Mother3\Text\ControlCodeToken.cs" />
     <Compile Include="Mother3\Text\EnglishCharacterMap.cs" />
     <Compile Include="Mother3\Text\EnglishStreamTokenReader.cs" />
+    <Compile Include="Mother3\Text\EnglishStreamTokenWriter.cs" />
     <Compile Include="Mother3\Text\ICharacterMap.cs" />
     <Compile Include="Mother3\Text\ITokenReader.cs" />
     <Compile Include="Mother3\Text\ITokenWriter.cs" />
