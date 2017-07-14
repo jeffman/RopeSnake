@@ -21,12 +21,11 @@ namespace RopeSnake.Mother3
             var items = (data as ItemsProjectData).Items;
 
             var itemsBlock = new Block(ItemCount * Item.SizeInBytes);
-            var itemsStream = itemsBlock.ToStream();
 
             for (int i = 0; i < ItemCount; i++)
             {
                 items[i].Index = i;
-                itemsStream.WriteItem(items[i]);
+                itemsBlock.WriteItem(i * Item.SizeInBytes, items[i]);
             }
 
             var itemNames = new FixedStringTable
@@ -63,10 +62,8 @@ namespace RopeSnake.Mother3
             var itemNames = Mother3Helpers.ReadFixedStringTableFromTextTable(rom, 2);
             var itemDescriptions = Mother3Helpers.ReadStringTableFromTextTable(rom, 3);
 
-            var itemTable = new FixedTableAccessor(Mother3Config.Configs[rom.Type].GetAsmPointer("ItemTable", rom),
-                Item.SizeInBytes, ItemCount);
-
-            data.Items = itemTable.ParseEntries(rom, s => s.ReadItem()).ToArray();
+            var itemTable = new FixedTableAccessor(rom.GetAsmPointer("ItemTable"), Item.SizeInBytes, ItemCount);
+            data.Items = itemTable.GetEntries().Select(e => rom.ReadItem(e.Offset)).ToArray();
 
             foreach (var item in data.Items)
             {

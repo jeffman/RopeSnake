@@ -29,7 +29,8 @@ namespace RopeSnake.Tests.Core
 
             using (var stream = Open("new", "txt", FileMode.CreateNew))
             {
-                stream.WriteString(testString);
+                using (var writer = new StreamWriter(stream))
+                    writer.Write(testString);
             }
 
             var file = new FileInfo("temp\\new.txt");
@@ -47,7 +48,8 @@ namespace RopeSnake.Tests.Core
 
             using (var stream = Open("existing", "txt", FileMode.Create))
             {
-                stream.WriteString(testString);
+                using (var writer = new StreamWriter(stream))
+                    writer.Write(testString);
             }
 
             var file = new FileInfo("temp\\existing.txt");
@@ -63,7 +65,8 @@ namespace RopeSnake.Tests.Core
 
             using (var stream = Open("foo\\existing", "txt", FileMode.Create))
             {
-                stream.WriteString(testString);
+                using (var writer = new StreamWriter(stream))
+                    writer.Write(testString);
             }
 
             var file = new FileInfo("temp\\foo\\existing.txt");

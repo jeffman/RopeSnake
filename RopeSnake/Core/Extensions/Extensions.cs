@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace RopeSnake.Core
 {
     public static class Extensions
     {
+        internal static readonly Encoding DefaultEncoding = Encoding.ASCII;
+
         public static IEnumerable<object> EnumerateRecursive(this object value)
             => value.EnumerateRecursive(EnumerateChildren);
 
@@ -124,6 +127,22 @@ namespace RopeSnake.Core
         {
             foreach (T value in values)
                 set.Add(value);
+        }
+
+        public static string ReadAllText(this Stream stream)
+        {
+            using (var reader = new StreamReader(stream, DefaultEncoding))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        public static void WriteAllText(this Stream stream, string value)
+        {
+            using (var writer = new StreamWriter(stream, DefaultEncoding))
+            {
+                writer.Write(value);
+            }
         }
     }
 }

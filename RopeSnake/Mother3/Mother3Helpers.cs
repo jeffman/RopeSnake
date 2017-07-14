@@ -27,22 +27,21 @@ namespace RopeSnake.Mother3
 
         public static FixedStringTable ReadFixedStringTableFromTextTable(Rom rom, int tableIndex)
         {
-            var accessor = new OffsetTableAccessor(rom, Mother3Config.Configs[rom.Type].GetAsmPointer(TextTableKey, rom));
-            return ReadFixedStringTable(rom, accessor.GetEntry(tableIndex).Address);
+            var accessor = new OffsetTableAccessor(rom, rom.GetAsmPointer(TextTableKey));
+            return ReadFixedStringTable(rom, accessor.GetEntry(tableIndex).Offset);
         }
 
-        public static List<string> ReadStringTable(Rom rom, int offsetsPointer, int stringsPointer,
+        public static List<string> ReadStringTable(Rom rom, int offsetsOffset, int stringsOffset,
             bool isCompressed, bool isEncoded, bool longOffsets)
         {
             var reader = Mother3TextReader.Create(rom, isCompressed, isEncoded);
-            var stream = rom.ToStream(offsetsPointer);
-            return stream.ReadStringTable(reader, stringsPointer, longOffsets);
+            return rom.ReadStringTable(offsetsOffset, stringsOffset, reader, longOffsets);
         }
 
         public static List<string> ReadStringTableFromTextTable(Rom rom, int tableIndex)
         {
-            var textTable = new OffsetTableAccessor(rom, Mother3Config.Configs[rom.Type].GetAsmPointer(TextTableKey, rom));
-            return ReadStringTable(rom, textTable.GetEntry(tableIndex).Address, textTable.GetEntry(tableIndex + 1).Address, false, false, false);
+            var textTable = new OffsetTableAccessor(rom, rom.GetAsmPointer(TextTableKey));
+            return ReadStringTable(rom, textTable.GetEntry(tableIndex).Offset, textTable.GetEntry(tableIndex + 1).Offset, false, false, false);
         }
     }
 }

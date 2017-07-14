@@ -110,7 +110,7 @@ namespace RopeSnake.Gba
             }
         }
 
-        public static Tile ReadTile(this Block block, int offset, int bitDepth = 4)
+        public static Tile ReadTile(this Block block, int offset, int bitDepth)
         {
             var tile = new Tile(8, 8);
 
@@ -143,7 +143,7 @@ namespace RopeSnake.Gba
             return tile;
         }
 
-        public static void WriteTile(this Block block, int offset, Tile tile, int bitDepth = 4)
+        public static void WriteTile(this Block block, int offset, Tile tile, int bitDepth)
         {
             switch (bitDepth)
             {
@@ -181,7 +181,7 @@ namespace RopeSnake.Gba
             }
         }
 
-        public static List<Tile> ReadTileset(this Block block, int offset, int tileCount, int bitDepth = 4)
+        public static List<Tile> ReadTileset(this Block block, int offset, int tileCount, int bitDepth)
         {
             if (tileCount < 0)
                 throw new ArgumentException(nameof(tileCount));
@@ -197,16 +197,20 @@ namespace RopeSnake.Gba
             return tileset;
         }
 
-        public static void WriteTileset(this Block block, int offset, IEnumerable<Tile> tileset, int bitDepth = 4)
+        public static int WriteTileset(this Block block, int offset, IEnumerable<Tile> tileset, int bitDepth)
         {
             if (tileset == null)
                 throw new ArgumentNullException(nameof(tileset));
+
+            int oldOffset = offset;
 
             foreach (var tile in tileset)
             {
                 block.WriteTile(offset, tile, bitDepth);
                 offset += bitDepth * 8;
             }
+
+            return offset - oldOffset;
         }
 
         public static TileInfo ReadTileInfo(this Block block, int offset)

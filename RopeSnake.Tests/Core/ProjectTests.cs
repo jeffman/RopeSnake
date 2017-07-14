@@ -35,7 +35,10 @@ namespace RopeSnake.Tests.Core
             };
 
             using (var saturn = project.Get("Script", "MrSaturn", "txt"))
-                saturn.WriteString("boing");
+            {
+                using (var writer = new StreamWriter(saturn))
+                    writer.Write("boing");
+            }
 
             project.Save("temp\\TestProject");
 

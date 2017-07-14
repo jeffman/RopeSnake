@@ -28,25 +28,6 @@ namespace RopeSnake.Mother3
         [JsonProperty]
         public ScriptEncodingParameters ScriptEncodingParameters { get; internal set; }
 
-        public int GetAsmPointer(string key, Rom rom)
-        {
-            var pointers = new HashSet<int>();
-
-            foreach (var asmPointer in AsmPointers[key])
-            {
-                int pointer = rom.ReadGbaPointer(asmPointer.Location);
-                if (pointer > 0)
-                    pointer -= asmPointer.TargetOffset;
-
-                pointers.Add(pointer);
-            }
-
-            if (pointers.Count > 1)
-                throw new Exception($"Differing ASM pointers found for {key}: {String.Join(", ", pointers.Select(p => $"0x{p:X}"))}");
-
-            return pointers.First();
-        }
-
         #region Static members
 
         public static IReadOnlyDictionary<RomType, Mother3Config> Configs { get; internal set; }

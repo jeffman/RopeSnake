@@ -69,7 +69,6 @@
     <Compile Include="Core\RangeTests.cs" />
     <Compile Include="Core\ResourceManagerTests.cs" />
     <Compile Include="Core\RopeSnakeUiTests.cs" />
-    <Compile Include="Core\StreamExtensionsTests.cs" />
     <Compile Include="Core\TableAccessorExtensionsTests.cs" />
     <Compile Include="Core\TableAccessorTests.cs" />
     <Compile Include="Core\RangeAllocatorTests.cs" />

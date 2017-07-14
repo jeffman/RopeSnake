@@ -27,26 +27,24 @@ namespace RopeSnake.Mother3
             var result = new CompileResult { Alignment = 4 };
 
             var paletteBuffer = new Block(0x200);
-            var paletteStream = paletteBuffer.ToStream();
-
-            paletteStream.WritePalette(titleData.AnimationPalette);
-            result.AllocateBlocks.Add($"{Name}.AnimationPalette", paletteBuffer);
+            paletteBuffer.WritePalette(0, titleData.AnimationPalette);
 
             for (int i = 0; i < 21; i++)
             {
-                var tilesetBuffer = new Block(0x10000);
+                var tileset = titleData.AnimationTilesets[i];
+                var tilemap = titleData.AnimationTilemaps[i];
+
+                var tilesetBuffer = new Block(tileset.Count * 64);
                 var tilemapBuffer = new Block(0x800);
-                var tilesetStream = tilesetBuffer.ToStream();
-                var tilemapStream = tilemapBuffer.ToStream();
-
-                tilesetStream.WriteTileset(titleData.AnimationTilesets[i], 8);
-                tilemapStream.WriteTilemap(titleData.AnimationTilemaps[i]);
-
-                tilesetBuffer.Resize((int)tilesetStream.Position);
+                
+                tilesetBuffer.WriteTileset(0, titleData.AnimationTilesets[i], 8);
+                tilemapBuffer.WriteTilemap(0, titleData.AnimationTilemaps[i]);
 
                 result.AllocateBlocks.Add($"{Name}.AnimationTilesets[{i}]", tilesetBuffer);
                 result.AllocateBlocks.Add($"{Name}.AnimationTilemaps[{i}]", tilemapBuffer);
             }
+
+            result.AllocateBlocks.Add($"{Name}.AnimationPalette", paletteBuffer);
 
             return result;
         }
@@ -84,15 +82,15 @@ namespace RopeSnake.Mother3
         public override ProjectData ReadFromRom(Rom rom)
         {
             var data = new TitleScreenProjectData();
-            var table = new OffsetTableAccessor(rom, Mother3Config.Configs[rom.Type].GetAsmPointer("TitleScreens", rom));
-            var palette = table.ParseEntry(51, rom, s => s.ReadPalette(1, 256));
+            var table = new OffsetTableAccessor(rom, rom.GetAsmPointer("TitleScreens"));
+            var palette = rom.ReadPalette(table.GetEntry(51).Offset, 1, 256);
 
             data.AnimationPalette = palette;
 
             for (int i = 0; i < 21; i++)
             {
-                var tileset = table.ParseEntry(i + 9, rom, s => s.ReadTileset(384, 8));
-                var tilemap = table.ParseEntry(i + 30, rom, s => s.ReadTilemap(32, 32));
+                var tileset = rom.ReadTileset(table.GetEntry(i + 9).Offset, 384, 8);
+                var tilemap = rom.ReadTilemap(table.GetEntry(i + 30).Offset, 32, 32);
                 data.AnimationTilesets[i] = tileset;
                 data.AnimationTilemaps[i] = tilemap;
             }
@@ -126,7 +124,7 @@ namespace RopeSnake.Mother3
         {
             CopyAllocatedBlocksToRom(rom, compileResult, allocationResult);
 
-            var table = new OffsetTableUpdater(rom, Mother3Config.Configs[rom.Type].GetAsmPointer("TitleScreens", rom));
+            var table = new OffsetTableUpdater(rom, rom.GetAsmPointer("TitleScreens"));
 
             for (int i = 0; i < 21; i++)
             {
@@ -142,7 +140,7 @@ namespace RopeSnake.Mother3
 
             string paletteKey = $"{Name}.AnimationPalette";
             int paletteAddress = allocationResult.Allocations[paletteKey];
-            table.UpdateEntry(51, new TableEntry(paletteAddress));
+            table.UpdateEntry(51, paletteAddress);
         }
     }
 

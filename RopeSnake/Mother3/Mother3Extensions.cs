@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RopeSnake.Core;
+using RopeSnake.Gba;
 using RopeSnake.Mother3.Text;
 
 namespace RopeSnake.Mother3
@@ -25,6 +26,26 @@ namespace RopeSnake.Mother3
             }
 
             return table;
+        }
+
+        public static int GetAsmPointer(this Rom rom, string key)
+        {
+            var config = Mother3Config.Configs[rom.Type];
+            var pointers = new HashSet<int>();
+
+            foreach (var asmPointer in config.AsmPointers[key])
+            {
+                int pointer = rom.ReadGbaPointer(asmPointer.Location);
+                if (pointer > 0)
+                    pointer -= asmPointer.TargetOffset;
+
+                pointers.Add(pointer);
+            }
+
+            if (pointers.Count > 1)
+                throw new Exception($"Differing ASM pointers found for {key}: {String.Join(", ", pointers.Select(p => $"0x{p:X}"))}");
+
+            return pointers.First();
         }
 
         public static void WriteFixedStringTable(this Block block, int offset, FixedStringTable table, Mother3TextWriter writer)

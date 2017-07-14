@@ -46,10 +46,10 @@ namespace RopeSnake.Mother3
             block.WriteInt(offset + 20, (int)info.AilmentMode);
             block.WriteInt(offset + 24, info.Priority);
             block.WriteUShort(offset + 28, info.BattleText);
-            block.WriteBool8(offset + 29, info.AnimationDarken);
-            block.WriteByte(offset + 30, info.Animation);
-            block.WriteByte(offset + 31, info.HitAnimation);
-            block.WriteByte(offset + 32, info.Unknown);
+            block.WriteBool8(offset + 30, info.AnimationDarken);
+            block.WriteByte(offset + 31, info.Animation);
+            block.WriteByte(offset + 32, info.HitAnimation);
+            block.WriteByte(offset + 33, info.Unknown);
             block.WriteUShort(offset + 34, info.Sound);
             block.WriteByte(offset + 36, info.MissChance);
             block.WriteByte(offset + 37, info.CriticalChance);

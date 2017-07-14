@@ -31,7 +31,7 @@ namespace RopeSnake.Tests.Gba
             var compressed = File.ReadAllBytes("Artifacts\\Mother3\\titlescreen_compressed.bin");
 
             var compressor = new Lz77Compressor(true);
-            var redecompressed = compressor.Decompress((new Block(compressed)).ToStream());
+            var redecompressed = compressor.Decompress(new Block(compressed), 0);
 
             CollectionAssert.AreEqual(decompressed, redecompressed.Data);
         }

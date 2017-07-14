@@ -19,7 +19,7 @@ namespace RopeSnake.Core
 
         public bool Equals(SizedTableEntry other)
         {
-            return (Address == other.Address) && (Size == other.Size);
+            return (Offset == other.Offset) && (Size == other.Size);
         }
 
         public override bool Equals(object obj)

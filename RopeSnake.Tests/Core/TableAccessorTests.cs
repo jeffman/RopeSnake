@@ -50,7 +50,7 @@ namespace RopeSnake.Tests.Core
 
             for (int i = 0; i < 4; i++)
             {
-                Assert.AreEqual(values[i], accessor.ParseEntry(i, testBlock, StreamExtensions.ReadUInt));
+                Assert.AreEqual(values[i], testBlock.ReadUInt(accessor.GetEntry(i).Offset));
             }
         }
     }

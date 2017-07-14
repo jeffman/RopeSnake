@@ -9,16 +9,16 @@ namespace RopeSnake.Core
 {
     public class TableEntry : IEquatable<TableEntry>
     {
-        public int Address { get; protected set; }
+        public int Offset { get; protected set; }
 
-        public TableEntry(int address)
+        public TableEntry(int offset)
         {
-            Address = address;
+            Offset = offset;
         }
 
         public bool Equals(TableEntry other)
         {
-            return (Address == other.Address);
+            return (Offset == other.Offset);
         }
 
         public override bool Equals(object obj)
@@ -31,7 +31,10 @@ namespace RopeSnake.Core
 
         public override int GetHashCode()
         {
-            return Address.GetHashCode();
+            return Offset.GetHashCode();
         }
+
+        public static implicit operator TableEntry(int address)
+            => new TableEntry(address);
     }
 }

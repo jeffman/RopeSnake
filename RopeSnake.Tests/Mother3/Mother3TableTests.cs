@@ -58,7 +58,7 @@ namespace RopeSnake.Tests.Mother3
             for (int i = 0; i < expectedSar.Length; i++)
             {
                 updater.UpdateEntry(i, expectedSar[i]);
-                Assert.AreEqual(expectedSar[i].Address - updater.TableOffset, rom.ReadInt(updater.TableOffset + 8 + (i * 8)));
+                Assert.AreEqual(expectedSar[i].Offset - updater.TableOffset, rom.ReadInt(updater.TableOffset + 8 + (i * 8)));
                 Assert.AreEqual(expectedSar[i].Size, rom.ReadInt(updater.TableOffset + 12 + (i * 8)));
             }
         }

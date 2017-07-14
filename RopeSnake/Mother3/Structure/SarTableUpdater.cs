@@ -27,7 +27,7 @@ namespace RopeSnake.Mother3
             }
             else
             {
-                Source.WriteInt(tableAddress, entry.Address - TableOffset);
+                Source.WriteInt(tableAddress, entry.Offset - TableOffset);
                 Source.WriteInt(tableAddress + 4, entry.Size);
             }
         }

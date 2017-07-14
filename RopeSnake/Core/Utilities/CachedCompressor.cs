@@ -166,7 +166,6 @@ namespace RopeSnake.Core
                 foreach (var kv in cache)
                 {
                     stream.Write(kv.Key);
-                    stream.Write((byte)0);
                     stream.Write(kv.Value.Length);
                     stream.Write(kv.Value.Data);
                 }

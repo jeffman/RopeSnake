@@ -20,11 +20,7 @@ namespace RopeSnake.Tests.Mother3
         [TestMethod]
         public void ReadBattleInfo()
         {
-            var stream = origRom.ToStream(0xE5108 + (0x5C * Item.SizeInBytes) + 0x40); // Favorite Food
-            var oldPosition = stream.Position;
-            var info = stream.ReadBattleInfo();
-
-            Assert.AreEqual(BattleInfo.SizeInBytes, stream.Position - oldPosition);
+            var actualInfo = origRom.ReadBattleInfo(0xE5108 + (0x5C * Item.SizeInBytes) + 0x40); // Favorite Food
 
             var expectedInfo = new BattleInfo
             {
@@ -49,7 +45,7 @@ namespace RopeSnake.Tests.Mother3
                 Redirectable = true
             };
 
-            TestHelpers.AssertPublicInstancePropertiesEqualDeep(expectedInfo, info);
+            TestHelpers.AssertPublicInstancePropertiesEqualDeep(expectedInfo, actualInfo);
         }
 
         [TestMethod]
@@ -79,10 +75,8 @@ namespace RopeSnake.Tests.Mother3
             };
 
             var block = new Block(BattleInfo.SizeInBytes);
-            var stream = block.ToStream();
-            stream.WriteBattleInfo(info);
+            block.WriteBattleInfo(0, info);
 
-            Assert.AreEqual(BattleInfo.SizeInBytes, stream.Position);
             CollectionAssert.AreEqual(new byte[]
             {
                 1, 0, 0, 0,
@@ -103,8 +97,7 @@ namespace RopeSnake.Tests.Mother3
                 12, 0,
                 13,
                 14,
-                0,
-                15
+                0, 0
             }, block.Data);
         }
     }

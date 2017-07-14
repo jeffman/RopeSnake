@@ -25,7 +25,7 @@ namespace RopeSnake.Tests.Core
 
             testBlock = new Block(values.Length * 4);
             for (int i = 0; i < 4; i++)
-                testBlock.WriteUInt(values[i], i * 4);
+                testBlock.WriteUInt(i * 4, values[i]);
         }
 
         [TestInitialize]
@@ -40,24 +40,9 @@ namespace RopeSnake.Tests.Core
             int i = 0;
             foreach (var entry in accessor.GetEntries())
             {
-                Assert.AreEqual(i * 4, entry.Address);
+                Assert.AreEqual(i * 4, entry.Offset);
                 i++;
             }
-        }
-
-        [TestMethod]
-        public void ParseEntry()
-        {
-            for (int i = 0; i < values.Length; i++)
-            {
-                Assert.AreEqual(values[i], accessor.ParseEntry(i, testBlock, StreamExtensions.ReadUInt));
-            }
-        }
-
-        [TestMethod]
-        public void ParseEntries()
-        {
-            CollectionAssert.AreEqual(values, accessor.ParseEntries(testBlock, StreamExtensions.ReadUInt).ToList());
         }
     }
 }
