@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 using RopeSnake.Core;
 
 namespace RopeSnake.Mother3.Text
 {
-    internal class EnglishStreamTokenWriter : StreamTokenWriter
+    internal class EnglishBlockTokenWriter : BlockTokenWriter
     {
         public bool IsCompressed { get; set; }
         public ScriptEncodingParameters EncodingParameters { get; internal set; }
 
-        public EnglishStreamTokenWriter(Stream stream, ICharacterMap characterMap,
+        public EnglishBlockTokenWriter(Block destination, ICharacterMap characterMap,
             bool isCompressed, ScriptEncodingParameters encodingParameters)
-            : base(stream, characterMap)
+            : base(destination, characterMap)
         {
             IsCompressed = isCompressed;
             EncodingParameters = encodingParameters;
@@ -64,27 +63,24 @@ namespace RopeSnake.Mother3.Text
         {
             if (EncodingParameters != null)
             {
-                int encodePosition = (int)BaseStream.Position + 0x8000000;
-                long oldPosition = BaseStream.Position;
+                int encodePosition = Position + 0x8000000;
                 bool even = (encodePosition & 1) == 0;
 
                 if (even)
                 {
-                    BaseStream.Position = EncodingParameters.EvenPadAddress + ((encodePosition >> 1) % EncodingParameters.EvenPadModulus);
-                    byte key = BaseStream.GetByte();
+                    int keyPosition = EncodingParameters.EvenPadAddress + ((encodePosition >> 1) % EncodingParameters.EvenPadModulus);
+                    byte key = Destination.ReadByte(keyPosition);
                     value = (byte)(((value - EncodingParameters.EvenOffset2) ^ key) - EncodingParameters.EvenOffset1);
                 }
                 else
                 {
-                    BaseStream.Position = EncodingParameters.OddPadAddress + ((encodePosition >> 1) % EncodingParameters.OddPadModulus);
-                    byte key = BaseStream.GetByte();
+                    int keyPosition = EncodingParameters.OddPadAddress + ((encodePosition >> 1) % EncodingParameters.OddPadModulus);
+                    byte key = Destination.ReadByte(keyPosition);
                     value = (byte)(((value - EncodingParameters.OddOffset2) ^ key) - EncodingParameters.OddOffset1);
                 }
-
-                BaseStream.Position = oldPosition;
             }
 
-            BaseStream.WriteByte(value);
+            Destination.WriteByte(Position++, value);
         }
 
         internal void EncodeShort(short value)

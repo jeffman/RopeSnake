@@ -7,7 +7,7 @@ using RopeSnake.Core;
 
 namespace RopeSnake.Mother3.Text
 {
-    internal class StreamTokenReader : ITokenReader
+    internal class BlockTokenReader : ITokenReader
     {
         public Block Source { get; }
         public int Position { get; set; }
@@ -16,7 +16,7 @@ namespace RopeSnake.Mother3.Text
         protected IEnumerable<ControlCode> _controlCodes;
         protected CharacterContext _context;
 
-        public StreamTokenReader(Block source, ICharacterMap characterMap,
+        public BlockTokenReader(Block source, ICharacterMap characterMap,
             IEnumerable<ControlCode> controlCodes)
         {
             Source = source;
@@ -65,7 +65,11 @@ namespace RopeSnake.Mother3.Text
         }
 
         protected virtual short ReadShort()
-            => BaseStream.ReadShort();
+        {
+            short value = Source.ReadShort(Position);
+            Position += 2;
+            return value;
+        }
 
         protected virtual void AlternateContext(ref CharacterContext context)
         {

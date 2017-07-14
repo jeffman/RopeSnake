@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 using RopeSnake.Core;
 using RopeSnake.Mother3.Text;
 
@@ -11,51 +10,53 @@ namespace RopeSnake.Mother3
 {
     public static class Mother3Extensions
     {
-        public static FixedStringTable ReadFixedStringTable(this Stream stream, Mother3TextReader reader)
+        public static FixedStringTable ReadFixedStringTable(this Block block, int offset, Mother3TextReader reader)
         {
-            int stringLength = stream.ReadUShort();
-            int count = stream.ReadUShort();
+            int stringLength = block.ReadUShort(offset);
+            int count = block.ReadUShort(offset + 2);
 
             var table = new FixedStringTable { StringLength = stringLength };
-            reader.BaseStream.Position = stream.Position;
+            offset += 4;
 
             for (int i = 0; i < count; i++)
             {
-                table.Strings.Add(reader.ReadString(stringLength * 2));
+                table.Strings.Add(reader.ReadString(offset, stringLength * 2));
+                offset += stringLength * 2;
             }
 
             return table;
         }
 
-        public static void WriteFixedStringTable(this Stream stream, FixedStringTable table, Mother3TextWriter writer)
+        public static void WriteFixedStringTable(this Block block, int offset, FixedStringTable table, Mother3TextWriter writer)
         {
-            stream.WriteUShort((ushort)table.StringLength);
-            stream.WriteUShort((ushort)table.Strings.Count);
-            writer.BaseStream.Position = stream.Position;
+            block.WriteUShort(offset, (ushort)table.StringLength);
+            block.WriteUShort(offset + 2, (ushort)table.Strings.Count);
+            offset += 4;
 
             foreach (string str in table.Strings)
-                writer.WriteString(str, table.StringLength * 2);
+            {
+                writer.WriteString(offset, str, table.StringLength * 2);
+                offset += table.StringLength * 2;
+            }
         }
 
-        public static List<string> ReadStringTable(this Stream stream, Mother3TextReader reader,
-            int stringsPointer, bool longOffsets = false)
+        public static List<string> ReadStringTable(
+            this Block block,
+            int offsetsOffset,
+            int stringsOffset,
+            Mother3TextReader reader,
+            bool longOffsets = false)
         {
             var strings = new List<string>();
-            var offsets = new List<int>();
 
             ushort offset;
-            while ((offset = stream.ReadUShort()) != 0xFFFF)
+            while ((offset = block.ReadUShort(offsetsOffset)) != 0xFFFF)
             {
                 if (longOffsets)
                     offset *= 2;
 
-                offsets.Add(offset + stringsPointer);
-            }
-
-            foreach (var stringOffset in offsets)
-            {
-                reader.BaseStream.Position = stringOffset;
-                strings.Add(reader.ReadString());
+                strings.Add(reader.ReadString(offset + stringsOffset));
+                offsetsOffset += 2;
             }
 
             return strings;

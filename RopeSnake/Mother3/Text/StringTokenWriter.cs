@@ -8,6 +8,12 @@ namespace RopeSnake.Mother3.Text
 {
     internal class StringTokenWriter : ITokenWriter
     {
+        public int Position
+        {
+            get => Output.Length;
+            set => throw new InvalidOperationException("Cannot set the position of a StringBuilder");
+        }
+
         internal const char CodeOpen = '[';
         internal const char CodeClose = ']';
 

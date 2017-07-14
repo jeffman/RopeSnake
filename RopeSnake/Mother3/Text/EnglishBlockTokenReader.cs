@@ -7,16 +7,17 @@ using RopeSnake.Core;
 
 namespace RopeSnake.Mother3.Text
 {
-    internal class EnglishStreamTokenReader : StreamTokenReader
+    internal class EnglishBlockTokenReader : BlockTokenReader
     {
         public bool IsCompressed { get; set; }
         public ScriptEncodingParameters EncodingParameters { get; internal set; }
+
         internal Queue<short> _compressBuffer = new Queue<short>();
         internal short? _contextSwapBuffer = null;
 
-        public EnglishStreamTokenReader(Stream stream, ICharacterMap characterMap,
+        public EnglishBlockTokenReader(Block source, ICharacterMap characterMap,
             IEnumerable<ControlCode> controlCodes, bool isCompressed, ScriptEncodingParameters encodingParameters)
-            : base(stream, characterMap, controlCodes)
+            : base(source, characterMap, controlCodes)
         {
             IsCompressed = isCompressed;
             EncodingParameters = encodingParameters;
@@ -31,7 +32,7 @@ namespace RopeSnake.Mother3.Text
 
         public override Token Read()
         {
-            long oldPosition = BaseStream.Position;
+            int oldPosition = Position;
 
             if (_contextSwapBuffer != null)
             {
@@ -120,28 +121,25 @@ namespace RopeSnake.Mother3.Text
 
         internal byte DecodeByte()
         {
-            int decodePosition = (int)BaseStream.Position + 0x8000000;
-            byte value = BaseStream.GetByte();
+            int decodePosition = Position + 0x8000000;
+            byte value = Source.ReadByte(Position++);
 
             if (EncodingParameters != null)
             {
-                long oldPosition = BaseStream.Position;
                 bool even = (decodePosition & 1) == 0;
 
                 if (even)
                 {
-                    BaseStream.Position = EncodingParameters.EvenPadAddress + ((decodePosition >> 1) % EncodingParameters.EvenPadModulus);
-                    byte key = BaseStream.GetByte();
+                    int keyPosition = EncodingParameters.EvenPadAddress + ((decodePosition >> 1) % EncodingParameters.EvenPadModulus);
+                    byte key = Source.ReadByte(keyPosition);
                     value = (byte)(((value + EncodingParameters.EvenOffset1) ^ key) + EncodingParameters.EvenOffset2);
                 }
                 else
                 {
-                    BaseStream.Position = EncodingParameters.OddPadAddress + ((decodePosition >> 1) % EncodingParameters.OddPadModulus);
-                    byte key = BaseStream.GetByte();
+                    int keyPosition = EncodingParameters.OddPadAddress + ((decodePosition >> 1) % EncodingParameters.OddPadModulus);
+                    byte key = Source.ReadByte(keyPosition);
                     value = (byte)(((value + EncodingParameters.OddOffset1) ^ key) + EncodingParameters.OddOffset2);
                 }
-
-                BaseStream.Position = oldPosition;
             }
 
             return value;

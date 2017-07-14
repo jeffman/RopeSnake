@@ -124,8 +124,8 @@
     <Compile Include="Mother3\Text\ControlCode.cs" />
     <Compile Include="Mother3\Text\ControlCodeToken.cs" />
     <Compile Include="Mother3\Text\EnglishCharacterMap.cs" />
-    <Compile Include="Mother3\Text\EnglishStreamTokenReader.cs" />
-    <Compile Include="Mother3\Text\EnglishStreamTokenWriter.cs" />
+    <Compile Include="Mother3\Text\EnglishBlockTokenReader.cs" />
+    <Compile Include="Mother3\Text\EnglishBlockTokenWriter.cs" />
     <Compile Include="Mother3\Text\ICharacterMap.cs" />
     <Compile Include="Mother3\Text\ITokenReader.cs" />
     <Compile Include="Mother3\Text\ITokenWriter.cs" />
@@ -134,8 +134,8 @@
     <Compile Include="Mother3\Text\Mother3TextWriter.cs" />
     <Compile Include="Mother3\Text\RawToken.cs" />
     <Compile Include="Mother3\Text\ScriptEncodingParameters.cs" />
-    <Compile Include="Mother3\Text\StreamTokenReader.cs" />
-    <Compile Include="Mother3\Text\StreamTokenWriter.cs" />
+    <Compile Include="Mother3\Text\BlockTokenReader.cs" />
+    <Compile Include="Mother3\Text\BlockTokenWriter.cs" />
     <Compile Include="Mother3\Text\StringTokenReader.cs" />
     <Compile Include="Mother3\Text\StringTokenWriter.cs" />
     <Compile Include="Mother3\Text\Token.cs" />

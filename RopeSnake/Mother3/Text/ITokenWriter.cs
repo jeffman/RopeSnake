@@ -8,6 +8,7 @@ namespace RopeSnake.Mother3.Text
 {
     public interface ITokenWriter
     {
+        int Position { get; set; }
         void Write(Token token);
         void Reset();
     }

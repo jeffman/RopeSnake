@@ -13,17 +13,16 @@ namespace RopeSnake.Mother3
     {
         internal const string TextTableKey = "Text.TextTable";
 
-        public static FixedStringTable ReadFixedStringTable(Rom rom, int pointer)
+        public static FixedStringTable ReadFixedStringTable(Rom rom, int offset)
         {
             var reader = Mother3TextReader.Create(rom, false, false);
-            var stream = rom.ToStream(pointer);
-            return stream.ReadFixedStringTable(reader);
+            return rom.ReadFixedStringTable(offset, reader);
         }
 
-        public static void WriteFixedStringTable(FixedStringTable table, Rom rom, int pointer)
+        public static void WriteFixedStringTable(Block destination, RomType type, int offset, FixedStringTable table)
         {
-            var writer = Mother3TextWriter.Create(rom, false, false);
-            rom.ToStream(pointer).WriteFixedStringTable(table, writer);
+            var writer = Mother3TextWriter.Create(destination, type, false, false);
+            destination.WriteFixedStringTable(offset, table, writer);
         }
 
         public static FixedStringTable ReadFixedStringTableFromTextTable(Rom rom, int tableIndex)

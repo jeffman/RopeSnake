@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using RopeSnake.Core;
 
 namespace RopeSnake.Mother3.Text
 {
-    internal class StreamTokenWriter : ITokenWriter
+    internal class BlockTokenWriter : ITokenWriter
     {
-        public Stream BaseStream { get; }
+        public Block Destination { get; }
+        public int Position { get; set; }
+
         protected ICharacterMap _characterMap;
         protected CharacterContext _context;
 
-        public StreamTokenWriter(Stream stream, ICharacterMap characterMap)
+        public BlockTokenWriter(Block destination, ICharacterMap characterMap)
         {
-            BaseStream = stream;
+            Destination = destination;
             _characterMap = characterMap;
             Reset();
         }
@@ -69,7 +70,8 @@ namespace RopeSnake.Mother3.Text
 
         protected virtual void WriteShort(short value)
         {
-            BaseStream.WriteShort(value);
+            Destination.WriteShort(Position, value);
+            Position += 2;
         }
 
         protected virtual void WriteCodeValue(ControlCodeToken codeToken)

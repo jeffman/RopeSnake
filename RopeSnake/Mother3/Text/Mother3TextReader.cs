@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using RopeSnake.Core;
@@ -10,35 +9,36 @@ namespace RopeSnake.Mother3.Text
 {
     public class Mother3TextReader
     {
-        public Stream BaseStream => _streamReader.BaseStream;
-        internal StreamTokenReader _streamReader;
+        internal BlockTokenReader _blockReader;
         internal StringTokenWriter _stringWriter;
 
-        internal Mother3TextReader(StreamTokenReader streamReader, StringTokenWriter stringWriter)
+        internal Mother3TextReader(BlockTokenReader streamReader, StringTokenWriter stringWriter)
         {
-            _streamReader = streamReader;
+            _blockReader = streamReader;
             _stringWriter = stringWriter;
         }
 
         public static Mother3TextReader Create(Rom rom, bool isCompressed, bool isEncoded)
-        {
-            var type = rom.Type;
+            => Create(rom, rom.Type, isCompressed, isEncoded);
 
+        public static Mother3TextReader Create(Block source, RomType type, bool isCompressed, bool isEncoded)
+        {
             if (type.Game != "Mother 3")
                 throw new NotSupportedException(type.Game);
 
-            StreamTokenReader reader;
+            BlockTokenReader reader;
             var charMap = Mother3Config.CreateCharacterMap(type);
             var codes = Mother3Config.Configs[type].ControlCodes;
 
             switch (type.Version)
             {
                 case "jp":
-                    reader = new StreamTokenReader(rom.ToStream(), charMap, codes);
+                    reader = new BlockTokenReader(source, charMap, codes);
                     break;
 
                 case "en-v10":
-                    reader = new EnglishStreamTokenReader(rom.ToStream(),
+                    reader = new EnglishBlockTokenReader(
+                        source,
                         charMap,
                         codes,
                         isCompressed,
@@ -55,19 +55,22 @@ namespace RopeSnake.Mother3.Text
             return new Mother3TextReader(reader, writer);
         }
 
-        public string ReadString() => ReadString(-1);
+        public string ReadString(int offset) => ReadString(offset, -1);
 
-        public string ReadString(int bytesToRead)
+        public string ReadString(int offset, int bytesToRead)
         {
-            _streamReader.Reset();
+            if (bytesToRead < -1)
+                throw new ArgumentException(nameof(bytesToRead));
+
+            _blockReader.Reset();
             _stringWriter.Reset();
             _stringWriter.Output.Clear();
 
-            long oldPosition = BaseStream.Position;
+            _blockReader.Position = offset;
 
-            while ((bytesToRead == -1) || (BaseStream.Position - oldPosition < bytesToRead))
+            while ((bytesToRead == -1) || (_blockReader.Position - offset < bytesToRead))
             {
-                var token = _streamReader.Read();
+                var token = _blockReader.Read();
 
                 if (token.IsTerminator)
                     break;
@@ -75,8 +78,8 @@ namespace RopeSnake.Mother3.Text
                 _stringWriter.Write(token);
             }
 
-            if ((bytesToRead >= 0) && BaseStream.Position != oldPosition + bytesToRead)
-                BaseStream.Position = oldPosition + bytesToRead;
+            if (bytesToRead >= 0)
+                _blockReader.Position = offset + bytesToRead;
 
             return _stringWriter.Output.ToString();
         }
