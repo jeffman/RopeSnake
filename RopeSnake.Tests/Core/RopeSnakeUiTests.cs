@@ -58,7 +58,8 @@ namespace RopeSnake.Tests.Core
             var expected = new Type[]
             {
                 typeof(TestModule),
-                typeof(TitleScreenModule)
+                typeof(TitleScreenModule),
+                typeof(ItemsModule)
             };
 
             CollectionAssert.AreEquivalent(expected, RopeSnakeUi._moduleTypes.ToList());

@@ -112,6 +112,7 @@
     <Compile Include="Mother3\Structure\FixedStringTable.cs" />
     <Compile Include="Mother3\Models\Item.cs" />
     <Compile Include="Mother3\Models\ModelExtensions.cs" />
+    <Compile Include="Mother3\Modules\ItemsModule.cs" />
     <Compile Include="Mother3\Modules\TitleScreenModule.cs" />
     <Compile Include="Mother3\Mother3Config.cs" />
     <Compile Include="Mother3\Structure\OffsetTableAccessor.cs" />

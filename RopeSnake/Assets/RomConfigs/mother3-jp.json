@@ -1,5 +1,91 @@
 ﻿{
   "AsmPointers": {
+    "ItemTable": [
+      116680,
+      118120,
+      118580,
+      120532,
+      169176,
+      174588,
+      178652,
+      178704,
+      258652,
+      274376,
+      275144,
+      282564,
+      283580,
+      284852,
+      288236,
+      323724,
+      327452,
+      327884,
+      337460,
+      338780,
+      339008,
+      340196,
+      344916,
+      345004,
+      346992,
+      347060,
+      347100,
+      347884,
+      347932,
+      347984,
+      349776,
+      379048,
+      379320,
+      380196,
+      412132,
+      536896,
+      {
+        "Location": 337124,
+        "TargetOffset": 4
+      },
+      {
+        "Location": 337464,
+        "TargetOffset": 4
+      },
+      {
+        "Location": 337920,
+        "TargetOffset": 4
+      },
+      {
+        "Location": 340200,
+        "TargetOffset": 4
+      },
+      {
+        "Location": 340700,
+        "TargetOffset": 4
+      },
+      {
+        "Location": 379528,
+        "TargetOffset": 64
+      },
+      {
+        "Location": 379556,
+        "TargetOffset": 64
+      },
+      {
+        "Location": 379584,
+        "TargetOffset": 64
+      },
+      {
+        "Location": 379612,
+        "TargetOffset": 64
+      },
+      {
+        "Location": 379640,
+        "TargetOffset": 64
+      },
+      {
+        "Location": 379680,
+        "TargetOffset": 64
+      },
+      {
+        "Location": 379764,
+        "TargetOffset": 64
+      }
+    ],
     "TitleScreens": [
       356416,
       356480,
@@ -26,6 +112,14 @@
       570988,
       577484,
       582088
+    ],
+    "Text.TextTable": [
+      7112,
+      7160,
+      7208,
+      7256,
+      7464,
+      7620
     ]
   },
   "ControlCodes": [
