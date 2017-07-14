@@ -11,19 +11,15 @@ using RopeSnake.Graphics;
 
 namespace RopeSnake.Mother3
 {
-    public class TitleScreenModule : ModuleBase
+    public sealed class TitleScreenModule : ModuleBase
     {
         public override string Name => "Mother3.TitleScreens";
 
         public override bool IsCompatibleWith(RomType romType)
-        {
-            return romType.Game == "Mother 3";
-        }
+            => romType.Game == "Mother 3";
 
         public override IEnumerable<Range> GetFreeRanges(RomType romType)
-        {
-            return new Range[] { Range.StartEnd(0x1BD6940, 0x1C5F33F) };
-        }
+            => new Range[] { Range.StartEnd(0x1BD6940, 0x1C5F33F) };
 
         public override CompileResult Compile(ProjectData data, RomType romType)
         {
