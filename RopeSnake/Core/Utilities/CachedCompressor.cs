@@ -77,8 +77,8 @@ namespace RopeSnake.Core
             return compressed;
         }
 
-        public Block Decompress(Stream source)
-            => _compressor.Decompress(source);
+        public Block Decompress(Block source, int offset)
+            => _compressor.Decompress(source, offset);
 
         public static void ReadGlobalCache(string directory)
         {

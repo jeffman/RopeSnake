@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using RopeSnake.Core;
@@ -10,15 +9,17 @@ namespace RopeSnake.Mother3.Text
 {
     internal class StreamTokenReader : ITokenReader
     {
-        public Stream BaseStream { get; }
+        public Block Source { get; }
+        public int Position { get; set; }
+
         protected ICharacterMap _characterMap;
         protected IEnumerable<ControlCode> _controlCodes;
         protected CharacterContext _context;
 
-        public StreamTokenReader(Stream stream, ICharacterMap characterMap,
+        public StreamTokenReader(Block source, ICharacterMap characterMap,
             IEnumerable<ControlCode> controlCodes)
         {
-            BaseStream = stream;
+            Source = source;
             _characterMap = characterMap;
             _controlCodes = controlCodes;
         }
@@ -30,12 +31,12 @@ namespace RopeSnake.Mother3.Text
 
         public virtual Token Read()
         {
-            long oldPosition = BaseStream.Position;
+            int oldPosition = Position;
             short value = ReadShort();
             return OnRead(value, oldPosition);
         }
 
-        protected Token OnRead(short value, long oldPosition)
+        protected Token OnRead(short value, int oldPosition)
         {
             if (value >= 0)
             {

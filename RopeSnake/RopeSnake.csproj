@@ -69,7 +69,6 @@
     <Compile Include="Core\Extensions\BlockExtensions.cs" />
     <Compile Include="Core\RomConfigs.cs" />
     <Compile Include="Core\Utilities\AggregateAllocator.cs" />
-    <Compile Include="Core\Utilities\BlockStream.cs" />
     <Compile Include="Core\IAllocatable.cs" />
     <Compile Include="Core\Models\Range.cs" />
     <Compile Include="Core\ProjectData.cs" />
@@ -86,7 +85,6 @@
     <Compile Include="Core\Models\SizedTableEntry.cs" />
     <Compile Include="Core\Models\TableEntry.cs" />
     <Compile Include="Core\Project.cs" />
-    <Compile Include="Core\Extensions\StreamExtensions.cs" />
     <Compile Include="Core\Extensions\Extensions.cs" />
     <Compile Include="Core\Utilities\PredicateEqualityComparer.cs" />
     <Compile Include="Core\Utilities\ResourceManager.cs" />

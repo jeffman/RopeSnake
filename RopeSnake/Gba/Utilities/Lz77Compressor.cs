@@ -240,23 +240,23 @@ namespace RopeSnake.Gba
             }
         }
 
-        public virtual Block Decompress(Stream source)
+        public virtual Block Decompress(Block source, int offset)
         {
             // Check for LZ77 signature
-            if (source.GetByte() != 0x10)
+            if (source.ReadByte(offset++) != 0x10)
                 throw new Exception($"Expected LZ77 header");
 
             // Read the block length
-            int length = source.GetByte();
-            length += (source.GetByte() << 8);
-            length += (source.GetByte() << 16);
+            int length = source.ReadByte(offset++);
+            length += (source.ReadByte(offset++) << 8);
+            length += (source.ReadByte(offset++) << 16);
 
             Block decompressed = new Block(length);
             int decompPosition = 0;
 
             while (decompPosition < length)
             {
-                byte mode = source.GetByte();
+                byte mode = source.ReadByte(offset++);
                 for (int i = 0; i < 8; i++)
                 {
                     switch ((mode >> (7 - i)) & 1)
@@ -267,14 +267,14 @@ namespace RopeSnake.Gba
                             if (decompPosition >= length)
                                 break;
 
-                            decompressed[decompPosition++] = source.GetByte();
+                            decompressed[decompPosition++] = source.ReadByte(offset++);
                             break;
 
                         case 1:
 
                             // String lookup
-                            int lookup = (source.GetByte() << 8);
-                            lookup += source.GetByte();
+                            int lookup = (source.ReadByte(offset++) << 8);
+                            lookup += source.ReadByte(offset++);
 
                             int numBytes = ((lookup >> 12) & 0xF) + 3;
                             int distance = (lookup & 0xFFF);

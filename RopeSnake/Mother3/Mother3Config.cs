@@ -34,7 +34,7 @@ namespace RopeSnake.Mother3
 
             foreach (var asmPointer in AsmPointers[key])
             {
-                int pointer = rom.ReadInt(asmPointer.Location).FromPointer();
+                int pointer = rom.ReadGbaPointer(asmPointer.Location);
                 if (pointer > 0)
                     pointer -= asmPointer.TargetOffset;
 

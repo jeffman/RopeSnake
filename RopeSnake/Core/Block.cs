@@ -49,9 +49,6 @@ namespace RopeSnake.Core
             Array.Resize(ref _data, newLength);
         }
 
-        public virtual BlockStream ToStream(int offset = 0)
-            => new BlockStream(this) { Position = offset };
-
         public void CopyTo(Block destination)
             => CopyTo(destination, 0);
 
@@ -85,5 +82,8 @@ namespace RopeSnake.Core
             RLog.Debug($"Writing block to file {fileName}");
             File.WriteAllBytes(fileName, _data);
         }
+
+        public static Block Wrap(byte[] data)
+            => new Block { _data = data };
     }
 }

@@ -10,6 +10,6 @@ namespace RopeSnake.Core
     public interface ICompressor
     {
         Block Compress(Block source, int offset, int length);
-        Block Decompress(Stream source);
+        Block Decompress(Block source, int offset);
     }
 }

@@ -8,6 +8,7 @@ namespace RopeSnake.Mother3.Text
 {
     public interface ITokenReader
     {
+        int Position { get; set; }
         Token Read();
         void Reset();
     }

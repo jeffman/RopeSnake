@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 using System.Drawing;
 using RopeSnake.Core;
 using RopeSnake.Graphics;
@@ -21,10 +20,10 @@ namespace RopeSnake.Gba
             _writeCompressedBuffers = new ThreadLocal<Block>(() => new Block(_writeCompressedBufferSize));
         }
 
-        public static int ReadPointer(this Stream stream)
-            => stream.ReadInt().ToPointer();
+        public static int ReadGbaPointer(this Block block, int offset)
+            => block.ReadInt(offset).FromGbaPointer();
 
-        public static int FromPointer(this int value)
+        public static int FromGbaPointer(this int value)
         {
             if (value == 0)
                 return 0;
@@ -35,10 +34,10 @@ namespace RopeSnake.Gba
             return value & 0x7FFFFFF;
         }
 
-        public static void WritePointer(this Stream stream, int value)
-            => stream.WriteInt(value.ToPointer());
+        public static void WriteGbaPointer(this Block block, int offset, int value)
+            => block.WriteInt(offset, value.ToGbaPointer());
 
-        public static int ToPointer(this int value)
+        public static int ToGbaPointer(this int value)
         {
             if (value <= 0)
                 return 0;
@@ -46,48 +45,44 @@ namespace RopeSnake.Gba
             return value | 0x8000000;
         }
 
-        public static T ReadCompressed<T>(this Stream stream, Func<Stream, int, T> reader)
+        public static T ReadCompressed<T>(this Block block, int offset, Func<Block, int, int, T> reader)
         {
             var compressor = Compressors.CreateLz77(true);
-            var decompressed = compressor.Decompress(stream);
-            var decompStream = decompressed.ToStream();
-            return reader(decompStream, decompressed.Length);
+            var decompressed = compressor.Decompress(block, offset);
+            return reader(decompressed, 0, decompressed.Length);
         }
 
-        public static T ReadCompressed<T>(this Stream stream, Func<Stream, T> reader)
-            => stream.ReadCompressed((s, i) => reader(s));
+        public static T ReadCompressed<T>(this Block block, int offset, Func<Block, int, T> reader)
+            => block.ReadCompressed(offset, (s, o, l) => reader(s, o));
 
-        public static void WriteCompressed(this Stream stream, Action<Stream> writer)
+        public static void WriteCompressed(this Block block, int offset, Func<Block, int, int> writer)
         {
             var buffer = _writeCompressedBuffers.Value;
-            var compStream = buffer.ToStream();
-            writer(compStream);
-
-            int length = (int)compStream.Position;
+            int length = writer(buffer, 0);
             var compressor = Compressors.CreateLz77(true);
             var compressed = compressor.Compress(buffer, 0, length);
-            stream.WriteBytes(compressed.Data);
+            block.WriteBlock(offset, compressed);
         }
 
-        public static Color ReadColor(this Stream stream)
+        public static Color ReadColor(this Block block, int offset)
         {
-            int value = stream.ReadUShort();
+            int value = block.ReadUShort(offset);
             int r = value & 0x1F;
             int g = (value >> 5) & 0x1F;
             int b = (value >> 10) & 0x1F;
             return Color.FromArgb(r * 8, g * 8, b * 8);
         }
 
-        public static void WriteColor(this Stream stream, Color color)
+        public static void WriteColor(this Block block, int offset, Color color)
         {
             int value = 0;
             value |= ((color.R / 8) & 0x1F);
             value |= ((color.G / 8) & 0x1F) << 5;
             value |= ((color.B / 8) & 0x1F) << 10;
-            stream.WriteUShort((ushort)value);
+            block.WriteUShort(offset, (ushort)value);
         }
 
-        public static Palette ReadPalette(this Stream stream, int numPalettes, int numColors)
+        public static Palette ReadPalette(this Block block, int offset, int numPalettes, int numColors)
         {
             if (numColors < 0)
                 throw new ArgumentException(nameof(numColors));
@@ -95,21 +90,27 @@ namespace RopeSnake.Gba
             var palette = new Palette(numPalettes, numColors);
 
             for (int i = 0; i < palette.TotalCount; i++)
-                palette.SetColor(i, stream.ReadColor());
+            {
+                palette.SetColor(i, block.ReadColor(offset));
+                offset += 2;
+            }
 
             return palette;
         }
 
-        public static void WritePalette(this Stream stream, Palette palette)
+        public static void WritePalette(this Block block, int offset, Palette palette)
         {
             if (palette == null)
                 throw new ArgumentException(nameof(palette));
 
             for (int i = 0; i < palette.TotalCount; i++)
-                stream.WriteColor(palette.GetColor(i));
+            {
+                block.WriteColor(offset, palette.GetColor(i));
+                offset += 2;
+            }
         }
 
-        public static Tile ReadTile(this Stream stream, int bitDepth = 4)
+        public static Tile ReadTile(this Block block, int offset, int bitDepth = 4)
         {
             var tile = new Tile(8, 8);
 
@@ -120,7 +121,7 @@ namespace RopeSnake.Gba
                     {
                         for (int x = 0; x < 8; x += 2)
                         {
-                            byte pair = stream.GetByte();
+                            byte pair = block.ReadByte(offset++);
                             tile[x, y] = (byte)(pair & 0xF);
                             tile[x + 1, y] = (byte)((pair >> 4) & 0xF);
                         }
@@ -131,7 +132,7 @@ namespace RopeSnake.Gba
                     for (int y = 0; y < 8; y++)
                     {
                         for (int x = 0; x < 8; x++)
-                            tile[x, y] = stream.GetByte();
+                            tile[x, y] = block.ReadByte(offset++);
                     }
                     break;
 
@@ -142,7 +143,7 @@ namespace RopeSnake.Gba
             return tile;
         }
 
-        public static void WriteTile(this Stream stream, Tile tile, int bitDepth = 4)
+        public static void WriteTile(this Block block, int offset, Tile tile, int bitDepth = 4)
         {
             switch (bitDepth)
             {
@@ -154,7 +155,7 @@ namespace RopeSnake.Gba
                             int first = getPixel(x, y, 15);
                             int second = getPixel(x + 1, y, 15);
                             byte pair = (byte)((first & 0xF) | ((second & 0xF) << 4));
-                            stream.WriteByte(pair);
+                            block.WriteByte(offset, pair);
                         }
                     }
                     break;
@@ -163,7 +164,7 @@ namespace RopeSnake.Gba
                     for (int y = 0; y < 8; y++)
                     {
                         for (int x = 0; x < 8; x++)
-                            stream.WriteByte(tile[x, y]);
+                            block.WriteByte(offset, tile[x, y]);
                     }
                     break;
 
@@ -180,7 +181,7 @@ namespace RopeSnake.Gba
             }
         }
 
-        public static List<Tile> ReadTileset(this Stream stream, int tileCount, int bitDepth = 4)
+        public static List<Tile> ReadTileset(this Block block, int offset, int tileCount, int bitDepth = 4)
         {
             if (tileCount < 0)
                 throw new ArgumentException(nameof(tileCount));
@@ -188,23 +189,29 @@ namespace RopeSnake.Gba
             var tileset = new List<Tile>(tileCount);
 
             for (int i = 0; i < tileCount; i++)
-                tileset.Add(stream.ReadTile(bitDepth));
+            {
+                tileset.Add(block.ReadTile(offset, bitDepth));
+                offset += bitDepth * 8;
+            }
 
             return tileset;
         }
 
-        public static void WriteTileset(this Stream stream, IEnumerable<Tile> tileset, int bitDepth = 4)
+        public static void WriteTileset(this Block block, int offset, IEnumerable<Tile> tileset, int bitDepth = 4)
         {
             if (tileset == null)
                 throw new ArgumentNullException(nameof(tileset));
 
             foreach (var tile in tileset)
-                stream.WriteTile(tile, bitDepth);
+            {
+                block.WriteTile(offset, tile, bitDepth);
+                offset += bitDepth * 8;
+            }
         }
 
-        public static TileInfo ReadTileInfo(this Stream stream)
+        public static TileInfo ReadTileInfo(this Block block, int offset)
         {
-            int value = stream.ReadUShort();
+            int value = block.ReadUShort(offset);
             int tile = value & 0x3FF;
             bool flipX = (tile & 0x400) != 0;
             bool flipY = (tile & 0x800) != 0;
@@ -212,7 +219,7 @@ namespace RopeSnake.Gba
             return new TileInfo(tile, palette, flipX, flipY);
         }
 
-        public static void WriteTileInfo(this Stream stream, TileInfo tileInfo)
+        public static void WriteTileInfo(this Block block, int offset, TileInfo tileInfo)
         {
             int value = 0;
 
@@ -227,21 +234,24 @@ namespace RopeSnake.Gba
             value |= (tileInfo.FlipY ? 0x800 : 0);
             value |= ((tileInfo.Palette & 0xF) << 12);
 
-            stream.WriteUShort((ushort)value);
+            block.WriteUShort(offset, (ushort)value);
         }
 
-        public static Tilemap ReadTilemap(this Stream stream, int width, int height)
+        public static Tilemap ReadTilemap(this Block block, int offset, int width, int height)
         {
             var tilemap = new Tilemap(width, height, 8, 8);
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
-                    tilemap[x, y] = stream.ReadTileInfo();
+                {
+                    tilemap[x, y] = block.ReadTileInfo(offset);
+                    offset += 2;
+                }
             }
             return tilemap;
         }
 
-        public static void WriteTilemap(this Stream stream, Tilemap tilemap)
+        public static void WriteTilemap(this Block block, int offset, Tilemap tilemap)
         {
             if (tilemap == null)
                 throw new ArgumentNullException(nameof(tilemap));
@@ -249,7 +259,10 @@ namespace RopeSnake.Gba
             for (int y = 0; y < tilemap.TileHeight; y++)
             {
                 for (int x = 0; x < tilemap.TileWidth; x++)
-                    stream.WriteTileInfo(tilemap[x, y]);
+                {
+                    block.WriteTileInfo(offset, tilemap[x, y]);
+                    offset += 2;
+                }
             }
         }
     }

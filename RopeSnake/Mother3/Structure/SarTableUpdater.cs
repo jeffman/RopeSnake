@@ -22,13 +22,13 @@ namespace RopeSnake.Mother3
 
             if (entry == null)
             {
-                Source.WriteInt(0, tableAddress);
-                Source.WriteInt(0, tableAddress + 4);
+                Source.WriteInt(tableAddress, 0);
+                Source.WriteInt(tableAddress + 4, 0);
             }
             else
             {
-                Source.WriteInt(entry.Address - TableOffset, tableAddress);
-                Source.WriteInt(entry.Size, tableAddress + 4);
+                Source.WriteInt(tableAddress, entry.Address - TableOffset);
+                Source.WriteInt(tableAddress + 4, entry.Size);
             }
         }
     }
