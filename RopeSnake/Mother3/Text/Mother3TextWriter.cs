@@ -20,10 +20,36 @@ namespace RopeSnake.Mother3.Text
             _stringReader = reader;
         }
 
-        public static Mother3TextWriter Create(Rom rom)
+        public static Mother3TextWriter Create(Rom rom, bool isCompressed, bool isEncoded)
         {
-            var writer = new StreamTokenWriter(rom.ToStream(), Mother3Config.CreateCharacterMap(rom.Type));
-            var reader = new StringTokenReader(Mother3Config.Configs[rom.Type].ControlCodes);
+            var type = rom.Type;
+
+            if (type.Game != "Mother 3")
+                throw new NotSupportedException(type.Game);
+
+            StreamTokenWriter writer;
+            var charMap = Mother3Config.CreateCharacterMap(rom.Type);
+            var codes = Mother3Config.Configs[rom.Type].ControlCodes;
+
+            switch (type.Version)
+            {
+                case "jp":
+                    writer = new StreamTokenWriter(rom.ToStream(), charMap);
+                    break;
+
+                case "en-v10":
+                    writer = new EnglishStreamTokenWriter(rom.ToStream(),
+                        charMap,
+                        isCompressed,
+                        isEncoded ? Mother3Config.Configs[type].ScriptEncodingParameters : null);
+                    break;
+
+                default:
+                    RLog.Warn($"Unrecognized ROM version: {type.Version}. Defaulting to Japanese character map.");
+                    goto case "jp";
+            }
+
+            var reader = new StringTokenReader(codes);
 
             return new Mother3TextWriter(writer, reader);
         }

@@ -20,7 +20,7 @@ namespace RopeSnake.Mother3.Text
             _stringWriter = stringWriter;
         }
 
-        public static Mother3TextReader Create(Rom rom, bool isCompressed = false)
+        public static Mother3TextReader Create(Rom rom, bool isCompressed, bool isEncoded)
         {
             var type = rom.Type;
 
@@ -28,18 +28,21 @@ namespace RopeSnake.Mother3.Text
                 throw new NotSupportedException(type.Game);
 
             StreamTokenReader reader;
+            var charMap = Mother3Config.CreateCharacterMap(type);
+            var codes = Mother3Config.Configs[type].ControlCodes;
 
             switch (type.Version)
             {
                 case "jp":
-                    reader = new StreamTokenReader(rom.ToStream(),
-                        Mother3Config.CreateCharacterMap(rom.Type), Mother3Config.Configs[rom.Type].ControlCodes);
+                    reader = new StreamTokenReader(rom.ToStream(), charMap, codes);
                     break;
 
                 case "en-v10":
                     reader = new EnglishStreamTokenReader(rom.ToStream(),
-                        Mother3Config.CreateCharacterMap(rom.Type), Mother3Config.Configs[rom.Type].ControlCodes,
-                        isCompressed, Mother3Config.Configs[rom.Type].ScriptEncodingParameters);
+                        charMap,
+                        codes,
+                        isCompressed,
+                        isEncoded ? Mother3Config.Configs[type].ScriptEncodingParameters : null);
                     break;
 
                 default:
