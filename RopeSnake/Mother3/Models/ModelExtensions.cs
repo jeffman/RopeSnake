@@ -28,30 +28,13 @@ namespace RopeSnake.Mother3
                 AnimationDarken = stream.ReadBool8(),
                 Animation = stream.GetByte(),
                 HitAnimation = stream.GetByte(),
-                UnknownA = stream.GetByte(),
+                Unknown = stream.GetByte(),
                 Sound = stream.ReadUShort(),
                 MissChance = stream.GetByte(),
                 CriticalChance = stream.GetByte(),
-                Redirectable = stream.ReadBool8(),
-                UnknownB = stream.GetByte()
+                Redirectable = stream.ReadBool16()
             };
             return info;
-        }
-
-        internal static AilmentType? DecodeAilmentType(byte value)
-        {
-            if (value == 0)
-                return null;
-            else
-                return (AilmentType)(value - 1);
-        }
-
-        internal static byte EncodeAilmentType(AilmentType? value)
-        {
-            if (value == null)
-                return 0;
-            else
-                return (byte)((byte)value.Value + 1);
         }
 
         public static void WriteBattleInfo(this Stream stream, BattleInfo info)
@@ -70,12 +53,83 @@ namespace RopeSnake.Mother3
             stream.WriteBool8(info.AnimationDarken);
             stream.WriteByte(info.Animation);
             stream.WriteByte(info.HitAnimation);
-            stream.WriteByte(info.UnknownA);
+            stream.WriteByte(info.Unknown);
             stream.WriteUShort(info.Sound);
             stream.WriteByte(info.MissChance);
             stream.WriteByte(info.CriticalChance);
-            stream.WriteBool8(info.Redirectable);
-            stream.WriteByte(info.UnknownB);
+            stream.WriteBool16(info.Redirectable);
+        }
+
+        internal static AilmentType? DecodeAilmentType(byte value)
+        {
+            if (value == 0)
+                return null;
+            else
+                return (AilmentType)(value - 1);
+        }
+
+        internal static byte EncodeAilmentType(AilmentType? value)
+        {
+            if (value == null)
+                return 0;
+            else
+                return (byte)((byte)value.Value + 1);
+        }
+
+        public static Item ReadItem(this Stream stream)
+        {
+            var item = new Item
+            {
+                Index = stream.ReadInt(),
+                Type = (ItemType)stream.ReadInt(),
+                Key = !stream.ReadBool16(),
+                SellPrice = stream.ReadUShort(),
+                EquipFlags = (EquipFlags)stream.ReadInt(),
+                Hp = stream.ReadInt(),
+                Pp = stream.ReadInt(),
+                Offense = stream.ReadSByte(),
+                Defense = stream.ReadSByte(),
+                Iq = stream.ReadSByte(),
+                Speed = stream.ReadSByte(),
+                Kindness = stream.ReadInt(),
+                AilmentProtection = Enumerable.Range(0, 11).ToDictionary(i => (AilmentType)i, i => stream.ReadShort()),
+                ElementalProtection = Enumerable.Range(0, 5).ToDictionary(i => (ElementalType)i, i => stream.ReadSByte()),
+                AttackType = (AttackType)stream.GetByte(),
+                UnknownA = stream.ReadInt(),
+                BattleInfo = stream.ReadBattleInfo(),
+                UnknownB = stream.ReadUShort(),
+                SingleUse = stream.ReadBool16()
+            };
+
+            return item;
+        }
+
+        public static void WriteItem(this Stream stream, Item item)
+        {
+            stream.WriteInt(item.Index);
+            stream.WriteInt((int)item.Type);
+            stream.WriteBool16(!item.Key);
+            stream.WriteUShort(item.SellPrice);
+            stream.WriteInt((int)item.EquipFlags);
+            stream.WriteInt(item.Hp);
+            stream.WriteInt(item.Pp);
+            stream.WriteSByte(item.Offense);
+            stream.WriteSByte(item.Defense);
+            stream.WriteSByte(item.Iq);
+            stream.WriteSByte(item.Speed);
+            stream.WriteInt(item.Kindness);
+
+            for (int i = 0; i < 11; i++)
+                stream.WriteShort(item.AilmentProtection[(AilmentType)i]);
+
+            for (int i = 0; i < 5; i++)
+                stream.WriteSByte(item.ElementalProtection[(ElementalType)i]);
+
+            stream.WriteByte((byte)item.AttackType);
+            stream.WriteInt(item.UnknownA);
+            stream.WriteBattleInfo(item.BattleInfo);
+            stream.WriteUShort(item.UnknownB);
+            stream.WriteBool16(item.SingleUse);
         }
     }
 }

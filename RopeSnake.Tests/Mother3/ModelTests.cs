@@ -20,11 +20,11 @@ namespace RopeSnake.Tests.Mother3
         [TestMethod]
         public void ReadBattleInfo()
         {
-            var stream = origRom.ToStream(0xE5108 + (0x5C * Item.FieldSize) + 0x40); // Favorite Food
+            var stream = origRom.ToStream(0xE5108 + (0x5C * Item.SizeInBytes) + 0x40); // Favorite Food
             var oldPosition = stream.Position;
             var info = stream.ReadBattleInfo();
 
-            Assert.AreEqual(BattleInfo.FieldSize, stream.Position - oldPosition);
+            Assert.AreEqual(BattleInfo.SizeInBytes, stream.Position - oldPosition);
 
             var expectedInfo = new BattleInfo
             {
@@ -42,12 +42,11 @@ namespace RopeSnake.Tests.Mother3
                 AnimationDarken = false,
                 Animation = 0,
                 HitAnimation = 0x1C,
-                UnknownA = 0,
+                Unknown = 0,
                 Sound = 0,
                 MissChance = 0,
                 CriticalChance = 0,
-                Redirectable = true,
-                UnknownB = 0
+                Redirectable = true
             };
 
             TestHelpers.AssertPublicInstancePropertiesEqualDeep(expectedInfo, info);
@@ -72,19 +71,18 @@ namespace RopeSnake.Tests.Mother3
                 AnimationDarken = true,
                 Animation = 9,
                 HitAnimation = 10,
-                UnknownA = 11,
+                Unknown = 11,
                 Sound = 12,
                 MissChance = 13,
                 CriticalChance = 14,
-                Redirectable = false,
-                UnknownB = 15
+                Redirectable = false
             };
 
-            var block = new Block(BattleInfo.FieldSize);
+            var block = new Block(BattleInfo.SizeInBytes);
             var stream = block.ToStream();
             stream.WriteBattleInfo(info);
 
-            Assert.AreEqual(BattleInfo.FieldSize, stream.Position);
+            Assert.AreEqual(BattleInfo.SizeInBytes, stream.Position);
             CollectionAssert.AreEqual(new byte[]
             {
                 1, 0, 0, 0,

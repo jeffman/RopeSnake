@@ -3,36 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace RopeSnake.Mother3
 {
     // http://datacrystal.romhacking.net/wiki/MOTHER_3:Item_data#Info_chunk
     public sealed class Item
     {
-        internal const int FieldSize = 108;
+        internal const int SizeInBytes = 108;
 
-        // The struct actually has an index into the item name table at offset 0,
-        // but since it's more useful to edit the name directy we'll use a string
-        // instead. Serializers need to take this into account.
+        // The name and description are not stored in the struct; rather, an index is stored
+        // The deserializer is responsible for populating the name and description
+        [JsonProperty(Order = -10)]
         public string Name { get; set; }
+        [JsonProperty(Order = -9)]
+        public string Description { get; set; }
+        [JsonIgnore]
+        public int Index { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public ItemType Type { get; set; }
         public bool Key { get; set; }
         public ushort SellPrice { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public EquipFlags EquipFlags { get; set; }
         public int Hp { get; set; }
-        public short Pp { get; set; }
+        public int Pp { get; set; }
         public sbyte Offense { get; set; }
         public sbyte Defense { get; set; }
         public sbyte Iq { get; set; }
         public sbyte Speed { get; set; }
-        public sbyte Kindness { get; set; }
+        public int Kindness { get; set; }
         public Dictionary<AilmentType, short> AilmentProtection { get; set; }
         public Dictionary<ElementalType, sbyte> ElementalProtection { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public AttackType AttackType { get; set; }
+        public int UnknownA { get; set; }
         public BattleInfo BattleInfo { get; set; }
-        public ushort UnknownA { get; set; }
+        public ushort UnknownB { get; set; }
         public bool SingleUse { get; set; }
-        public byte UnknownB { get; set; }
     }
 
     public enum ItemType : int

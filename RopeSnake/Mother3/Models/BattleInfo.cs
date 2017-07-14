@@ -3,34 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace RopeSnake.Mother3
 {
     // http://datacrystal.romhacking.net/wiki/MOTHER_3:Battle_tables_info_chunk
     public sealed class BattleInfo
     {
-        internal const int FieldSize = 40;
+        internal const int SizeInBytes = 40;
 
         public int Effect { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public ElementalType Element { get; set; }
         public int Target { get; set; }
         public ushort Multiplier { get; set; }
         public ushort LowerStat { get; set; }
         public ushort UpperStat { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public AilmentType? Ailment { get; set; }
         public byte AilmentChance { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public AilmentMode AilmentMode { get; set; }
         public int Priority { get; set; }
         public ushort BattleText { get; set; }
         public bool AnimationDarken { get; set; }
         public byte Animation { get; set; }
         public byte HitAnimation { get; set; }
-        public byte UnknownA { get; set; }
+        public byte Unknown { get; set; }
         public ushort Sound { get; set; }
         public byte MissChance { get; set; }
         public byte CriticalChance { get; set; }
         public bool Redirectable { get; set; }
-        public byte UnknownB { get; set; }
     }
 
     public enum AilmentType : byte
