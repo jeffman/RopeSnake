@@ -128,16 +128,16 @@ namespace RopeSnake.Core
             {
                 var cache = CreateBlankCache();
 
-                using (var stream = new BinaryReader(File.OpenRead(fileName), Encoding.ASCII))
+                using (var reader = new BinaryReader(File.OpenRead(fileName), Encoding.ASCII))
                 {
-                    int count = stream.ReadInt32();
+                    int count = reader.ReadInt32();
 
                     for (int i = 0; i < count; i++)
                     {
-                        string hash = stream.ReadString();
-                        int length = stream.ReadInt32();
+                        string hash = reader.ReadString();
+                        int length = reader.ReadInt32();
                         Block block = new Block(length);
-                        stream.Read(block.Data, 0, length);
+                        reader.Read(block.Data, 0, length);
 
                         cache.Add(hash, block);
                     }
@@ -159,15 +159,15 @@ namespace RopeSnake.Core
             if (!directory.Exists)
                 directory.Create();
 
-            using (var stream = new BinaryWriter(File.Create(fileName), Encoding.ASCII))
+            using (var writer = new BinaryWriter(File.Create(fileName), Encoding.ASCII))
             {
-                stream.Write(cache.Count);
+                writer.Write(cache.Count);
 
                 foreach (var kv in cache)
                 {
-                    stream.Write(kv.Key);
-                    stream.Write(kv.Value.Length);
-                    stream.Write(kv.Value.Data);
+                    writer.Write(kv.Key);
+                    writer.Write(kv.Value.Length);
+                    writer.Write(kv.Value.Data);
                 }
             }
         }
