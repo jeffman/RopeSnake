@@ -102,7 +102,7 @@ namespace RopeSnake.Mother3.Text
 
                 if (code == null)
                 {
-                    if (!short.TryParse(firstChunk, out short codeValue))
+                    if (!TryParseChunk(firstChunk, out short codeValue))
                         throw new Exception($"Could not parse as a number: {firstChunk}");
 
                     code = _controlCodes.FirstOrDefault(c => c.Value == codeValue);
@@ -123,7 +123,7 @@ namespace RopeSnake.Mother3.Text
                 {
                     string chunk = chunks[i + 1];
 
-                    if (!short.TryParse(chunk, out short argValue))
+                    if (!TryParseChunk(chunk, out short argValue))
                         throw new Exception($"Could not parse as a number: {chunk}");
 
                     args[i] = argValue;
@@ -142,5 +142,8 @@ namespace RopeSnake.Mother3.Text
         }
 
         public void Reset() { }
+
+        internal bool TryParseChunk(string chunk, out short value)
+            => short.TryParse(chunk, System.Globalization.NumberStyles.HexNumber, null, out value);
     }
 }
