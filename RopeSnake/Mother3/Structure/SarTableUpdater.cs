@@ -31,5 +31,13 @@ namespace RopeSnake.Mother3
                 Source.WriteInt(tableAddress + 4, entry.Size);
             }
         }
+
+        public void UpdateCount(int newCount)
+        {
+            if (newCount < 0)
+                throw new TableException($"Negative counts not supported: given {newCount}");
+
+            Source.WriteInt(TableOffset + 4, newCount);
+        }
     }
 }
