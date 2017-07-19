@@ -33,6 +33,9 @@ namespace RopeSnake.Core
         public void Deallocate(Range range)
             => _allocator.Deallocate(range);
 
+        public int BytesAvailableAt(int offset)
+            => _allocator.BytesAvailableAt(offset);
+
         #endregion
     }
 }

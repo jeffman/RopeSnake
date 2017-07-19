@@ -72,5 +72,21 @@ namespace RopeSnake.Tests.Core
 
             Assert.AreEqual("[4, 23]", allocator.ToString());
         }
+
+        [TestMethod]
+        public void HasBytesAvailableAt()
+        {
+            var allocator = new RangeAllocator();
+            allocator.Deallocate(Range.StartEnd(4, 15));
+            Assert.AreEqual(4, allocator.BytesAvailableAt(12));
+        }
+
+        [TestMethod]
+        public void HasNoBytesAvailableAt()
+        {
+            var allocator = new RangeAllocator();
+            allocator.Deallocate(Range.StartEnd(4, 15));
+            Assert.AreEqual(0, allocator.BytesAvailableAt(16));
+        }
     }
 }

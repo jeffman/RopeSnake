@@ -10,6 +10,7 @@ namespace RopeSnake.Core
     {
         int Allocate(int size, int alignment);
         void Deallocate(Range range);
+        int BytesAvailableAt(int offset);
     }
 
     public sealed class AllocationException : Exception

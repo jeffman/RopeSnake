@@ -147,6 +147,17 @@ namespace RopeSnake.Core
             _rangeList.Clear();
         }
 
+        public int BytesAvailableAt(int offset)
+        {
+            foreach (var range in _rangeList)
+            {
+                if (range.Start <= offset && range.End >= offset)
+                    return range.End - offset + 1;
+            }
+
+            return 0;
+        }
+
         private void Consolidate()
         {
             if (_rangeList.Count < 1)
