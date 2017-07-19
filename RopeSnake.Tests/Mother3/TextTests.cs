@@ -53,5 +53,30 @@ namespace RopeSnake.Tests.Mother3
             var readString = reader.ReadString(0x1371D88);
             Assert.AreEqual("[SATURN]@THIS IS[BREAK]  \"THIS VEHICLE\".[WAIT FF00]  YOU RIDE?[WAIT FF00][MENU 2][NORMAL]¹Yes²No[ENDMENU]", readString);
         }
+
+        [TestMethod]
+        public void WriteStringTable()
+        {
+            var block = new Block(0x100);
+            var strings = new string[]
+            {
+                "◇だんろのおくに",
+                "あながあいている。[WAIT FF00]◇おちてみますか?",
+                "[MENU 2]   はい   いいえ[BREAK][ENDMENU]",
+                "[MENU 2]   はい   いいえ[BREAK][ENDMENU]",
+                ""
+            };
+
+            var writer = Mother3TextWriter.Create(block, origRom.Type, false, false);
+            (int stringsOffset, int totalSize) = block.WriteStringTable(32, writer, strings);
+
+            Assert.AreEqual(42, stringsOffset);
+            Assert.AreEqual(0x6A, totalSize);
+
+            var expectedBlock = new Block(0x100);
+            expectedBlock.ReadFromFile("Artifacts\\Mother3\\stringtable.bin");
+
+            CollectionAssert.AreEqual(expectedBlock.Data, block.Data);
+        }
     }
 }

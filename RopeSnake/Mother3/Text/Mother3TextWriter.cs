@@ -52,9 +52,9 @@ namespace RopeSnake.Mother3.Text
             return new Mother3TextWriter(writer, reader);
         }
 
-        public void WriteString(int offset, string str) => WriteString(offset, str, -1);
+        public int WriteString(int offset, string str) => WriteString(offset, str, -1);
 
-        public void WriteString(int offset, string str, int bytesToWrite)
+        public int WriteString(int offset, string str, int bytesToWrite)
         {
             _blockWriter.Reset();
             _blockWriter.Position = offset;
@@ -79,6 +79,8 @@ namespace RopeSnake.Mother3.Text
 
             if (bytesToWrite >= 0)
                 _blockWriter.Position = offset + bytesToWrite;
+
+            return _blockWriter.Position - offset;
         }
     }
 }

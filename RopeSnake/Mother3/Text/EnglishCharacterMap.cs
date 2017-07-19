@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ForwardLookup = System.Collections.Generic.Dictionary<short, char>;
-using ReverseLookup = System.Collections.Generic.Dictionary<char, short>;
 
 namespace RopeSnake.Mother3.Text
 {

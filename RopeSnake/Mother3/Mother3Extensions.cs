@@ -82,5 +82,82 @@ namespace RopeSnake.Mother3
 
             return strings;
         }
+
+        public static (int stringsOffset, int totalSize) WriteStringTable(
+            this Block block,
+            int offset,
+            Mother3TextWriter writer,
+            IEnumerable<string> strings,
+            bool longOffsets = false)
+        {
+            if (!offset.IsAligned(2))
+                throw new ArgumentException("Offset must be aligned by 2");
+
+            // The game follows a convention where the first four bytes at stringsOffset
+            // are [FF FF n_low n_high] where n is the string count.
+
+            int count = strings.Count();
+            if (count > 0x7FFE)
+                throw new Exception("Too many strings");
+
+            int offsetsOffset = offset;
+            int stringsOffset = offset + (count * 2);
+
+            int currentOffsetsOffset = offsetsOffset;
+            int currentStringsOffset = stringsOffset + 4;
+
+            string prevString = null;
+            int prevOffsetOffset = 0;
+            bool hasPrevString = false;
+
+            foreach (string str in strings)
+            {
+                int offsetOffset = 0;
+
+                if (hasPrevString && str == prevString)
+                {
+                    offsetOffset = prevOffsetOffset;
+                }
+                else if (IsEmptyString(str))
+                {
+                    offsetOffset = 0;
+                }
+                else
+                {
+                    if (longOffsets)
+                        currentStringsOffset = currentStringsOffset.Align(2);
+
+                    offsetOffset = currentStringsOffset - stringsOffset;
+
+                    if (longOffsets)
+                        offsetOffset /= 2;
+
+                    if (offsetOffset > 0xFFFE)
+                        throw new Exception("Maximum string table size exceeded");
+
+                    int bytesWritten = writer.WriteString(currentStringsOffset, str);
+                    currentStringsOffset += bytesWritten;
+                }
+
+                block.WriteUShort(currentOffsetsOffset, (ushort)offsetOffset);
+                currentOffsetsOffset += 2;
+
+                prevString = str;
+                prevOffsetOffset = offsetOffset;
+                hasPrevString = true;
+            }
+
+            block.WriteUShort(currentOffsetsOffset, 0xFFFF);
+            block.WriteUShort(currentOffsetsOffset + 2, (ushort)count);
+
+            return (stringsOffset, currentStringsOffset - offsetsOffset);
+        }
+
+        internal static bool IsEmptyString(string str)
+        {
+            return String.IsNullOrEmpty(str) ||
+                (str.ToLower() == "[end]") ||
+                (str.ToLower() == "[ff ff]");
+        }
     }
 }
