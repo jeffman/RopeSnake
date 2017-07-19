@@ -37,7 +37,7 @@ namespace RopeSnake.Mother3
                 throw new TableException($"Negative counts not supported: given {newCount}");
 
             block.WriteString(newOffset, "sar ", 4);
-            block.WriteInt(newCount, newOffset + 4);
+            block.WriteInt(newOffset + 4, newCount);
         }
     }
 }
