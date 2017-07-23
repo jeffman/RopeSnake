@@ -32,16 +32,16 @@ namespace RopeSnake.Mother3
         }
 
         public static List<string> ReadStringTable(Rom rom, int offsetsOffset, int stringsOffset,
-            bool isCompressed, bool isEncoded, bool longOffsets)
+            bool isCompressed, bool isEncoded)
         {
             var reader = Mother3TextReader.Create(rom, isCompressed, isEncoded);
-            return rom.ReadStringTable(offsetsOffset, stringsOffset, reader, longOffsets);
+            return rom.ReadStringTable(offsetsOffset, stringsOffset, reader);
         }
 
         public static List<string> ReadStringTableFromTextTable(Rom rom, int tableIndex)
         {
             var textTable = new OffsetTableAccessor(rom, rom.GetAsmPointer(TextTableKey));
-            return ReadStringTable(rom, textTable.GetEntry(tableIndex).Offset, textTable.GetEntry(tableIndex + 1).Offset, false, false, false);
+            return ReadStringTable(rom, textTable.GetEntry(tableIndex).Offset, textTable.GetEntry(tableIndex + 1).Offset, false, false);
         }
     }
 }

@@ -65,17 +65,13 @@ namespace RopeSnake.Mother3
             this Block block,
             int offsetsOffset,
             int stringsOffset,
-            Mother3TextReader reader,
-            bool longOffsets = false)
+            Mother3TextReader reader)
         {
             var strings = new List<string>();
 
             ushort offset;
             while ((offset = block.ReadUShort(offsetsOffset)) != 0xFFFF)
             {
-                if (longOffsets)
-                    offset *= 2;
-
                 strings.Add(reader.ReadString(offset + stringsOffset));
                 offsetsOffset += 2;
             }
@@ -87,8 +83,7 @@ namespace RopeSnake.Mother3
             this Block block,
             int offset,
             Mother3TextWriter writer,
-            IEnumerable<string> strings,
-            bool longOffsets = false)
+            IEnumerable<string> strings)
         {
             if (!offset.IsAligned(2))
                 throw new ArgumentException("Offset must be aligned by 2");
@@ -124,13 +119,7 @@ namespace RopeSnake.Mother3
                 }
                 else
                 {
-                    if (longOffsets)
-                        currentStringsOffset = currentStringsOffset.Align(2);
-
                     offsetOffset = currentStringsOffset - stringsOffset;
-
-                    if (longOffsets)
-                        offsetOffset /= 2;
 
                     if (offsetOffset > 0xFFFE)
                         throw new Exception("Maximum string table size exceeded");
