@@ -28,7 +28,7 @@ namespace RopeSnake.Tests.Mother3
         [TestMethod]
         public void ReadString()
         {
-            var reader = Mother3TextReader.Create(origRom, false, false);
+            var reader = Mother3TextReader.Create(origRom);
             var readString = reader.ReadString(0x137149C);
             Assert.AreEqual("◇だんろのおくに あながあいている。[WAIT FF00]◇おちてみますか?[BREAK][MENU 2]   はい   いいえ[BREAK][ENDMENU]", readString);
         }
@@ -36,7 +36,7 @@ namespace RopeSnake.Tests.Mother3
         [TestMethod]
         public void ReadSaturnString()
         {
-            var reader = Mother3TextReader.Create(origRom, false, false);
+            var reader = Mother3TextReader.Create(origRom);
             var readString = reader.ReadString(0x13724BA);
             Assert.AreEqual("[ALTFONT]◆のりものて゛す　に[BREAK]　のりこみますか？[WAIT FF00][MENU 2]　　　はい　　　いいえ[BREAK][ENDMENU]", readString);
         }
@@ -70,7 +70,7 @@ namespace RopeSnake.Tests.Mother3
                 ""
             };
 
-            var writer = Mother3TextWriter.Create(block, origRom.Type, false, false);
+            var writer = Mother3TextWriter.Create(block, origRom.Type);
             (int stringsOffset, int totalSize) = block.WriteStringTable(32, writer, strings);
 
             Assert.AreEqual(42, stringsOffset);
@@ -85,7 +85,7 @@ namespace RopeSnake.Tests.Mother3
         [TestMethod]
         public void ReadBxtStringTable()
         {
-            var actualStrings = origRom.ReadBxtStringTable(0x1C8F390, Mother3TextReader.Create(origRom, false, false));
+            var actualStrings = origRom.ReadBxtStringTable(0x1C8F390, Mother3TextReader.Create(origRom));
             var expectedStrings = JsonConvert.DeserializeObject<List<string>>(
                 File.ReadAllText("Artifacts\\Mother3\\orig_musictitles_expected.json"));
 

@@ -19,7 +19,7 @@ namespace RopeSnake.Mother3.Text
             _stringReader = reader;
         }
 
-        public static Mother3TextWriter Create(Block destination, RomType type, bool isCompressed, bool isEncoded)
+        public static Mother3TextWriter Create(Block destination, RomType type, bool isCompressed = false, bool isEncoded = false)
         {
             if (type.Game != "Mother 3")
                 throw new NotSupportedException(type.Game);
