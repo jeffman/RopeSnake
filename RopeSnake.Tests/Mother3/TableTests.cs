@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace RopeSnake.Tests.Mother3
 {
     [TestClass]
-    public class Mother3TableTests
+    public class TableTests
     {
         private static Block baseRom;
         private static Block rom;
