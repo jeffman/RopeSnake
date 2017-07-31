@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RopeSnake.Core;
 using RopeSnake.Mother3;
 using RopeSnake.Mother3.Text;
+using Newtonsoft.Json;
 
 namespace RopeSnake.Tests.Mother3
 {
@@ -77,6 +80,16 @@ namespace RopeSnake.Tests.Mother3
             expectedBlock.ReadFromFile("Artifacts\\Mother3\\stringtable.bin");
 
             CollectionAssert.AreEqual(expectedBlock.Data, block.Data);
+        }
+
+        [TestMethod]
+        public void ReadBxtStringTable()
+        {
+            var actualStrings = origRom.ReadBxtStringTable(0x1C8F390, Mother3TextReader.Create(origRom, false, false));
+            var expectedStrings = JsonConvert.DeserializeObject<List<string>>(
+                File.ReadAllText("Artifacts\\Mother3\\orig_musictitles_expected.json"));
+
+            CollectionAssert.AreEqual(expectedStrings, actualStrings);
         }
     }
 }

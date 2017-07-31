@@ -148,5 +148,34 @@ namespace RopeSnake.Mother3
                 (str.ToLower() == "[end]") ||
                 (str.ToLower() == "[ff ff]");
         }
+
+        public static List<string> ReadBxtStringTable(this Block block, int offset, Mother3TextReader reader)
+        {
+            string header = block.ReadString(offset, 4);
+
+            if (header != "bxt ")
+                throw new InvalidOperationException($"Expected bxt header but got \"{header}\"");
+
+            // The first field after the header seems to always be 1 (other values crash the game?),
+            // so we'll skip reading it
+
+            int count = block.ReadInt(offset + 8);
+            var strings = new List<string>(count);
+
+            for (int i = 0; i < count; i++)
+            {
+                int stringOffset = block.ReadUShort(offset + 12 + (i * 2));
+
+                if (stringOffset == 0)
+                    strings.Add(null);
+                else
+                {
+                    stringOffset += offset;
+                    strings.Add(reader.ReadString(stringOffset));
+                }
+            }
+
+            return strings;
+        }
     }
 }

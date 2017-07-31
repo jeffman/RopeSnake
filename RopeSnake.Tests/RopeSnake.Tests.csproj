@@ -92,6 +92,9 @@
     <None Include="Artifacts\CompCache\lz77.cache">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Artifacts\Mother3\orig_musictitles_expected.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Artifacts\Mother3\orig_sartable_expected.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
