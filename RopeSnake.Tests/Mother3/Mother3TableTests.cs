@@ -34,7 +34,7 @@ namespace RopeSnake.Tests.Mother3
         [TestMethod]
         public void ReadSar()
         {
-            var accessor = new SarTableAccessor(rom, 0x1C90960);
+            var accessor = new SarTable(rom, 0x1C90960);
 
             Assert.AreEqual(expectedSar.Length, accessor.Count);
             CollectionAssert.AreEqual(expectedSar, accessor.GetEntries().ToList());
@@ -45,13 +45,13 @@ namespace RopeSnake.Tests.Mother3
         [ExpectedException(typeof(TableException))]
         public void ReadInvalidSarHeader()
         {
-            var accessor = new SarTableAccessor(rom, 0);
+            var accessor = new SarTable(rom, 0);
         }
 
         [TestMethod]
         public void WriteSar()
         {
-            var updater = new SarTableUpdater(rom, 0x1C90960);
+            var updater = new SarTable(rom, 0x1C90960);
 
             Assert.AreEqual(expectedSar.Length, updater.Count);
 

@@ -80,7 +80,7 @@
     <Compile Include="Core\Utilities\ITableAccessor.cs" />
     <Compile Include="Core\Utilities\ITableUpdater.cs" />
     <Compile Include="Core\Utilities\RangeAllocator.cs" />
-    <Compile Include="Core\Utilities\FixedTableAccessor.cs" />
+    <Compile Include="Core\Utilities\FixedTable.cs" />
     <Compile Include="Core\IModule.cs" />
     <Compile Include="Core\Models\SizedTableEntry.cs" />
     <Compile Include="Core\Models\TableEntry.cs" />
@@ -113,12 +113,8 @@
     <Compile Include="Mother3\Modules\ItemsModule.cs" />
     <Compile Include="Mother3\Modules\TitleScreenModule.cs" />
     <Compile Include="Mother3\Mother3Config.cs" />
-    <Compile Include="Mother3\Structure\OffsetTableAccessor.cs" />
-    <Compile Include="Mother3\Structure\OffsetTableBase.cs" />
-    <Compile Include="Mother3\Structure\OffsetTableUpdater.cs" />
-    <Compile Include="Mother3\Structure\SarTableAccessor.cs" />
-    <Compile Include="Mother3\Structure\SarTableBase.cs" />
-    <Compile Include="Mother3\Structure\SarTableUpdater.cs" />
+    <Compile Include="Mother3\Structure\OffsetTable.cs" />
+    <Compile Include="Mother3\Structure\SarTable.cs" />
     <Compile Include="Mother3\Text\CharacterToken.cs" />
     <Compile Include="Mother3\Text\ContextToken.cs" />
     <Compile Include="Mother3\Text\ControlCode.cs" />

@@ -7,13 +7,13 @@ using System.IO;
 
 namespace RopeSnake.Core
 {
-    public class FixedTableAccessor : ITableAccessor<SizedTableEntry>
+    public class FixedTable : ITableAccessor<SizedTableEntry>
     {
         public int Count { get; protected set; }
         public int TableOffset { get; protected set; }
         public int EntryLength { get; protected set; }
 
-        public FixedTableAccessor(int tableOffset, int entryLength, int count)
+        public FixedTable(int tableOffset, int entryLength, int count)
         {
             TableOffset = tableOffset;
             EntryLength = entryLength;

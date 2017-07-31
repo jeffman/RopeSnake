@@ -31,7 +31,7 @@ namespace RopeSnake.Tests.Core
         [TestInitialize]
         public void TestInitialize()
         {
-            accessor = new FixedTableAccessor(0, 4, values.Length);
+            accessor = new FixedTable(0, 4, values.Length);
         }
 
         [TestMethod]

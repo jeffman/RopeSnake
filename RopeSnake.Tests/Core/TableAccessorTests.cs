@@ -46,7 +46,7 @@ namespace RopeSnake.Tests.Core
         [TestMethod]
         public void FixedTableTest()
         {
-            var accessor = new FixedTableAccessor(0, 4, 4);
+            var accessor = new FixedTable(0, 4, 4);
 
             for (int i = 0; i < 4; i++)
             {

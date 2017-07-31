@@ -62,7 +62,7 @@ namespace RopeSnake.Mother3
             var itemNames = Mother3Helpers.ReadFixedStringTableFromTextTable(rom, 2);
             var itemDescriptions = Mother3Helpers.ReadStringTableFromTextTable(rom, 3);
 
-            var itemTable = new FixedTableAccessor(rom.GetAsmPointer("ItemTable"), Item.SizeInBytes, ItemCount);
+            var itemTable = new FixedTable(rom.GetAsmPointer("ItemTable"), Item.SizeInBytes, ItemCount);
             data.Items = itemTable.GetEntries().Select(e => rom.ReadItem(e.Offset)).ToArray();
 
             foreach (var item in data.Items)

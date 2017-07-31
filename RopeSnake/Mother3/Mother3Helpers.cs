@@ -27,7 +27,7 @@ namespace RopeSnake.Mother3
 
         public static FixedStringTable ReadFixedStringTableFromTextTable(Rom rom, int tableIndex)
         {
-            var accessor = new OffsetTableAccessor(rom, rom.GetAsmPointer(TextTableKey));
+            var accessor = new OffsetTable(rom, rom.GetAsmPointer(TextTableKey));
             return ReadFixedStringTable(rom, accessor.GetEntry(tableIndex).Offset);
         }
 
@@ -40,7 +40,7 @@ namespace RopeSnake.Mother3
 
         public static List<string> ReadStringTableFromTextTable(Rom rom, int tableIndex)
         {
-            var textTable = new OffsetTableAccessor(rom, rom.GetAsmPointer(TextTableKey));
+            var textTable = new OffsetTable(rom, rom.GetAsmPointer(TextTableKey));
             return ReadStringTable(rom, textTable.GetEntry(tableIndex).Offset, textTable.GetEntry(tableIndex + 1).Offset, false, false);
         }
     }
