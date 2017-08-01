@@ -28,6 +28,12 @@ namespace RopeSnake.Mother3
         [JsonProperty]
         public ScriptEncodingParameters ScriptEncodingParameters { get; internal set; }
 
+        [JsonProperty]
+        public Dictionary<string, object> Parameters { get; internal set; }
+
+        [JsonProperty]
+        public Dictionary<string, Range[]> FreeRanges { get; internal set; }
+
         #region Static members
 
         public static IReadOnlyDictionary<RomType, Mother3Config> Configs { get; internal set; }
@@ -64,5 +70,10 @@ namespace RopeSnake.Mother3
         }
 
         #endregion
+
+        public T GetParameter<T>(string key)
+        {
+            return (T)Convert.ChangeType(Parameters[key], typeof(T));
+        }
     }
 }

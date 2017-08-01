@@ -76,6 +76,7 @@
     <Compile Include="Core\RomTypeDetectorTests.cs" />
     <Compile Include="Gba\Lz77Tests.cs" />
     <Compile Include="Graphics\CanvasTests.cs" />
+    <Compile Include="Mother3\ConfigTests.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="Mother3\TableTests.cs" />
     <Compile Include="Mother3\TextTests.cs" />

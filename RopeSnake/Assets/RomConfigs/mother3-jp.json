@@ -7813,5 +7813,14 @@
     "64": "？",
     "65": "！",
     "66": "　"
+  },
+  "Parameters": {
+    "Items.Count": 256,
+    "Sar.Header": "sar "
+  },
+  "FreeRanges": {
+    "Items": [
+      "[0xD22290, 0xD27307]"
+    ]
   }
 }
