@@ -21,20 +21,22 @@ namespace RopeSnake.Core
         /// <summary>
         /// ROM type associated with this compilation.
         /// </summary>
-        public RomType RomType { get; set; }
+        public RomType RomType { get; }
 
         /// <summary>
         /// Alignment to be used during allocation.
         /// </summary>
-        public int Alignment { get; set; } = 1;
+        public int Alignment { get; }
 
         /// <summary>
         /// Optional data to be included for use during WriteToRom.
         /// </summary>
         public object Tag { get; set; }
 
-        public CompileResult()
+        public CompileResult(RomType type, int alignment = 1)
         {
+            RomType = type;
+            Alignment = alignment;
             StaticBlocks = new Dictionary<string, (Block, int)>();
             AllocateBlocks = new Dictionary<string, Block>();
         }

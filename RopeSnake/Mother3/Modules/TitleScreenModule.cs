@@ -24,7 +24,7 @@ namespace RopeSnake.Mother3
         public override CompileResult Compile(ProjectData data, RomType romType)
         {
             var titleData = data as TitleScreenProjectData;
-            var result = new CompileResult { Alignment = 4 };
+            var result = new CompileResult(romType, 4);
 
             var paletteBuffer = new Block(0x200);
             paletteBuffer.WritePalette(0, titleData.AnimationPalette);
